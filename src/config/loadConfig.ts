@@ -11,17 +11,17 @@ export async function loadConfig(configFile: string): Promise<HonoDocsConfig> {
     throw new Error(`[hono-docs] Config file not found: ${fullPath}`);
   }
 
+  // Use esbuild-register for anything non-.mjs (ESM)
   const ext = extname(fullPath);
   let unregister = () => {};
+  const needsTranspile = ![".mjs", ".cjs"].includes(ext);
 
-  // Register esbuild for TypeScript
-  if (ext === ".ts" || ext === ".tsx" || ext === ".mts") {
+  if (needsTranspile) {
     const reg = register({ target: "es2020", jsx: "automatic" });
     unregister = reg.unregister;
   }
 
   let configModule: unknown;
-
   try {
     configModule = await import(pathToFileURL(fullPath).href);
   } catch (err) {
