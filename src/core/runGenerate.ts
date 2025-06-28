@@ -24,7 +24,7 @@ export async function runGenerate(configPath: string) {
   //   ? path.resolve(__dirname, "../../")
   //   : // : path.dirname(require.resolve("@rcmade/hono-docs/package.json"));
   //     path.dirname(fileURLToPath(import.meta.url));
-  const libDir = getLibDir();
+  const libDir = getLibDir(import.meta.url);
   console.log("Library root directory:", libDir);
 
   const apis = config.apis;

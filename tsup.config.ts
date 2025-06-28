@@ -6,8 +6,11 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   dts: true,
-  format: ["cjs", "esm"],
+  format: ["esm"],
   target: "node16",
+  outExtension({ format }) {
+    return { js: ".mjs" };
+  },
   external: [
     "@rcmade/hono-docs",
     "@rcmade/hono-docs/package.json",

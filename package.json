@@ -2,6 +2,7 @@
   "name": "@rcmade/hono-docs",
   "version": "1.0.5",
   "description": "Auto-generate OpenAPI 3.0 spec from Hono route types",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/rcmade/hono-docs.git"
@@ -18,31 +19,17 @@
     "cli",
     "generator"
   ],
-  "main": "dist/index.js",
+  "main": "dist/index.mjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "bin": {
-    "hono-docs": "dist/cli/index.js"
+    "hono-docs": "./dist/cli/index.mjs"
   },
   "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    },
-    "./core": {
-      "import": "./dist/core/index.mjs",
-      "require": "./dist/core/index.js"
-    },
-    "./cli": {
-      "import": "./dist/cli/index.mjs",
-      "require": "./dist/cli/index.js"
-    },
+    ".": "./dist/index.mjs",
+    "./core": "./dist/core/index.mjs",
+    "./cli": "./dist/cli/index.mjs",
     "./package.json": "./package.json"
-  },
-  "scripts": {
-    "build": "tsup",
-    "lint": "eslint . --ext .ts,.js",
-    "prepare": "husky install"
   },
   "publishConfig": {
     "access": "public"
@@ -50,6 +37,11 @@
   "files": [
     "dist"
   ],
+  "scripts": {
+    "build": "tsup",
+    "lint": "eslint . --ext .ts,.js",
+    "prepare": "husky install"
+  },
   "dependencies": {
     "esbuild-register": "^3.6.0",
     "ts-morph": "^26.0.0",
