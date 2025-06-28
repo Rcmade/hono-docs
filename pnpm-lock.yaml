@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      esbuild:
+        specifier: ^0.25.5
+        version: 0.25.5
       esbuild-register:
         specifier: ^3.6.0
         version: 3.6.0(esbuild@0.25.5)

@@ -43,6 +43,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "esbuild": "^0.25.5",
     "esbuild-register": "^3.6.0",
     "ts-morph": "^26.0.0",
     "yargs": "^18.0.0"
