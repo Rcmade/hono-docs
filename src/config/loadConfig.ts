@@ -1,11 +1,12 @@
-// src/utils/loadConfig.ts
 import { resolve, extname } from "node:path";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
-import { createRequire } from "node:module";
-import { register } from "esbuild-register/dist/node";
+import esbuild from "esbuild";
 import type { HonoDocsConfig } from "../types";
 
+/**
+ * Load hono-docs config from a given path, supporting TS/JS/MJS/CJS files.
+ */
 export async function loadConfig(configFile: string): Promise<HonoDocsConfig> {
   const fullPath = resolve(process.cwd(), configFile);
 
@@ -14,19 +15,36 @@ export async function loadConfig(configFile: string): Promise<HonoDocsConfig> {
   }
 
   const ext = extname(fullPath);
-  const require = createRequire(import.meta.url);
 
-  // Register esbuild for .ts/.js
-  const reg = register({ target: "es2020", jsx: "automatic" });
   let configModule: unknown;
 
   try {
     if (ext === ".mjs" || ext === ".mts") {
-      // Native ESM
+      // Pure ESM module — import directly
       configModule = await import(pathToFileURL(fullPath).href);
+    } else if (
+      ext === ".ts" ||
+      ext === ".tsx" ||
+      ext === ".js" ||
+      ext === ".cjs"
+    ) {
+      // Use esbuild to transpile and eval as ESM
+      const fileContent = readFileSync(fullPath, "utf-8");
+
+      const { code } = await esbuild.transform(fileContent, {
+        loader: ext === ".tsx" ? "tsx" : ext === ".ts" ? "ts" : "js",
+        format: "esm",
+        sourcemap: false,
+        target: "es2020",
+      });
+
+      // Use `data:` URL to dynamically import transpiled code
+      const base64 = Buffer.from(code).toString("base64");
+      const dataUrl = `data:text/javascript;base64,${base64}`;
+
+      configModule = await import(dataUrl);
     } else {
-      // TS or CJS config
-      configModule = require(fullPath);
+      throw new Error(`[hono-docs] Unsupported config file extension: ${ext}`);
     }
   } catch (err) {
     throw new Error(
@@ -34,16 +52,14 @@ export async function loadConfig(configFile: string): Promise<HonoDocsConfig> {
         err instanceof Error ? err.message : String(err)
       }`
     );
-  } finally {
-    reg.unregister();
   }
 
   const config =
     configModule &&
     typeof configModule === "object" &&
     "default" in configModule
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ? (configModule as any).default
+      ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (configModule as any).default
       : configModule;
 
   if (!config || typeof config !== "object") {
