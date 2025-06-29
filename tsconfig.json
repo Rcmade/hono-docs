@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2020",
+    "lib": ["es2022", "es2020", "es2018", "es2017", "es7", "es6", "es5"],
     "module": "ESNext",
     "moduleResolution": "Node",
     "declaration": true,
@@ -13,5 +14,6 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true
   },
+
   "include": ["src"]
 }
