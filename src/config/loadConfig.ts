@@ -1,10 +1,9 @@
-// src/cli/loadConfig.ts
 import { resolve } from "path";
 import { existsSync } from "fs";
-// <-- import tsImport from tsx:
 import { tsImport } from "tsx/esm/api";
 import type { HonoDocsConfig } from "../types";
 import { unwrapModule } from "../utils/libDir";
+import { pathToFileURL } from "url";
 
 export async function loadConfig(configFile: string): Promise<HonoDocsConfig> {
   // 1. Resolve absolute path
@@ -16,8 +15,11 @@ export async function loadConfig(configFile: string): Promise<HonoDocsConfig> {
   // 2. Dynamically load the config via tsx's tsImport()
   let configModule: unknown;
   try {
-    // tsImport(filePath, importMetaUrl) returns the loaded module
-    configModule = await tsImport(fullPath, import.meta.url);
+    configModule = await tsImport(
+      pathToFileURL(fullPath).href,
+      import.meta.url
+    );
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     throw new Error(

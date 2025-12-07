@@ -10,7 +10,7 @@ import { getLibDir } from "../utils/libDir";
 
 export async function runGenerate(configPath: string) {
   const config = await loadConfig(configPath);
-
+console.log("-------------------------------------------------------------------")
   const rootPath = process.cwd();
   console.log("Initializing ts-morph with tsConfig:", config.tsConfigPath);
   const project = new Project({
