@@ -15,9 +15,9 @@
     }
   ],
   "paths": {
-    "/user": {
+    "/user/me": {
       "get": {
-        "summary": "Auto-generated GET /",
+        "summary": "Auto-generated GET /me",
         "responses": {
           "default": {
             "description": "Default fallback response",
@@ -26,12 +26,106 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "name": {
+                    "id": {
                       "type": "string"
+                    },
+                    "name": {},
+                    "email": {}
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "email"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Routes"
+        ]
+      }
+    },
+    "/user": {
+      "get": {
+        "summary": "Auto-generated GET /",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Default fallback response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "string"
+                        },
+                        "limit": {},
+                        "search": {
+                          "oneOf": [
+                            {}
+                          ]
+                        }
+                      },
+                      "required": [
+                        "page",
+                        "limit"
+                      ]
+                    },
+                    "total": {
+                      "type": "number"
                     }
                   },
                   "required": [
-                    "name"
+                    "data",
+                    "meta",
+                    "total"
                   ]
                 }
               }
@@ -41,11 +135,248 @@
         "tags": [
           "UserList"
         ]
+      },
+      "post": {
+        "summary": "Auto-generated POST /",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {},
+                  "age": {
+                    "oneOf": [
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "oneOf": [
+                        {},
+                        {}
+                      ]
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {},
+                        "age": {
+                          "oneOf": [
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "id": {}
+                      },
+                      "required": [
+                        "name",
+                        "email",
+                        "id"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "user"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Routes"
+        ]
       }
     },
-    "/user/u/{id}": {
+    "/user/{id}": {
       "get": {
-        "summary": "Auto-generated GET /u/{id}",
+        "summary": "Auto-generated GET /{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {},
+                    "email": {},
+                    "age": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "age"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "oneOf": [
+                        {},
+                        {}
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Routes"
+        ]
+      },
+      "put": {
+        "summary": "Auto-generated PUT /{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {},
+                  "age": {
+                    "oneOf": [
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Default fallback response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "oneOf": [
+                        {},
+                        {}
+                      ]
+                    },
+                    "updated": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {},
+                        "age": {
+                          "oneOf": [
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "id": {}
+                      },
+                      "required": [
+                        "name",
+                        "email",
+                        "id"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "updated"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Routes"
+        ]
+      },
+      "delete": {
+        "summary": "Auto-generated DELETE /{id}",
         "parameters": [
           {
             "name": "id",
@@ -64,12 +395,178 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
+                    "success": {
+                      "oneOf": [
+                        {},
+                        {}
+                      ]
+                    },
+                    "deletedId": {
                       "type": "string"
                     }
                   },
                   "required": [
-                    "id"
+                    "success",
+                    "deletedId"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Routes"
+        ]
+      }
+    },
+    "/user/profile/context": {
+      "patch": {
+        "summary": "Auto-generated PATCH /profile/context",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "user-agent",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          {
+            "name": "session_id",
+            "in": "cookie",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Default fallback response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "oneOf": [
+                        {},
+                        {}
+                      ]
+                    },
+                    "headers": {
+                      "type": "object",
+                      "properties": {
+                        "x-api-key": {
+                          "type": "string"
+                        },
+                        "user-agent": {
+                          "oneOf": [
+                            {}
+                          ]
+                        }
+                      },
+                      "required": [
+                        "x-api-key"
+                      ]
+                    },
+                    "cookies": {
+                      "type": "object",
+                      "properties": {
+                        "session_id": {}
+                      },
+                      "required": [
+                        "session_id"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "headers",
+                    "cookies"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Routes"
+        ]
+      }
+    },
+    "/user/profile/bio": {
+      "post": {
+        "summary": "Auto-generated POST /profile/bio",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bio": {
+                    "type": "string"
+                  },
+                  "avatarUrl": {
+                    "oneOf": [
+                      {}
+                    ]
+                  }
+                },
+                "required": [
+                  "bio"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Default fallback response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "oneOf": [
+                        {},
+                        {}
+                      ]
+                    },
+                    "form": {
+                      "type": "object",
+                      "properties": {
+                        "bio": {
+                          "type": "string"
+                        },
+                        "avatarUrl": {
+                          "oneOf": [
+                            {}
+                          ]
+                        }
+                      },
+                      "required": [
+                        "bio"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "form"
                   ]
                 }
               }
