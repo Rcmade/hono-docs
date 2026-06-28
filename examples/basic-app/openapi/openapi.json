@@ -17,7 +17,8 @@
   "paths": {
     "/user/me": {
       "get": {
-        "summary": "Auto-generated GET /me",
+        "summary": "Get Current User",
+        "description": "Returns the profile of the currently authenticated user.",
         "responses": {
           "default": {
             "description": "Default fallback response",
@@ -49,7 +50,8 @@
     },
     "/user": {
       "get": {
-        "summary": "Auto-generated GET /",
+        "summary": "List Users",
+        "description": "Retrieves a paginated list of users.",
         "parameters": [
           {
             "name": "page",
@@ -137,7 +139,8 @@
         ]
       },
       "post": {
-        "summary": "Auto-generated POST /",
+        "summary": "Create User",
+        "description": "Creates a new user in the system.",
         "requestBody": {
           "required": true,
           "content": {
@@ -175,8 +178,18 @@
                   "properties": {
                     "success": {
                       "oneOf": [
-                        {},
-                        {}
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
                       ]
                     },
                     "user": {
@@ -218,7 +231,8 @@
     },
     "/user/{id}": {
       "get": {
-        "summary": "Auto-generated GET /{id}",
+        "summary": "Get User by ID",
+        "description": "Retrieves a specific user's details by their UUID.",
         "parameters": [
           {
             "name": "id",
@@ -265,8 +279,18 @@
                   "properties": {
                     "success": {
                       "oneOf": [
-                        {},
-                        {}
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
                       ]
                     },
                     "message": {
@@ -287,7 +311,8 @@
         ]
       },
       "put": {
-        "summary": "Auto-generated PUT /{id}",
+        "summary": "Update User",
+        "description": "Updates an existing user's information.",
         "parameters": [
           {
             "name": "id",
@@ -335,8 +360,18 @@
                   "properties": {
                     "success": {
                       "oneOf": [
-                        {},
-                        {}
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
                       ]
                     },
                     "updated": {
@@ -376,7 +411,8 @@
         ]
       },
       "delete": {
-        "summary": "Auto-generated DELETE /{id}",
+        "summary": "Delete User",
+        "description": "Removes a user from the system.",
         "parameters": [
           {
             "name": "id",
@@ -397,8 +433,18 @@
                   "properties": {
                     "success": {
                       "oneOf": [
-                        {},
-                        {}
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
                       ]
                     },
                     "deletedId": {
@@ -421,7 +467,8 @@
     },
     "/user/profile/context": {
       "patch": {
-        "summary": "Auto-generated PATCH /profile/context",
+        "summary": "Update Profile Context (Header & Cookie)",
+        "description": "Demonstrates header and cookie validation.",
         "parameters": [
           {
             "name": "x-api-key",
@@ -462,8 +509,18 @@
                   "properties": {
                     "success": {
                       "oneOf": [
-                        {},
-                        {}
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
                       ]
                     },
                     "headers": {
@@ -509,7 +566,8 @@
     },
     "/user/profile/bio": {
       "post": {
-        "summary": "Auto-generated POST /profile/bio",
+        "summary": "Update Bio (Form Data)",
+        "description": "Demonstrates form data (body) validation.",
         "requestBody": {
           "required": true,
           "content": {
@@ -543,8 +601,18 @@
                   "properties": {
                     "success": {
                       "oneOf": [
-                        {},
-                        {}
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
                       ]
                     },
                     "form": {
@@ -576,6 +644,196 @@
         "tags": [
           "User Routes"
         ]
+      }
+    },
+    "/user/{id}/preferences": {
+      "put": {
+        "summary": "Update Advanced Preferences",
+        "description": "Demonstrates complex Zod schemas like enums, unions, nested objects, arrays, and records.",
+        "tags": [
+          "Preferences",
+          "Advanced",
+          "User Routes"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "notifications": {
+                    "type": "object",
+                    "properties": {
+                      "frequency": {
+                        "type": "string",
+                        "enum": [
+                          "never",
+                          "daily",
+                          "weekly"
+                        ]
+                      },
+                      "email": {
+                        "oneOf": [
+                          {
+                            "type": "boolean",
+                            "enum": [
+                              false
+                            ]
+                          },
+                          {
+                            "type": "boolean",
+                            "enum": [
+                              true
+                            ]
+                          }
+                        ]
+                      },
+                      "push": {}
+                    },
+                    "required": [
+                      "frequency"
+                    ]
+                  },
+                  "roles": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "admin",
+                        "editor",
+                        "viewer"
+                      ]
+                    }
+                  },
+                  "theme": {
+                    "type": "string",
+                    "enum": [
+                      "light",
+                      "dark",
+                      "system"
+                    ],
+                    "nullable": true
+                  },
+                  "metadata": {
+                    "oneOf": [
+                      {}
+                    ]
+                  }
+                },
+                "required": [
+                  "notifications",
+                  "roles"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Default fallback response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "oneOf": [
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "preferences": {
+                      "type": "object",
+                      "properties": {
+                        "theme": {
+                          "type": "string",
+                          "enum": [
+                            "light",
+                            "dark",
+                            "system"
+                          ]
+                        },
+                        "notifications": {
+                          "type": "object",
+                          "properties": {
+                            "email": {},
+                            "push": {},
+                            "frequency": {
+                              "type": "string",
+                              "enum": [
+                                "never",
+                                "daily",
+                                "weekly"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "email",
+                            "push",
+                            "frequency"
+                          ]
+                        },
+                        "roles": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "admin",
+                              "editor",
+                              "viewer"
+                            ]
+                          }
+                        },
+                        "metadata": {
+                          "oneOf": [
+                            {
+                              "type": "object",
+                              "properties": {}
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "theme",
+                        "notifications",
+                        "roles"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "id",
+                    "preferences"
+                  ]
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

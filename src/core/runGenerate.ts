@@ -49,6 +49,7 @@ export async function runGenerate(configPath: string) {
 
     await generateOpenApi({
       snapshotPath,
+      apiGroup,
       ...commonParams,
       fileName: sanitizedName,
       outputRoot: openAPiOutputRoot,
@@ -84,7 +85,7 @@ export async function runGenerate(configPath: string) {
             .replace(/\/+$/, "") || "/";
         customApiMap.set(
           `${customApi.method.toLowerCase()} ${fullPath}`,
-          customApi
+          customApi,
         );
       }
     }

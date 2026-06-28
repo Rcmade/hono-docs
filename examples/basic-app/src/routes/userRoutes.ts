@@ -32,6 +32,17 @@ const formSchema = z.object({
   bio: z.string().max(200).describe("User biography"),
 });
 
+const advancedPreferencesSchema = z.object({
+  theme: z.enum(["light", "dark", "system"]).default("system").describe("UI Theme preference"),
+  notifications: z.object({
+    email: z.boolean().default(true),
+    push: z.boolean().default(false),
+    frequency: z.union([z.literal("daily"), z.literal("weekly"), z.literal("never")]).describe("Notification frequency")
+  }),
+  roles: z.array(z.enum(["admin", "editor", "viewer"])).min(1).describe("Assigned user roles"),
+  metadata: z.record(z.string(), z.any()).optional().describe("Arbitrary key-value metadata"),
+});
+
 export const userRoutes = new Hono()
   /**
    * Get Current User
@@ -138,6 +149,23 @@ export const userRoutes = new Hono()
     (c) => {
       const form = c.req.valid("form");
       return c.json({ success: true, form });
+    }
+  )
+
+  /**
+   * @summary Update Advanced Preferences
+   * @description Demonstrates complex Zod schemas like enums, unions, nested objects, arrays, and records.
+   * @tag Preferences
+   * @tag Advanced
+   */
+  .put(
+    "/:id/preferences",
+    zValidator("param", idParamSchema),
+    zValidator("json", advancedPreferencesSchema),
+    (c) => {
+      const { id } = c.req.valid("param");
+      const preferences = c.req.valid("json");
+      return c.json({ success: true, id, preferences });
     }
   );
 

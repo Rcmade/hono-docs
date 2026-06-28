@@ -13,7 +13,9 @@ import type {
   AppTypeSnapshotPath,
   GenerateParams,
   OpenApiPath,
+  ApiGroup,
 } from "../types";
+import { extractJSDocs } from "../utils/jsdoc";
 import { genParameters } from "../utils/parameters";
 import { genRequestBody } from "../utils/requestBody";
 import { buildSchema } from "../utils/buildSchema";
@@ -29,15 +31,17 @@ export async function generateOpenApi({
   project,
   rootPath,
   outputRoot,
+  apiGroup,
 }: // {
 //   config: HonoDocsConfig;
 //   snapshotPath: AppTypeSnapshotPath;
 // }
 GenerateParams & {
   snapshotPath: AppTypeSnapshotPath;
+  apiGroup: ApiGroup;
 }): Promise<OpenApiPath> {
   const sf = project.addSourceFileAtPath(
-    path.resolve(rootPath, snapshotPath.appTypePath)
+    path.resolve(rootPath, snapshotPath.appTypePath),
   );
   const aliasDecl = sf.getTypeAliasOrThrow("AppType");
 
@@ -71,10 +75,15 @@ GenerateParams & {
   } else if (routesNode.isKind(SyntaxKind.TypeLiteral)) {
     literals.push(routesNode as TypeLiteralNode);
   } else {
+    console.error("DEBUG: routesNode is", routesNode.getText());
     throw new Error("Routes type is not a literal or intersection of literals");
   }
 
   const paths: OpenAPI = {};
+  const jsDocMap = extractJSDocs(
+    path.resolve(rootPath, apiGroup.appTypePath),
+    project,
+  );
 
   for (const lit of literals) {
     for (const member of lit.getMembers()) {
@@ -97,10 +106,22 @@ GenerateParams & {
         const http = name.slice(1).toLowerCase(); // "get", "post", etc.
         const variants = unwrapUnion(methodProp.getType());
 
+        const key = `${http} ${route}`;
+        const jsDoc = jsDocMap.get(key);
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const op: any = {
-          summary: `Auto-generated ${http.toUpperCase()} ${route}`,
+          summary:
+            jsDoc?.summary || `Auto-generated ${http.toUpperCase()} ${route}`,
         };
+
+        if (jsDoc?.description) {
+          op.description = jsDoc.description;
+        }
+
+        if (jsDoc?.tags && jsDoc.tags.length > 0) {
+          op.tags = jsDoc.tags;
+        }
 
         // parameters
         const params = genParameters(variants[0]);
@@ -123,8 +144,8 @@ GenerateParams & {
         for (const [code, vs] of Object.entries(byStatus)) {
           const schemas = vs.map((v) =>
             buildSchema(
-              v.getProperty("output")!.getValueDeclarationOrThrow().getType()
-            )
+              v.getProperty("output")!.getValueDeclarationOrThrow().getType(),
+            ),
           );
           const schema = schemas.length > 1 ? { oneOf: schemas } : schemas[0];
           op.responses[code] = {
