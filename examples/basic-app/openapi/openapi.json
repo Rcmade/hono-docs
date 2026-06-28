@@ -11,17 +11,82 @@
   ],
   "tags": [
     {
-      "name": "User Routes"
+      "name": "Root App"
     }
   ],
   "paths": {
-    "/user/me": {
+    "/api": {
+      "get": {
+        "summary": "Auto-generated GET /api",
+        "responses": {
+          "default": {
+            "description": "Default fallback response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Hello Hono!"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/docs": {
+      "get": {
+        "summary": "Auto-generated GET /api/docs",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/docs/open-api": {
+      "get": {
+        "summary": "Auto-generated GET /api/docs/open-api",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/user/me": {
       "get": {
         "summary": "Get Current User",
         "description": "Returns the profile of the currently authenticated user.",
         "responses": {
           "default": {
-            "description": "Default fallback response",
+            "description": "Generic status from T[\"status\"]",
             "content": {
               "application/json": {
                 "schema": {
@@ -44,14 +109,13 @@
           }
         },
         "tags": [
-          "User Routes"
+          "Root App"
         ]
       }
     },
-    "/user": {
+    "/api/user": {
       "get": {
-        "summary": "List Users",
-        "description": "Retrieves a paginated list of users.",
+        "summary": "Auto-generated GET /api/user",
         "parameters": [
           {
             "name": "page",
@@ -92,7 +156,7 @@
         ],
         "responses": {
           "default": {
-            "description": "Default fallback response",
+            "description": "Generic status from T[\"status\"]",
             "content": {
               "application/json": {
                 "schema": {
@@ -135,12 +199,11 @@
           }
         },
         "tags": [
-          "UserList"
+          "Root App"
         ]
       },
       "post": {
-        "summary": "Create User",
-        "description": "Creates a new user in the system.",
+        "summary": "Auto-generated POST /api/user",
         "requestBody": {
           "required": true,
           "content": {
@@ -169,8 +232,8 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "Status 201",
+          "default": {
+            "description": "Generic status from T[\"status\"]",
             "content": {
               "application/json": {
                 "schema": {
@@ -225,11 +288,11 @@
           }
         },
         "tags": [
-          "User Routes"
+          "Root App"
         ]
       }
     },
-    "/user/{id}": {
+    "/api/user/{id}": {
       "get": {
         "summary": "Get User by ID",
         "description": "Retrieves a specific user's details by their UUID.",
@@ -244,62 +307,59 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Status 200",
+          "default": {
+            "description": "Generic status from T[\"status\"]",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {},
-                    "email": {},
-                    "age": {
-                      "type": "number"
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "name",
-                    "email",
-                    "age"
-                  ]
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Status 404",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "oneOf": [
-                        {
-                          "type": "boolean",
-                          "enum": [
-                            false
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "oneOf": [
+                            {
+                              "type": "boolean",
+                              "enum": [
+                                false
+                              ]
+                            },
+                            {
+                              "type": "boolean",
+                              "enum": [
+                                true
+                              ]
+                            }
                           ]
                         },
-                        {
-                          "type": "boolean",
-                          "enum": [
-                            true
-                          ]
+                        "message": {
+                          "type": "string"
                         }
+                      },
+                      "required": [
+                        "success",
+                        "message"
                       ]
                     },
-                    "message": {
-                      "type": "string"
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {},
+                        "email": {},
+                        "age": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "email",
+                        "age"
+                      ]
                     }
-                  },
-                  "required": [
-                    "success",
-                    "message"
                   ]
                 }
               }
@@ -307,7 +367,7 @@
           }
         },
         "tags": [
-          "User Routes"
+          "Root App"
         ]
       },
       "put": {
@@ -352,7 +412,7 @@
         },
         "responses": {
           "default": {
-            "description": "Default fallback response",
+            "description": "Generic status from T[\"status\"]",
             "content": {
               "application/json": {
                 "schema": {
@@ -407,7 +467,7 @@
           }
         },
         "tags": [
-          "User Routes"
+          "Root App"
         ]
       },
       "delete": {
@@ -425,7 +485,7 @@
         ],
         "responses": {
           "default": {
-            "description": "Default fallback response",
+            "description": "Generic status from T[\"status\"]",
             "content": {
               "application/json": {
                 "schema": {
@@ -461,11 +521,11 @@
           }
         },
         "tags": [
-          "User Routes"
+          "Root App"
         ]
       }
     },
-    "/user/profile/context": {
+    "/api/user/profile/context": {
       "patch": {
         "summary": "Update Profile Context (Header & Cookie)",
         "description": "Demonstrates header and cookie validation.",
@@ -501,7 +561,7 @@
         ],
         "responses": {
           "default": {
-            "description": "Default fallback response",
+            "description": "Generic status from T[\"status\"]",
             "content": {
               "application/json": {
                 "schema": {
@@ -560,11 +620,11 @@
           }
         },
         "tags": [
-          "User Routes"
+          "Root App"
         ]
       }
     },
-    "/user/profile/bio": {
+    "/api/user/profile/bio": {
       "post": {
         "summary": "Update Bio (Form Data)",
         "description": "Demonstrates form data (body) validation.",
@@ -593,7 +653,7 @@
         },
         "responses": {
           "default": {
-            "description": "Default fallback response",
+            "description": "Generic status from T[\"status\"]",
             "content": {
               "application/json": {
                 "schema": {
@@ -642,18 +702,18 @@
           }
         },
         "tags": [
-          "User Routes"
+          "Root App"
         ]
       }
     },
-    "/user/{id}/preferences": {
+    "/api/user/{id}/preferences": {
       "put": {
         "summary": "Update Advanced Preferences",
         "description": "Demonstrates complex Zod schemas like enums, unions, nested objects, arrays, and records.",
         "tags": [
           "Preferences",
           "Advanced",
-          "User Routes"
+          "Root App"
         ],
         "parameters": [
           {
@@ -719,15 +779,18 @@
                   "theme": {
                     "type": "string",
                     "enum": [
-                      "light",
                       "dark",
+                      "light",
                       "system"
                     ],
                     "nullable": true
                   },
                   "metadata": {
                     "oneOf": [
-                      {}
+                      {
+                        "type": "object",
+                        "properties": {}
+                      }
                     ]
                   }
                 },
@@ -741,7 +804,7 @@
         },
         "responses": {
           "default": {
-            "description": "Default fallback response",
+            "description": "Generic status from T[\"status\"]",
             "content": {
               "application/json": {
                 "schema": {
@@ -772,8 +835,8 @@
                         "theme": {
                           "type": "string",
                           "enum": [
-                            "light",
                             "dark",
+                            "light",
                             "system"
                           ]
                         },
@@ -828,6 +891,593 @@
                     "success",
                     "id",
                     "preferences"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/nested/info": {
+      "get": {
+        "summary": "Nested Get",
+        "description": "A nested route in a separate file.",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "info": {
+                      "oneOf": [
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "info"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/deep/ping": {
+      "post": {
+        "summary": "Level 1 Ping",
+        "description": "Ping endpoint for level 1.",
+        "tags": [
+          "Deep",
+          "Root App"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "msg": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "msg"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pong": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "pong"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/deep/level2/health": {
+      "get": {
+        "summary": "Deep Level 2 Health",
+        "description": "Checks the health at level 2.",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Level 2 is healthy"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/deep/level2/level3/info": {
+      "get": {
+        "summary": "Nested Get",
+        "description": "A nested route in a separate file.",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "level": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "level"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/deep/level2/level3/level4/boss/{organizationId}/resource/{resourceId}": {
+      "post": {
+        "summary": "The Boss Level API",
+        "description": "A tremendously complex endpoint testing query params, headers, path params, complex JSON bodies, and multiple status codes.",
+        "tags": [
+          "Boss Level",
+          "Root App"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {}
+                }
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {}
+                }
+              ]
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "name",
+                "createdAt",
+                "updatedAt"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "resourceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-client-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "username": {},
+                  "roles": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "admin",
+                        "user",
+                        "manager",
+                        "guest"
+                      ]
+                    }
+                  },
+                  "profile": {
+                    "type": "object",
+                    "properties": {
+                      "avatarUrl": {
+                        "oneOf": [
+                          {}
+                        ]
+                      },
+                      "address": {
+                        "type": "object",
+                        "properties": {
+                          "street": {},
+                          "city": {},
+                          "zipcode": {},
+                          "coordinates": {
+                            "oneOf": [
+                              {
+                                "type": "array",
+                                "items": {
+                                  "oneOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {}
+                                  ]
+                                },
+                                "minItems": 2,
+                                "maxItems": 2
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "street",
+                          "city",
+                          "zipcode"
+                        ]
+                      },
+                      "bio": {
+                        "oneOf": [
+                          {}
+                        ]
+                      }
+                    },
+                    "required": [
+                      "avatarUrl",
+                      "address"
+                    ]
+                  },
+                  "settings": {
+                    "type": "object",
+                    "properties": {}
+                  },
+                  "metadata": {}
+                },
+                "required": [
+                  "id",
+                  "username",
+                  "roles",
+                  "profile",
+                  "settings"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "code": {
+                              "type": "string"
+                            },
+                            "message": {}
+                          },
+                          "required": [
+                            "code",
+                            "message"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "error"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "code": {
+                              "type": "string"
+                            },
+                            "message": {}
+                          },
+                          "required": [
+                            "code",
+                            "message"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "error"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "code": {
+                              "type": "string"
+                            },
+                            "message": {}
+                          },
+                          "required": [
+                            "code",
+                            "message"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "error"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "echo": {
+                          "type": "object",
+                          "properties": {
+                            "org": {},
+                            "res": {},
+                            "pagination": {
+                              "type": "object",
+                              "properties": {
+                                "page": {
+                                  "type": "number"
+                                },
+                                "limit": {},
+                                "sortBy": {
+                                  "type": "string",
+                                  "enum": [
+                                    "name",
+                                    "createdAt",
+                                    "updatedAt"
+                                  ]
+                                },
+                                "order": {
+                                  "type": "string",
+                                  "enum": [
+                                    "asc",
+                                    "desc"
+                                  ]
+                                },
+                                "search": {
+                                  "oneOf": [
+                                    {}
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "page",
+                                "limit",
+                                "sortBy",
+                                "order"
+                              ]
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "id": {},
+                                "username": {},
+                                "roles": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "enum": [
+                                      "admin",
+                                      "user",
+                                      "manager",
+                                      "guest"
+                                    ]
+                                  }
+                                },
+                                "profile": {
+                                  "type": "object",
+                                  "properties": {
+                                    "avatarUrl": {
+                                      "oneOf": [
+                                        {}
+                                      ]
+                                    },
+                                    "address": {
+                                      "type": "object",
+                                      "properties": {
+                                        "street": {},
+                                        "city": {},
+                                        "zipcode": {},
+                                        "coordinates": {
+                                          "oneOf": [
+                                            {
+                                              "type": "array",
+                                              "items": {
+                                                "oneOf": [
+                                                  {},
+                                                  {}
+                                                ]
+                                              },
+                                              "minItems": 2,
+                                              "maxItems": 2
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "required": [
+                                        "street",
+                                        "city",
+                                        "zipcode"
+                                      ]
+                                    },
+                                    "bio": {}
+                                  },
+                                  "required": [
+                                    "avatarUrl",
+                                    "address"
+                                  ]
+                                },
+                                "settings": {
+                                  "type": "object",
+                                  "properties": {}
+                                },
+                                "metadata": {}
+                              },
+                              "required": [
+                                "id",
+                                "username",
+                                "roles",
+                                "profile",
+                                "settings"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "org",
+                            "res",
+                            "pagination",
+                            "data"
+                          ]
+                        },
+                        "timestamp": {}
+                      },
+                      "required": [
+                        "success",
+                        "message",
+                        "echo",
+                        "timestamp"
+                      ]
+                    }
                   ]
                 }
               }

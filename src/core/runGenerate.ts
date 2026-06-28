@@ -82,7 +82,8 @@ export async function runGenerate(configPath: string) {
         const fullPath =
           path.posix
             .join(apiGroup.apiPrefix, customApi.api)
-            .replace(/\/+$/, "") || "/";
+            .replace(/\/+$/, "")
+            .replace(/:([^/]+)/g, "{$1}") || "/";
         customApiMap.set(
           `${customApi.method.toLowerCase()} ${fullPath}`,
           customApi,

@@ -1,0 +1,117 @@
+Type Arguments Length: 4
+Schema Type Text: { "/api": { $get: { input: {}; output: "Hello Hono!"; outputFormat: "text"; status: import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/utils/http-status").ContentfulStatusCode; }; }; } | import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/types").MergeSchemaPath<{ "/": { $get: { input: {}; output: {}; outputFormat: string; status: import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/utils/http-status").StatusCode; }; }; } & { "/open-api": { $get: { input: {}; output: {}; outputFormat: "json"; status: import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/utils/http-status").ContentfulStatusCode; }; }; }, "/api/docs"> | import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/types").MergeSchemaPath<({ "/me": { $get: { input: {}; output: { id: string; name: string; email: string; }; outputFormat: "json"; status: import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/utils/http-status").ContentfulStatusCode; }; }; } & { "/": { $get: { input: { query: { page?: string | undefined; limit?: string | undefined; search?: string | undefined; }; }; output: { data: never[]; meta: { page: string; limit: string; search?: string | undefined; }; total: number; }; outputFormat: "json"; status: import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/utils/http-status").ContentfulStatusCode; }; }; } & { "/": { $post: { input: { json: { name: string; email: string; age?: number | undefined; }; }; output: { success: boolean; user: { name: string; email: string; age?: number | undefined; id: string; }; }; outputFormat: "json"; status: 201; }; }; } & { "/:id": { $get: { input: { param: { id: string; }; }; output: { success: boolean; message: string; }; outputFormat: "json"; status: 404; } | { input: { param: { id: string; }; }; output: { id: string; name: string; email: string; age: number; }; outputFormat: "json"; status: 200; }; }; } & { "/:id": { $put: { input: { param: { id: string; }; } & { json: { name: string; email: string; age?: number | undefined; }; }; output: { success: boolean; updated: { name: string; email: string; age?: number | undefined; id: string; }; }; outputFormat: "json"; status: import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/utils/http-status").ContentfulStatusCode; }; }; } & { "/:id": { $delete: { input: { param: { id: string; }; }; output: { success: boolean; deletedId: string; }; outputFormat: "json"; status: import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/utils/http-status").ContentfulStatusCode; }; }; } & { "/profile/context": { $patch: { input: { header: { "x-api-key": string; "user-agent"?: string | undefined; }; } & { cookie: { session_id: string; }; }; output: { success: boolean; headers: { "x-api-key": string; "user-agent"?: string | undefined; }; cookies: { session_id: string; }; }; outputFormat: "json"; status: import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/utils/http-status").ContentfulStatusCode; }; }; } & { "/profile/bio": { $post: { input: { form: { bio: string; avatarUrl?: string | undefined; }; }; output: { success: boolean; form: { bio: string; avatarUrl?: string | undefined; }; }; outputFormat: "json"; status: import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/utils/http-status").ContentfulStatusCode; }; }; } & { "/:id/preferences": { $put: { input: { param: { id: string; }; } & { json: { notifications: { frequency: "never" | "daily" | "weekly"; email?: boolean | undefined; push?: boolean | undefined; }; roles: ("admin" | "editor" | "viewer")[]; theme?: "dark" | "light" | "system" | undefined; metadata?: Record<string, any> | undefined; }; }; output: { success: boolean; id: string; preferences: { theme: "dark" | "light" | "system"; notifications: { email: boolean; push: boolean; frequency: "never" | "daily" | "weekly"; }; roles: ("admin" | "editor" | "viewer")[]; metadata?: { [x: string]: any; } | undefined; }; }; outputFormat: "json"; status: import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/utils/http-status").ContentfulStatusCode; }; }; }) | import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/types").MergeSchemaPath<{ "/info": { $get: { input: {}; output: { info: boolean; }; outputFormat: "json"; status: import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/utils/http-status").ContentfulStatusCode; }; }; }, "/nested">, "/api/user"> | import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/types").MergeSchemaPath<{ "/ping": { $post: { input: { json: { msg: string; }; }; output: { pong: string; }; outputFormat: "json"; status: import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/utils/http-status").ContentfulStatusCode; }; }; } | import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/types").MergeSchemaPath<{ "/health": { $get: { input: {}; output: "Level 2 is healthy"; outputFormat: "text"; status: import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/utils/http-status").ContentfulStatusCode; }; }; } | import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/types").MergeSchemaPath<{ "/info": { $get: { input: {}; output: { level: number; }; outputFormat: "json"; status: import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/utils/http-status").ContentfulStatusCode; }; }; } | import("/home/developer/Music/products/hono-docs/examples/basic-app/node_modules/.pnpm/hono@4.12.1/node_modules/hono/dist/types/types").MergeSchemaPath<{ "/boss/:organizationId/resource/:resourceId": { $post: { input: { param: { organizationId: string; resourceId: string; }; } & { query: { page?: string | string[] | undefined; limit?: string | string[] | undefined; search?: string | undefined; sortBy?: "name" | "createdAt" | "updatedAt" | undefined; order?: "asc" | "desc" | undefined; }; } & { header: { "x-api-key": string; "x-client-id": string; }; } & { json: { id: string; username: string; roles: ("user" | "admin" | "manager" | "guest")[]; profile: { avatarUrl: string | null; address: { street: string; city: string; zipcode: string; coordinates?: [number, number] | undefined; }; bio?: string | undefined; }; settings: Record<string, string | number | boolean | string[]>; metadata?: any; }; }; output: { success: false; error: { code: string; message: string; }; }; outputFormat: "json"; status: 403; } | { input: { param: { organizationId: string; resourceId: string; }; } & { query: { page?: string | string[] | undefined; limit?: string | string[] | undefined; search?: string | undefined; sortBy?: "name" | "createdAt" | "updatedAt" | undefined; order?: "asc" | "desc" | undefined; }; } & { header: { "x-api-key": string; "x-client-id": string; }; } & { json: { id: string; username: string; roles: ("user" | "admin" | "manager" | "guest")[]; profile: { avatarUrl: string | null; address: { street: string; city: string; zipcode: string; coordinates?: [number, number] | undefined; }; bio?: string | undefined; }; settings: Record<string, string | number | boolean | string[]>; metadata?: any; }; }; output: { success: false; error: { code: string; message: string; }; }; outputFormat: "json"; status: 404; } | { input: { param: { organizationId: string; resourceId: string; }; } & { query: { page?: string | string[] | undefined; limit?: string | string[] | undefined; search?: string | undefined; sortBy?: "name" | "createdAt" | "updatedAt" | undefined; order?: "asc" | "desc" | undefined; }; } & { header: { "x-api-key": string; "x-client-id": string; }; } & { json: { id: string; username: string; roles: ("user" | "admin" | "manager" | "guest")[]; profile: { avatarUrl: string | null; address: { street: string; city: string; zipcode: string; coordinates?: [number, number] | undefined; }; bio?: string | undefined; }; settings: Record<string, string | number | boolean | string[]>; metadata?: any; }; }; output: { success: false; error: { code: string; message: string; }; }; outputFormat: "json"; status: 500; } | { input: { param: { organizationId: string; resourceId: string; }; } & { query: { page?: string | string[] | undefined; limit?: string | string[] | undefined; search?: string | undefined; sortBy?: "name" | "createdAt" | "updatedAt" | undefined; order?: "asc" | "desc" | undefined; }; } & { header: { "x-api-key": string; "x-client-id": string; }; } & { json: { id: string; username: string; roles: ("user" | "admin" | "manager" | "guest")[]; profile: { avatarUrl: string | null; address: { street: string; city: string; zipcode: string; coordinates?: [number, number] | undefined; }; bio?: string | undefined; }; settings: Record<string, string | number | boolean | string[]>; metadata?: any; }; }; output: { success: true; message: string; echo: { org: string; res: string; pagination: { page: number; limit: number; sortBy: "name" | "createdAt" | "updatedAt"; order: "asc" | "desc"; search?: string | undefined; }; data: { id: string; username: string; roles: ("user" | "admin" | "manager" | "guest")[]; profile: { avatarUrl: string | null; address: { street: string; city: string; zipcode: string; coordinates?: [number, number] | undefined; }; bio?: string | undefined; }; settings: { [x: string]: string | number | boolean | string[]; }; metadata?: any; }; }; timestamp: string; }; outputFormat: "json"; status: 201; }; }; }, "/level4">, "/level3">, "/level2">, "/api/deep">
+Route: /api
+  Method: $get
+    input:
+    output:
+    outputFormat:
+    status:
+Route: /api/docs
+  Method: $get
+    input:
+    output:
+    outputFormat:
+    status:
+Route: /api/docs/open-api
+  Method: $get
+    input:
+    output:
+    outputFormat:
+    status:
+Route: /api/user/me
+  Method: $get
+    input:
+    output:
+    outputFormat:
+    status:
+Route: /api/user
+  Method: $get
+    input:
+      query
+    output:
+    outputFormat:
+    status:
+  Method: $post
+    input:
+      json
+    output:
+    outputFormat:
+    status:
+Route: /api/user/:id
+  Method: $get
+    input:
+      param
+    output:
+    outputFormat:
+    status:
+  Method: $put
+    input:
+      param
+      json
+    output:
+    outputFormat:
+    status:
+  Method: $delete
+    input:
+      param
+    output:
+    outputFormat:
+    status:
+Route: /api/user/profile/context
+  Method: $patch
+    input:
+      header
+      cookie
+    output:
+    outputFormat:
+    status:
+Route: /api/user/profile/bio
+  Method: $post
+    input:
+      form
+    output:
+    outputFormat:
+    status:
+Route: /api/user/:id/preferences
+  Method: $put
+    input:
+      param
+      json
+    output:
+    outputFormat:
+    status:
+Route: /api/user/nested/info
+  Method: $get
+    input:
+    output:
+    outputFormat:
+    status:
+Route: /api/deep/ping
+  Method: $post
+    input:
+      json
+    output:
+    outputFormat:
+    status:
+Route: /api/deep/level2/health
+  Method: $get
+    input:
+    output:
+    outputFormat:
+    status:
+Route: /api/deep/level2/level3/info
+  Method: $get
+    input:
+    output:
+    outputFormat:
+    status:
+Route: /api/deep/level2/level3/level4/boss/:organizationId/resource/:resourceId
+  Method: $post
+    input:
+      param
+      query
+      header
+      json
+    output:
+    outputFormat:
+    status:

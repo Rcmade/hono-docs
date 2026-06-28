@@ -1,11 +1,12 @@
-import { SyntaxKind } from "ts-morph";
+import type { OpenAPIV3 } from "openapi-types";
 
 export function buildSchema(
   type: import("ts-morph").Type,
+  typeChecker: import("ts-morph").TypeChecker,
+  contextNode: import("ts-morph").Node,
   seen = new WeakSet(),
-  depth = 0
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): any {
+  depth = 0,
+): OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject {
   // Prevent infinite recursion on circular/recursive types
   if (depth > 40) return {};
   if (seen.has(type)) return {};
@@ -34,20 +35,23 @@ export function buildSchema(
     const members = type.getUnionTypes();
     const lits = members.filter((u) => u.isStringLiteral());
     const onlyNull = members.every(
-      (u) => u.isStringLiteral() || u.isNull() || u.isUndefined()
+      (u) => u.isStringLiteral() || u.isNull() || u.isUndefined(),
     );
     if (lits.length && onlyNull) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const schema: any = {
+      const schema: OpenAPIV3.SchemaObject = {
         type: "string",
-        enum: lits.map((u) => u.getLiteralValue()),
+        enum: lits.map((u) => String(u.getLiteralValue())),
       };
       if (members.some((u) => u.isNull() || u.isUndefined()))
         schema.nullable = true;
       return schema;
     }
     const nonNull = members.filter((u) => !u.isNull() && !u.isUndefined());
-    return { oneOf: nonNull.map((u) => buildSchema(u, seen, depth + 1)) };
+    return {
+      oneOf: nonNull.map((u) =>
+        buildSchema(u, typeChecker, contextNode, seen, depth + 1),
+      ),
+    };
   }
   if (type.isString()) return { type: "string" };
   if (type.isNumber()) return { type: "number" };
@@ -55,33 +59,65 @@ export function buildSchema(
   if (type.isArray()) {
     return {
       type: "array",
-      items: buildSchema(type.getArrayElementTypeOrThrow(), seen, depth + 1),
+      items: buildSchema(
+        type.getArrayElementTypeOrThrow(),
+        typeChecker,
+        contextNode,
+        seen,
+        depth + 1,
+      ),
     };
   }
 
-  const decls = type.getSymbol()?.getDeclarations() || [];
-  const isLit = decls.some(
-    (d) =>
-      d.getKind() === SyntaxKind.TypeLiteral ||
-      d.getKind() === SyntaxKind.InterfaceDeclaration
-  );
-  if (!isLit) return {};
-
-  const props = type
-    .getProperties()
-    .filter(
-      (p) => p.getValueDeclaration()?.getKind() === SyntaxKind.PropertySignature
-    );
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const propsMap: Record<string, any> = {};
-  const req: string[] = [];
-  for (const p of props) {
-    const decl = p.getValueDeclarationOrThrow();
-    propsMap[p.getName()] = buildSchema(decl.getType(), seen, depth + 1);
-    if (!p.isOptional()) req.push(p.getName());
+  if (type.isTuple()) {
+    return {
+      type: "array",
+      items: {
+        oneOf: type
+          .getTupleElements()
+          .map((el) =>
+            buildSchema(el, typeChecker, contextNode, seen, depth + 1),
+          ),
+      },
+      minItems: type.getTupleElements().length,
+      maxItems: type.getTupleElements().length,
+    };
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const res: any = { type: "object", properties: propsMap };
-  if (req.length) res.required = req;
-  return res;
+
+  // Any object type (whether literal, mapped, or interface)
+  if (type.isObject()) {
+    const props = type.getProperties();
+    // Filter out built-in prototype methods or internal symbols
+    const filteredProps = props.filter((p) => {
+      const name = p.getName();
+      return !name.startsWith("__@") && !name.startsWith("Symbol(");
+    });
+
+    const propsMap: Record<
+      string,
+      OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject
+    > = {};
+    const req: string[] = [];
+
+    for (const p of filteredProps) {
+      const pType = typeChecker.getTypeOfSymbolAtLocation(p, contextNode);
+      propsMap[p.getName()] = buildSchema(
+        pType,
+        typeChecker,
+        contextNode,
+        seen,
+        depth + 1,
+      );
+      if (!p.isOptional()) req.push(p.getName());
+    }
+
+    const res: OpenAPIV3.SchemaObject = {
+      type: "object",
+      properties: propsMap,
+    };
+    if (req.length) res.required = req;
+    return res;
+  }
+
+  return {};
 }

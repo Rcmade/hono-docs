@@ -12,13 +12,9 @@ export default defineConfig({
   },
   apis: [
     {
-      name: "User Routes",
-      apiPrefix: "/user",
-      appTypePath: "src/routes/userRoutes.ts",
-      api: [
-        { api: "/", method: "get", tag: ["UserList"] },
-        { api: "/:id", method: "get", tag: ["UserDetail"] },
-      ],
+      name: "Root App",
+      apiPrefix: "/",
+      appTypePath: "src/index.ts",
     },
   ],
 });

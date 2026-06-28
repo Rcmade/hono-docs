@@ -3,7 +3,6 @@ import fs from "node:fs";
 import path from "node:path";
 import {
   SyntaxKind,
-  TypeLiteralNode,
   ImportTypeNode,
   TypeReferenceNode,
   TypeNode,
@@ -15,7 +14,7 @@ import type {
   OpenApiPath,
   ApiGroup,
 } from "../types";
-import { extractJSDocs } from "../utils/jsdoc";
+import { extractJSDocs, type ParsedJSDoc } from "../utils/jsdoc";
 import { genParameters } from "../utils/parameters";
 import { genRequestBody } from "../utils/requestBody";
 import { buildSchema } from "../utils/buildSchema";
@@ -31,7 +30,6 @@ export async function generateOpenApi({
   project,
   rootPath,
   outputRoot,
-  apiGroup,
 }: // {
 //   config: HonoDocsConfig;
 //   snapshotPath: AppTypeSnapshotPath;
@@ -63,51 +61,61 @@ GenerateParams & {
 
   const routesNode = typeArgs[1];
 
-  // Gather all TypeLiteralNodes (handle intersections)
-  const literals: TypeLiteralNode[] = [];
-  if (routesNode.isKind(SyntaxKind.IntersectionType)) {
-    for (const tn of routesNode
-      .asKind(SyntaxKind.IntersectionType)!
-      .getTypeNodes()) {
-      if (tn.isKind(SyntaxKind.TypeLiteral))
-        literals.push(tn as TypeLiteralNode);
-    }
-  } else if (routesNode.isKind(SyntaxKind.TypeLiteral)) {
-    literals.push(routesNode as TypeLiteralNode);
-  } else {
-    console.error("DEBUG: routesNode is", routesNode.getText());
-    throw new Error("Routes type is not a literal or intersection of literals");
-  }
-
   const paths: OpenAPI = {};
-  const jsDocMap = extractJSDocs(
-    path.resolve(rootPath, apiGroup.appTypePath),
-    project,
-  );
 
-  for (const lit of literals) {
-    for (const member of lit.getMembers()) {
-      if (!member.isKind(SyntaxKind.PropertySignature)) continue;
-      const routeProp = member.asKindOrThrow(SyntaxKind.PropertySignature);
-      // Extract route string and normalize to OpenAPI path syntax
-      const raw = routeProp.getNameNode().getText().replace(/"/g, "");
+  // Extract all JSDocs globally from all project files
+  const jsDocMap = extractJSDocs(project);
+
+  const typeChecker = project.getTypeChecker();
+  const schemaType = typeChecker.getTypeAtLocation(routesNode);
+
+  // Schema type might be a Union (if .route() is used)
+  const types = schemaType.isUnion()
+    ? schemaType.getUnionTypes()
+    : [schemaType];
+
+  for (const t of types) {
+    for (const routeProp of t.getProperties()) {
+      const raw = routeProp.getName().replace(/"/g, "").replace(/'/g, "");
       const route = raw.replace(/:([^/]+)/g, "{$1}");
       if (!paths[route]) paths[route] = {};
 
-      // === NEW: get the RHS TypeLiteralNode properly ===
-      const tn = routeProp.getTypeNode();
-      if (!tn || !tn.isKind(SyntaxKind.TypeLiteral)) continue;
-      const rhs = tn as TypeLiteralNode;
+      // Get the type of the route methods object (e.g. { $get: ... })
+      const routeType = typeChecker.getTypeOfSymbolAtLocation(
+        routeProp,
+        aliasDecl,
+      );
+      if (!routeType) continue;
 
-      for (const m of rhs.getMembers()) {
-        if (!m.isKind(SyntaxKind.PropertySignature)) continue;
-        const methodProp = m.asKindOrThrow(SyntaxKind.PropertySignature);
-        const name = methodProp.getNameNode().getText(); // e.g. "$get"
+      for (const methodSymbol of routeType.getProperties()) {
+        const name = methodSymbol.getName(); // e.g. "$get"
+        if (!name.startsWith("$")) continue;
         const http = name.slice(1).toLowerCase(); // "get", "post", etc.
-        const variants = unwrapUnion(methodProp.getType());
 
-        const key = `${http} ${route}`;
-        const jsDoc = jsDocMap.get(key);
+        // Get the type of the method (e.g. { input: ..., output: ... })
+        const methodType = typeChecker.getTypeOfSymbolAtLocation(
+          methodSymbol,
+          aliasDecl,
+        );
+        if (!methodType) continue;
+
+        const variants = unwrapUnion(methodType);
+
+        const exactKey = `${http} ${route}`;
+        let jsDoc: ParsedJSDoc | undefined;
+
+        if (jsDocMap.has(exactKey)) {
+          jsDoc = jsDocMap.get(exactKey)![0];
+        } else {
+          for (const [k, docs] of jsDocMap.entries()) {
+            const [mapHttp, ...mapPathParts] = k.split(" ");
+            const mapPath = mapPathParts.join(" ");
+            if (mapHttp === http && route.endsWith(mapPath)) {
+              jsDoc = docs[0];
+              break;
+            }
+          }
+        }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const op: any = {
@@ -124,11 +132,11 @@ GenerateParams & {
         }
 
         // parameters
-        const params = genParameters(variants[0]);
+        const params = genParameters(variants[0], typeChecker, aliasDecl);
         if (params.length) op.parameters = params;
 
         // requestBody
-        const rb = genRequestBody(variants[0]);
+        const rb = genRequestBody(variants[0], typeChecker, aliasDecl);
         if (rb) op.requestBody = rb;
 
         // responses
@@ -142,11 +150,12 @@ GenerateParams & {
           return /^\d+$/.test(s) ? s : "default";
         });
         for (const [code, vs] of Object.entries(byStatus)) {
-          const schemas = vs.map((v) =>
-            buildSchema(
-              v.getProperty("output")!.getValueDeclarationOrThrow().getType(),
-            ),
-          );
+          const schemas = vs.map((v) => {
+            const outProp = v.getProperty("output");
+            if (!outProp) return {};
+            const outType = typeChecker.getTypeOfSymbolAtLocation(outProp, aliasDecl);
+            return buildSchema(outType, typeChecker, aliasDecl);
+          });
           const schema = schemas.length > 1 ? { oneOf: schemas } : schemas[0];
           op.responses[code] = {
             description:

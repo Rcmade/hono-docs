@@ -1,16 +1,30 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
+import { nestedRoutes } from "./nestedRoutes";
 
 const userSchema = z.object({
   name: z.string().min(1).describe("The user's full name"),
   email: z.email().describe("The user's email address"),
-  age: z.number().int().min(18).optional().describe("The user's age (must be at least 18)"),
+  age: z
+    .number()
+    .int()
+    .min(18)
+    .optional()
+    .describe("The user's age (must be at least 18)"),
 });
 
 const querySchema = z.object({
-  page: z.string().optional().default("1").describe("Page number for pagination"),
-  limit: z.string().optional().default("10").describe("Number of items per page"),
+  page: z
+    .string()
+    .optional()
+    .default("1")
+    .describe("Page number for pagination"),
+  limit: z
+    .string()
+    .optional()
+    .default("10")
+    .describe("Number of items per page"),
   search: z.string().optional().describe("Search term to filter users"),
 });
 
@@ -24,7 +38,7 @@ const headerSchema = z.object({
 });
 
 const cookieSchema = z.object({
-  "session_id": z.string().describe("Session ID from cookie"),
+  session_id: z.string().describe("Session ID from cookie"),
 });
 
 const formSchema = z.object({
@@ -33,14 +47,25 @@ const formSchema = z.object({
 });
 
 const advancedPreferencesSchema = z.object({
-  theme: z.enum(["light", "dark", "system"]).default("system").describe("UI Theme preference"),
+  theme: z
+    .enum(["light", "dark", "system"])
+    .default("system")
+    .describe("UI Theme preference"),
   notifications: z.object({
     email: z.boolean().default(true),
     push: z.boolean().default(false),
-    frequency: z.union([z.literal("daily"), z.literal("weekly"), z.literal("never")]).describe("Notification frequency")
+    frequency: z
+      .union([z.literal("daily"), z.literal("weekly"), z.literal("never")])
+      .describe("Notification frequency"),
   }),
-  roles: z.array(z.enum(["admin", "editor", "viewer"])).min(1).describe("Assigned user roles"),
-  metadata: z.record(z.string(), z.any()).optional().describe("Arbitrary key-value metadata"),
+  roles: z
+    .array(z.enum(["admin", "editor", "viewer"]))
+    .min(1)
+    .describe("Assigned user roles"),
+  metadata: z
+    .record(z.string(), z.any())
+    .optional()
+    .describe("Arbitrary key-value metadata"),
 });
 
 export const userRoutes = new Hono()
@@ -49,52 +74,47 @@ export const userRoutes = new Hono()
    * Returns the profile of the currently authenticated user.
    */
   .get("/me", (c) => {
-    return c.json({ id: "current-user-uuid", name: "current user", email: "user@example.com" });
+    return c.json({
+      id: "current-user-uuid",
+      name: "current user",
+      email: "user@example.com",
+    });
   })
 
   /**
    * List Users
    * Retrieves a paginated list of users.
    */
-  .get(
-    "/",
-    zValidator("query", querySchema),
-    (c) => {
-      const query = c.req.valid("query");
-      return c.json({ data: [], meta: query, total: 0 });
-    }
-  )
+  .get("/", zValidator("query", querySchema), (c) => {
+    const query = c.req.valid("query");
+    return c.json({ data: [], meta: query, total: 0 });
+  })
 
   /**
    * Create User
    * Creates a new user in the system.
    */
-  .post(
-    "/",
-    zValidator("json", userSchema),
-    (c) => {
-      const body = c.req.valid("json");
-      return c.json({ success: true, user: { id: "new-uuid", ...body } }, 201);
-    }
-  )
+  .post("/", zValidator("json", userSchema), (c) => {
+    const body = c.req.valid("json");
+    return c.json({ success: true, user: { id: "new-uuid", ...body } }, 201);
+  })
 
   /**
    * Get User by ID
    * Retrieves a specific user's details by their UUID.
    */
-  .get(
-    "/:id",
-    zValidator("param", idParamSchema),
-    (c) => {
-      const { id } = c.req.valid("param");
-      
-      if (id === "00000000-0000-0000-0000-000000000000") {
-        return c.json({ success: false, message: "User not found" }, 404);
-      }
-      
-      return c.json({ id, name: "John Doe", email: "john@example.com", age: 30 }, 200);
+  .get("/:id", zValidator("param", idParamSchema), (c) => {
+    const { id } = c.req.valid("param");
+
+    if (id === "00000000-0000-0000-0000-000000000000") {
+      return c.json({ success: false, message: "User not found" }, 404);
     }
-  )
+
+    return c.json(
+      { id, name: "John Doe", email: "john@example.com", age: 30 },
+      200,
+    );
+  })
 
   /**
    * Update User
@@ -108,21 +128,17 @@ export const userRoutes = new Hono()
       const { id } = c.req.valid("param");
       const data = c.req.valid("json");
       return c.json({ success: true, updated: { id, ...data } });
-    }
+    },
   )
 
   /**
    * Delete User
    * Removes a user from the system.
    */
-  .delete(
-    "/:id",
-    zValidator("param", idParamSchema),
-    (c) => {
-      const { id } = c.req.valid("param");
-      return c.json({ success: true, deletedId: id });
-    }
-  )
+  .delete("/:id", zValidator("param", idParamSchema), (c) => {
+    const { id } = c.req.valid("param");
+    return c.json({ success: true, deletedId: id });
+  })
 
   /**
    * Update Profile Context (Header & Cookie)
@@ -136,21 +152,17 @@ export const userRoutes = new Hono()
       const headers = c.req.valid("header");
       const cookies = c.req.valid("cookie");
       return c.json({ success: true, headers, cookies });
-    }
+    },
   )
 
   /**
    * Update Bio (Form Data)
    * Demonstrates form data (body) validation.
    */
-  .post(
-    "/profile/bio",
-    zValidator("form", formSchema),
-    (c) => {
-      const form = c.req.valid("form");
-      return c.json({ success: true, form });
-    }
-  )
+  .post("/profile/bio", zValidator("form", formSchema), (c) => {
+    const form = c.req.valid("form");
+    return c.json({ success: true, form });
+  })
 
   /**
    * @summary Update Advanced Preferences
@@ -166,7 +178,8 @@ export const userRoutes = new Hono()
       const { id } = c.req.valid("param");
       const preferences = c.req.valid("json");
       return c.json({ success: true, id, preferences });
-    }
-  );
+    },
+  )
+  .route("/nested", nestedRoutes);
 
 export type AppType = typeof userRoutes;
