@@ -1,0 +1,1510 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "JSON Config API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Root App"
+    }
+  ],
+  "paths": {
+    "/api": {
+      "get": {
+        "summary": "Auto-generated GET /api",
+        "responses": {
+          "default": {
+            "description": "Default fallback response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Hello Hono!"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/docs": {
+      "get": {
+        "summary": "Auto-generated GET /api/docs",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/docs/open-api": {
+      "get": {
+        "summary": "Auto-generated GET /api/docs/open-api",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/user/me": {
+      "get": {
+        "summary": "Get Current User",
+        "description": "Returns the profile of the currently authenticated user.",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {},
+                    "email": {}
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "email"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/user": {
+      "get": {
+        "summary": "Auto-generated GET /api/user",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "string"
+                        },
+                        "limit": {},
+                        "search": {
+                          "oneOf": [
+                            {}
+                          ]
+                        }
+                      },
+                      "required": [
+                        "page",
+                        "limit"
+                      ]
+                    },
+                    "total": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "meta",
+                    "total"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      },
+      "post": {
+        "summary": "Auto-generated POST /api/user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {},
+                  "age": {
+                    "oneOf": [
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "oneOf": [
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      ]
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {},
+                        "age": {
+                          "oneOf": [
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "id": {}
+                      },
+                      "required": [
+                        "name",
+                        "email",
+                        "id"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "user"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/user/{id}": {
+      "get": {
+        "summary": "Get User by ID",
+        "description": "Retrieves a specific user's details by their UUID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {},
+                    "email": {},
+                    "age": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "age"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "oneOf": [
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      },
+      "put": {
+        "summary": "Update User",
+        "description": "Updates an existing user's information.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {},
+                  "age": {
+                    "oneOf": [
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "oneOf": [
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      ]
+                    },
+                    "updated": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {},
+                        "age": {
+                          "oneOf": [
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "id": {}
+                      },
+                      "required": [
+                        "name",
+                        "email",
+                        "id"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "updated"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      },
+      "delete": {
+        "summary": "Delete User",
+        "description": "Removes a user from the system.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "oneOf": [
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      ]
+                    },
+                    "deletedId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "deletedId"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/user/profile/context": {
+      "patch": {
+        "summary": "Update Profile Context (Header & Cookie)",
+        "description": "Demonstrates header and cookie validation.",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "user-agent",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          {
+            "name": "session_id",
+            "in": "cookie",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "oneOf": [
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      ]
+                    },
+                    "headers": {
+                      "type": "object",
+                      "properties": {
+                        "x-api-key": {
+                          "type": "string"
+                        },
+                        "user-agent": {
+                          "oneOf": [
+                            {}
+                          ]
+                        }
+                      },
+                      "required": [
+                        "x-api-key"
+                      ]
+                    },
+                    "cookies": {
+                      "type": "object",
+                      "properties": {
+                        "session_id": {}
+                      },
+                      "required": [
+                        "session_id"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "headers",
+                    "cookies"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/user/profile/bio": {
+      "post": {
+        "summary": "Update Bio (Form Data)",
+        "description": "Demonstrates form data (body) validation.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bio": {
+                    "type": "string"
+                  },
+                  "avatarUrl": {
+                    "oneOf": [
+                      {}
+                    ]
+                  }
+                },
+                "required": [
+                  "bio"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "oneOf": [
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      ]
+                    },
+                    "form": {
+                      "type": "object",
+                      "properties": {
+                        "bio": {
+                          "type": "string"
+                        },
+                        "avatarUrl": {
+                          "oneOf": [
+                            {}
+                          ]
+                        }
+                      },
+                      "required": [
+                        "bio"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "form"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/user/{id}/preferences": {
+      "put": {
+        "summary": "Update Advanced Preferences",
+        "description": "Demonstrates complex Zod schemas like enums, unions, nested objects, arrays, and records.",
+        "tags": [
+          "Preferences",
+          "Advanced",
+          "Root App"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "notifications": {
+                    "type": "object",
+                    "properties": {
+                      "frequency": {
+                        "type": "string",
+                        "enum": [
+                          "never",
+                          "daily",
+                          "weekly"
+                        ]
+                      },
+                      "email": {
+                        "oneOf": [
+                          {
+                            "type": "boolean",
+                            "enum": [
+                              false
+                            ]
+                          },
+                          {
+                            "type": "boolean",
+                            "enum": [
+                              true
+                            ]
+                          }
+                        ]
+                      },
+                      "push": {}
+                    },
+                    "required": [
+                      "frequency"
+                    ]
+                  },
+                  "roles": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "admin",
+                        "editor",
+                        "viewer"
+                      ]
+                    }
+                  },
+                  "theme": {
+                    "type": "string",
+                    "enum": [
+                      "dark",
+                      "light",
+                      "system"
+                    ],
+                    "nullable": true
+                  },
+                  "metadata": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "notifications",
+                  "roles"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "oneOf": [
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "preferences": {
+                      "type": "object",
+                      "properties": {
+                        "theme": {
+                          "type": "string",
+                          "enum": [
+                            "dark",
+                            "light",
+                            "system"
+                          ]
+                        },
+                        "notifications": {
+                          "type": "object",
+                          "properties": {
+                            "email": {},
+                            "push": {},
+                            "frequency": {
+                              "type": "string",
+                              "enum": [
+                                "never",
+                                "daily",
+                                "weekly"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "email",
+                            "push",
+                            "frequency"
+                          ]
+                        },
+                        "roles": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "admin",
+                              "editor",
+                              "viewer"
+                            ]
+                          }
+                        },
+                        "metadata": {
+                          "oneOf": [
+                            {
+                              "type": "object",
+                              "properties": {}
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "theme",
+                        "notifications",
+                        "roles"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "id",
+                    "preferences"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/nested/info": {
+      "get": {
+        "summary": "Nested Get",
+        "description": "A nested route in a separate file.",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "info": {
+                      "oneOf": [
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "info"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/deep/ping": {
+      "post": {
+        "summary": "Level 1 Ping",
+        "description": "Ping endpoint for level 1.",
+        "tags": [
+          "Deep",
+          "Root App"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "msg": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "msg"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pong": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "pong"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/deep/level2/health": {
+      "get": {
+        "summary": "Deep Level 2 Health",
+        "description": "Checks the health at level 2.",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Level 2 is healthy"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/deep/level2/level3/info": {
+      "get": {
+        "summary": "Nested Get",
+        "description": "A nested route in a separate file.",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "level": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "level"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Root App"
+        ]
+      }
+    },
+    "/api/deep/level2/level3/level4/boss/{organizationId}/resource/{resourceId}": {
+      "post": {
+        "summary": "The Boss Level API",
+        "description": "A tremendously complex endpoint testing query params, headers, path params, complex JSON bodies, and multiple status codes.",
+        "tags": [
+          "Boss Level",
+          "Root App"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {}
+                }
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {}
+                }
+              ]
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "name",
+                "createdAt",
+                "updatedAt"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "resourceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-client-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "username": {},
+                  "roles": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "admin",
+                        "user",
+                        "manager",
+                        "guest"
+                      ]
+                    }
+                  },
+                  "profile": {
+                    "type": "object",
+                    "properties": {
+                      "avatarUrl": {
+                        "oneOf": [
+                          {}
+                        ]
+                      },
+                      "address": {
+                        "type": "object",
+                        "properties": {
+                          "street": {},
+                          "city": {},
+                          "zipcode": {},
+                          "coordinates": {
+                            "oneOf": [
+                              {
+                                "type": "array",
+                                "items": {
+                                  "oneOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {}
+                                  ]
+                                },
+                                "minItems": 2,
+                                "maxItems": 2
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "street",
+                          "city",
+                          "zipcode"
+                        ]
+                      },
+                      "bio": {
+                        "oneOf": [
+                          {}
+                        ]
+                      }
+                    },
+                    "required": [
+                      "avatarUrl",
+                      "address"
+                    ]
+                  },
+                  "settings": {
+                    "type": "object",
+                    "properties": {}
+                  },
+                  "metadata": {}
+                },
+                "required": [
+                  "id",
+                  "username",
+                  "roles",
+                  "profile",
+                  "settings"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "echo": {
+                      "type": "object",
+                      "properties": {
+                        "org": {},
+                        "res": {},
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "page": {
+                              "type": "number"
+                            },
+                            "limit": {},
+                            "sortBy": {
+                              "type": "string",
+                              "enum": [
+                                "name",
+                                "createdAt",
+                                "updatedAt"
+                              ]
+                            },
+                            "order": {
+                              "type": "string",
+                              "enum": [
+                                "asc",
+                                "desc"
+                              ]
+                            },
+                            "search": {
+                              "oneOf": [
+                                {}
+                              ]
+                            }
+                          },
+                          "required": [
+                            "page",
+                            "limit",
+                            "sortBy",
+                            "order"
+                          ]
+                        },
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "id": {},
+                            "username": {},
+                            "roles": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "enum": [
+                                  "admin",
+                                  "user",
+                                  "manager",
+                                  "guest"
+                                ]
+                              }
+                            },
+                            "profile": {
+                              "type": "object",
+                              "properties": {
+                                "avatarUrl": {
+                                  "oneOf": [
+                                    {}
+                                  ]
+                                },
+                                "address": {
+                                  "type": "object",
+                                  "properties": {
+                                    "street": {},
+                                    "city": {},
+                                    "zipcode": {},
+                                    "coordinates": {
+                                      "oneOf": [
+                                        {
+                                          "type": "array",
+                                          "items": {
+                                            "oneOf": [
+                                              {},
+                                              {}
+                                            ]
+                                          },
+                                          "minItems": 2,
+                                          "maxItems": 2
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "street",
+                                    "city",
+                                    "zipcode"
+                                  ]
+                                },
+                                "bio": {}
+                              },
+                              "required": [
+                                "avatarUrl",
+                                "address"
+                              ]
+                            },
+                            "settings": {
+                              "type": "object",
+                              "properties": {}
+                            },
+                            "metadata": {}
+                          },
+                          "required": [
+                            "id",
+                            "username",
+                            "roles",
+                            "profile",
+                            "settings"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "org",
+                        "res",
+                        "pagination",
+                        "data"
+                      ]
+                    },
+                    "timestamp": {}
+                  },
+                  "required": [
+                    "success",
+                    "message",
+                    "echo",
+                    "timestamp"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Status 403",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {}
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {}
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Status 500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {}
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

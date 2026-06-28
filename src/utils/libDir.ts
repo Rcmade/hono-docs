@@ -22,7 +22,8 @@ export function getLibDir(): string {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function unwrapModule(module: any): unknown {
   let result = module;
-  while (result?.default) {
+  while (result && result.default) {
+    if (result.default === result) break;
     result = result.default;
   }
   return result;
