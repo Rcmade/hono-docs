@@ -45,15 +45,22 @@ if (typeArgs.length >= 2) {
         const methodType = project
           .getTypeChecker()
           .getTypeOfSymbolAtLocation(method, typeAlias);
-        for (const mp of methodType.getProperties()) {
-          console.log(`    ${mp.getName()}:`);
-          if (mp.getName() === "input") {
-            const inputType = project
-              .getTypeChecker()
-              .getTypeOfSymbolAtLocation(mp, typeAlias);
-            for (const ip of inputType.getProperties()) {
-              console.log(`      ${ip.getName()}`);
+        
+        const variants = methodType.isUnion() ? methodType.getUnionTypes() : [methodType];
+        console.log(`    Variants: ${variants.length}`);
+
+        for (const [i, v] of variants.entries()) {
+          console.log(`      Variant ${i}:`);
+          const statusProp = v.getProperty("status");
+          if (statusProp) {
+            const statusType = project.getTypeChecker().getTypeOfSymbolAtLocation(statusProp, typeAlias);
+            console.log(`        status text: ${statusType.getText()}`);
+            console.log(`        isNumberLiteral: ${statusType.isNumberLiteral()}`);
+            if (statusType.isNumberLiteral()) {
+              console.log(`        literalValue: ${statusType.getLiteralValue()}`);
             }
+          } else {
+             console.log(`        No status property`);
           }
         }
       }

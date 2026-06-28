@@ -142,11 +142,15 @@ GenerateParams & {
         // responses
         op.responses = {};
         const byStatus = groupBy(variants, (v) => {
-          const s = v
-            .getProperty("status")!
-            .getValueDeclarationOrThrow()
-            .getType()
-            .getText();
+          const statusProp = v.getProperty("status");
+          if (!statusProp) return "default";
+          const statusType = typeChecker.getTypeOfSymbolAtLocation(statusProp, aliasDecl);
+          const s = statusType.getText();
+          
+          if (statusType.isNumberLiteral()) {
+            return String(statusType.getLiteralValue());
+          }
+          
           return /^\d+$/.test(s) ? s : "default";
         });
         for (const [code, vs] of Object.entries(byStatus)) {

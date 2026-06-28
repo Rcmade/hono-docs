@@ -232,8 +232,8 @@
           }
         },
         "responses": {
-          "default": {
-            "description": "Generic status from T[\"status\"]",
+          "201": {
+            "description": "Status 201",
             "content": {
               "application/json": {
                 "schema": {
@@ -307,59 +307,62 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": "Generic status from T[\"status\"]",
+          "200": {
+            "description": "Status 200",
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "success": {
-                          "oneOf": [
-                            {
-                              "type": "boolean",
-                              "enum": [
-                                false
-                              ]
-                            },
-                            {
-                              "type": "boolean",
-                              "enum": [
-                                true
-                              ]
-                            }
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {},
+                    "email": {},
+                    "age": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "age"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "oneOf": [
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            false
                           ]
                         },
-                        "message": {
-                          "type": "string"
+                        {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
                         }
-                      },
-                      "required": [
-                        "success",
-                        "message"
                       ]
                     },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "name": {},
-                        "email": {},
-                        "age": {
-                          "type": "number"
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "name",
-                        "email",
-                        "age"
-                      ]
+                    "message": {
+                      "type": "string"
                     }
+                  },
+                  "required": [
+                    "success",
+                    "message"
                   ]
                 }
               }
@@ -1245,239 +1248,256 @@
           }
         },
         "responses": {
-          "default": {
-            "description": "Generic status from T[\"status\"]",
+          "201": {
+            "description": "Status 201",
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "error": {
-                          "type": "object",
-                          "properties": {
-                            "code": {
-                              "type": "string"
-                            },
-                            "message": {}
-                          },
-                          "required": [
-                            "code",
-                            "message"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "success",
-                        "error"
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
                       ]
                     },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "error": {
-                          "type": "object",
-                          "properties": {
-                            "code": {
-                              "type": "string"
-                            },
-                            "message": {}
-                          },
-                          "required": [
-                            "code",
-                            "message"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "success",
-                        "error"
-                      ]
+                    "message": {
+                      "type": "string"
                     },
-                    {
+                    "echo": {
                       "type": "object",
                       "properties": {
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "error": {
+                        "org": {},
+                        "res": {},
+                        "pagination": {
                           "type": "object",
                           "properties": {
-                            "code": {
-                              "type": "string"
+                            "page": {
+                              "type": "number"
                             },
-                            "message": {}
-                          },
-                          "required": [
-                            "code",
-                            "message"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "success",
-                        "error"
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            true
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "echo": {
-                          "type": "object",
-                          "properties": {
-                            "org": {},
-                            "res": {},
-                            "pagination": {
-                              "type": "object",
-                              "properties": {
-                                "page": {
-                                  "type": "number"
-                                },
-                                "limit": {},
-                                "sortBy": {
-                                  "type": "string",
-                                  "enum": [
-                                    "name",
-                                    "createdAt",
-                                    "updatedAt"
-                                  ]
-                                },
-                                "order": {
-                                  "type": "string",
-                                  "enum": [
-                                    "asc",
-                                    "desc"
-                                  ]
-                                },
-                                "search": {
-                                  "oneOf": [
-                                    {}
-                                  ]
-                                }
-                              },
-                              "required": [
-                                "page",
-                                "limit",
-                                "sortBy",
-                                "order"
+                            "limit": {},
+                            "sortBy": {
+                              "type": "string",
+                              "enum": [
+                                "name",
+                                "createdAt",
+                                "updatedAt"
                               ]
                             },
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "id": {},
-                                "username": {},
-                                "roles": {
-                                  "type": "array",
-                                  "items": {
-                                    "type": "string",
-                                    "enum": [
-                                      "admin",
-                                      "user",
-                                      "manager",
-                                      "guest"
-                                    ]
-                                  }
-                                },
-                                "profile": {
-                                  "type": "object",
-                                  "properties": {
-                                    "avatarUrl": {
-                                      "oneOf": [
-                                        {}
-                                      ]
-                                    },
-                                    "address": {
-                                      "type": "object",
-                                      "properties": {
-                                        "street": {},
-                                        "city": {},
-                                        "zipcode": {},
-                                        "coordinates": {
-                                          "oneOf": [
-                                            {
-                                              "type": "array",
-                                              "items": {
-                                                "oneOf": [
-                                                  {},
-                                                  {}
-                                                ]
-                                              },
-                                              "minItems": 2,
-                                              "maxItems": 2
-                                            }
-                                          ]
-                                        }
-                                      },
-                                      "required": [
-                                        "street",
-                                        "city",
-                                        "zipcode"
-                                      ]
-                                    },
-                                    "bio": {}
-                                  },
-                                  "required": [
-                                    "avatarUrl",
-                                    "address"
-                                  ]
-                                },
-                                "settings": {
-                                  "type": "object",
-                                  "properties": {}
-                                },
-                                "metadata": {}
-                              },
-                              "required": [
-                                "id",
-                                "username",
-                                "roles",
-                                "profile",
-                                "settings"
+                            "order": {
+                              "type": "string",
+                              "enum": [
+                                "asc",
+                                "desc"
+                              ]
+                            },
+                            "search": {
+                              "oneOf": [
+                                {}
                               ]
                             }
                           },
                           "required": [
-                            "org",
-                            "res",
-                            "pagination",
-                            "data"
+                            "page",
+                            "limit",
+                            "sortBy",
+                            "order"
                           ]
                         },
-                        "timestamp": {}
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "id": {},
+                            "username": {},
+                            "roles": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "enum": [
+                                  "admin",
+                                  "user",
+                                  "manager",
+                                  "guest"
+                                ]
+                              }
+                            },
+                            "profile": {
+                              "type": "object",
+                              "properties": {
+                                "avatarUrl": {
+                                  "oneOf": [
+                                    {}
+                                  ]
+                                },
+                                "address": {
+                                  "type": "object",
+                                  "properties": {
+                                    "street": {},
+                                    "city": {},
+                                    "zipcode": {},
+                                    "coordinates": {
+                                      "oneOf": [
+                                        {
+                                          "type": "array",
+                                          "items": {
+                                            "oneOf": [
+                                              {},
+                                              {}
+                                            ]
+                                          },
+                                          "minItems": 2,
+                                          "maxItems": 2
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "street",
+                                    "city",
+                                    "zipcode"
+                                  ]
+                                },
+                                "bio": {}
+                              },
+                              "required": [
+                                "avatarUrl",
+                                "address"
+                              ]
+                            },
+                            "settings": {
+                              "type": "object",
+                              "properties": {}
+                            },
+                            "metadata": {}
+                          },
+                          "required": [
+                            "id",
+                            "username",
+                            "roles",
+                            "profile",
+                            "settings"
+                          ]
+                        }
                       },
                       "required": [
-                        "success",
-                        "message",
-                        "echo",
-                        "timestamp"
+                        "org",
+                        "res",
+                        "pagination",
+                        "data"
+                      ]
+                    },
+                    "timestamp": {}
+                  },
+                  "required": [
+                    "success",
+                    "message",
+                    "echo",
+                    "timestamp"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Status 403",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {}
+                      },
+                      "required": [
+                        "code",
+                        "message"
                       ]
                     }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {}
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Status 500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {}
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
                   ]
                 }
               }
