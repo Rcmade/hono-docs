@@ -13,11 +13,16 @@
   "homepage": "https://github.com/rcmade/hono-docs#readme",
   "keywords": [
     "openapi",
+    "swagger",
     "hono",
     "typescript",
+    "zod",
     "documentation",
     "cli",
-    "generator"
+    "generator",
+    "nested-routing",
+    "jsdoc",
+    "api"
   ],
   "license": "MIT",
   "main": "dist/index.js",
@@ -43,7 +48,6 @@
     "dist"
   ],
   "dependencies": {
-    "@rcmade/hono-docs": "link:",
     "esbuild-register": "^3.6.0",
     "jiti": "^2.7.0",
     "ts-morph": "^26.0.0",
