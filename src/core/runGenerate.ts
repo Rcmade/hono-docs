@@ -38,18 +38,22 @@ export async function runGenerate(configPath: string) {
     rootPath,
   };
   for (const apiGroup of apis) {
-    const sanitizedName = sanitizeApiPrefix(apiGroup.apiPrefix);
+    // Normalize "/" and "" to the same thing — both mean "no extra prefix"
+    const normalizedPrefix = apiGroup.apiPrefix === "/" ? "" : apiGroup.apiPrefix;
+    const normalizedGroup = { ...apiGroup, apiPrefix: normalizedPrefix };
+
+    const sanitizedName = sanitizeApiPrefix(normalizedPrefix) || "root";
 
     const snapshotPath = await generateTypes({
       ...commonParams,
-      apiGroup: apiGroup,
+      apiGroup: normalizedGroup,
       fileName: sanitizedName,
       outputRoot: snapshotOutputRoot,
     });
 
     await generateOpenApi({
       snapshotPath,
-      apiGroup,
+      apiGroup: normalizedGroup,
       ...commonParams,
       fileName: sanitizedName,
       outputRoot: openAPiOutputRoot,
@@ -64,7 +68,8 @@ export async function runGenerate(configPath: string) {
   };
 
   for (const apiGroup of apis) {
-    const name = sanitizeApiPrefix(apiGroup.apiPrefix);
+    const normalizedPrefix = apiGroup.apiPrefix === "/" ? "" : apiGroup.apiPrefix;
+    const name = sanitizeApiPrefix(normalizedPrefix) || "root";
     const openApiFile = path.join(openAPiOutputRoot, `${name}.json`);
 
     if (!fs.existsSync(openApiFile)) {
@@ -81,7 +86,7 @@ export async function runGenerate(configPath: string) {
       for (const customApi of apiGroup.api) {
         const fullPath =
           path.posix
-            .join(apiGroup.apiPrefix, customApi.api)
+            .join(normalizedPrefix, customApi.api)
             .replace(/\/+$/, "")
             .replace(/:([^/]+)/g, "{$1}") || "/";
         customApiMap.set(
@@ -94,7 +99,7 @@ export async function runGenerate(configPath: string) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     for (const [pathKey, operations] of Object.entries<any>(json.paths)) {
       const prefixedPath =
-        path.posix.join(apiGroup.apiPrefix, pathKey).replace(/\/+$/, "") || "/";
+        path.posix.join(normalizedPrefix, pathKey).replace(/\/+$/, "") || "/";
       if (!merged.paths[prefixedPath]) merged.paths[prefixedPath] = {};
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -15,7 +15,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@rcmade/hono-docs": "latest",
+    "@rcmade/hono-docs": "file:../..",
     "@types/node": "^20.19.33",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"

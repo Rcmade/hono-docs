@@ -11,8 +11,8 @@ export function extractJSDocs(
 ): Map<string, ParsedJSDoc[]> {
   const map = new Map<string, ParsedJSDoc[]>();
 
-  // 1. Build a map of router variable names to their mounted prefixes
-  const routeMounts = new Map<string, string>();
+  // 1. Build a map of router variable names to all prefixes they are mounted at
+  const routeMounts = new Map<string, string[]>();
   for (const sourceFile of project.getSourceFiles()) {
     const calls = sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression);
     for (const call of calls) {
@@ -20,9 +20,14 @@ export function extractJSDocs(
       if (expr.isKind(SyntaxKind.PropertyAccessExpression) && expr.getName() === "route") {
         const args = call.getArguments();
         if (args.length === 2 && args[0].isKind(SyntaxKind.StringLiteral)) {
-          const prefix = args[0].getLiteralText();
-          const routerVar = args[1].getText();
-          routeMounts.set(routerVar, prefix);
+          // Trim whitespace and strip trailing slash from the prefix
+          const prefix = args[0].getLiteralText().replace(/\/+$/, "");
+          // Only handle simple identifier references (e.g. "authRoutes"), not "routes.auth"
+          const routerVarRaw = args[1].getText().trim();
+          if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(routerVarRaw)) {
+            const existing = routeMounts.get(routerVarRaw) ?? [];
+            routeMounts.set(routerVarRaw, [...existing, prefix]);
+          }
         }
       }
     }
@@ -97,12 +102,16 @@ export function extractJSDocs(
                   // `generateOpenApi` replaces `:id` with `{id}`.
                   let openApiPath = routePath.replace(/:([^/]+)/g, "{$1}");
                   
-                  // Attempt to find if this route is part of a mounted sub-router
+                  // Attempt to find if this route is part of a mounted sub-router.
+                  // Walk up to the nearest VariableDeclaration to get the router variable name.
                   const varDecl = call.getFirstAncestorByKind(SyntaxKind.VariableDeclaration);
                   if (varDecl) {
                     const routerName = varDecl.getName();
-                    if (routeMounts.has(routerName)) {
-                      const prefix = routeMounts.get(routerName)!;
+                    const prefixes = routeMounts.get(routerName);
+                    if (prefixes && prefixes.length > 0) {
+                      // Use the first mount prefix (most common case).
+                      // If mounted at multiple paths, the suffix-match fallback in generateOpenApi handles it.
+                      const prefix = prefixes[0];
                       openApiPath = prefix + (openApiPath === "/" ? "" : openApiPath);
                     }
                   }
@@ -113,6 +122,20 @@ export function extractJSDocs(
                     map.set(key, []);
                   }
                   map.get(key)!.push(parsed);
+                  
+                  // If the router is mounted at multiple prefixes, also register under each additional prefix
+                  if (varDecl) {
+                    const prefixes2 = routeMounts.get(varDecl.getName());
+                    if (prefixes2 && prefixes2.length > 1) {
+                      const baseOpenApiPath = routePath.replace(/:([^/]+)/g, "{$1}");
+                      for (const extraPrefix of prefixes2.slice(1)) {
+                        const extraPath = extraPrefix + (baseOpenApiPath === "/" ? "" : baseOpenApiPath);
+                        const extraKey = `${name.toLowerCase()} ${extraPath}`;
+                        if (!map.has(extraKey)) map.set(extraKey, []);
+                        map.get(extraKey)!.push(parsed);
+                      }
+                    }
+                  }
                 }
               }
             }
