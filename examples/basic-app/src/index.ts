@@ -1,18 +1,19 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-import { userRoutes } from "./routes/userRoutes";
-import docs from "./routes/docs";
-
-import { level1 } from "./routes/deep/level1";
+import { authRoutes } from "./routes/authRoutes";
+import { productRoutes } from "./routes/productRoutes";
+import { orderRoutes } from "./routes/orderRoutes";
+import { docs } from "./routes/docs";
 
 const app = new Hono()
   .basePath("/api")
   .get("/", (c) => {
-    return c.text("Hello Hono!");
+    return c.json({ status: "Acme Corp API Online", version: "1.0.0" });
   })
-  .route("/docs", docs)
-  .route("/user", userRoutes)
-  .route("/deep", level1);
+  .route("/auth", authRoutes)
+  .route("/products", productRoutes)
+  .route("/orders", orderRoutes)
+  .route("/docs", docs);
 
 serve(
   {

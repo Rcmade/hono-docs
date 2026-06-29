@@ -1,10 +1,9 @@
-// src/routes/docs.ts
 import { Hono } from "hono";
 import { Scalar } from "@scalar/hono-api-reference";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-const docs = new Hono()
+export const docs = new Hono()
   .get(
     "/",
     Scalar({
@@ -21,6 +20,3 @@ const docs = new Hono()
     );
     return c.json(JSON.parse(raw));
   });
-
-export type AppType = typeof docs;
-export default docs;
