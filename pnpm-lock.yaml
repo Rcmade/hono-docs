@@ -4,10 +4,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@rcmade/hono-docs': 'link:'
+
 importers:
 
   .:
     dependencies:
+      '@rcmade/hono-docs':
+        specifier: 'link:'
+        version: 'link:'
       esbuild-register:
         specifier: ^3.6.0
         version: 3.6.0(esbuild@0.25.12)

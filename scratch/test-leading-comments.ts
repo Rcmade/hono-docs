@@ -1,38 +1,40 @@
-import { Project, SyntaxKind } from "ts-morph";
+import { Project, SyntaxKind, TypeNode, TypeReferenceNode, ImportTypeNode, ts } from "ts-morph";
+import path from "node:path";
 
-const source = `
-const app = new Hono()
-  /**
-   * My Doc
-   */
-  // this is a line comment
-  .get('/test', (c) => c.text('hello'));
-`;
+const project = new Project({
+  tsConfigFilePath: "./tsconfig.json",
+});
 
-const project = new Project();
-const sf = project.createSourceFile("test.ts", source);
+const sf = project.addSourceFileAtPath("./examples/basic-app/src/index.ts");
+const aliasDecl = sf.getTypeAliasOrThrow("AppType");
+const typeChecker = project.getTypeChecker();
+const topTypeNode = aliasDecl.getTypeNode()!;
 
-const calls = sf.getDescendantsOfKind(SyntaxKind.CallExpression);
-for (const call of calls) {
-  const expr = call.getExpression();
-  if (expr.isKind(SyntaxKind.PropertyAccessExpression)) {
-    const dotToken = expr.getChildAtIndex(1);
-    
-    // Get all leading comments of the dot token
-    const comments = dotToken.getLeadingCommentRanges();
-    let jsdocText = "";
-    
-    for (let i = comments.length - 1; i >= 0; i--) {
-      const c = comments[i];
-      if (c.getKind() === SyntaxKind.MultiLineCommentTrivia) {
-        const text = c.getText();
-        if (text.startsWith("/**") && !text.startsWith("/**/")) {
-          jsdocText = text;
-          break; // Get the closest JSDoc
-        }
-      }
+let typeArgs: readonly TypeNode<ts.TypeNode>[];
+
+if (topTypeNode.isKind(SyntaxKind.TypeReference)) {
+  typeArgs = (topTypeNode as TypeReferenceNode).getTypeArguments();
+} else if (topTypeNode.isKind(SyntaxKind.ImportType)) {
+  typeArgs = (topTypeNode as ImportTypeNode).getTypeArguments();
+} else {
+  throw new Error("AppType must be an ImportType or a TypeReference");
+}
+
+const routesNode = typeArgs[1];
+const sType = typeChecker.getTypeAtLocation(routesNode);
+
+console.log("Found properties:", sType.getProperties().length);
+for (const prop of sType.getProperties()) {
+  console.log("Prop:", prop.getName());
+  const routeType = typeChecker.getTypeOfSymbolAtLocation(prop, aliasDecl);
+  for (const method of routeType.getProperties()) {
+    console.log("  Method:", method.getName());
+    const decls = method.getDeclarations();
+    if (decls.length > 0) {
+      console.log("    Decls:", decls[0].getKindName());
+      console.log("    Has comments?", decls[0].getLeadingCommentRanges().length > 0);
+      const jsdocs = (decls[0] as any).getJsDocs?.();
+      console.log("    JSDocs?", jsdocs ? jsdocs.length : 0);
     }
-    
-    console.log("Extracted JSDoc:", jsdocText);
   }
 }

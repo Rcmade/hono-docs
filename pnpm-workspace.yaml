@@ -1,2 +1,4 @@
 allowBuilds:
   esbuild: true
+overrides:
+  '@rcmade/hono-docs': 'link:'

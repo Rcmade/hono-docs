@@ -43,6 +43,7 @@
     "dist"
   ],
   "dependencies": {
+    "@rcmade/hono-docs": "link:",
     "esbuild-register": "^3.6.0",
     "jiti": "^2.7.0",
     "ts-morph": "^26.0.0",

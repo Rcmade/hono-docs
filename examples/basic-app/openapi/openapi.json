@@ -234,7 +234,12 @@
     },
     "/api/products": {
       "get": {
-        "summary": "Auto-generated GET /api/products",
+        "summary": "List Catalog Products",
+        "description": "Returns a paginated list of all active products in the store catalog.",
+        "tags": [
+          "Catalog",
+          "E-Commerce Platform"
+        ],
         "parameters": [
           {
             "name": "category",
@@ -346,10 +351,7 @@
               }
             }
           }
-        },
-        "tags": [
-          "E-Commerce Platform"
-        ]
+        }
       }
     },
     "/api/products/{productId}": {
@@ -411,7 +413,12 @@
     },
     "/api/orders": {
       "post": {
-        "summary": "Auto-generated POST /api/orders",
+        "summary": "Create Order",
+        "description": "Places a new order for a product and triggers the fulfillment pipeline.",
+        "tags": [
+          "Orders",
+          "E-Commerce Platform"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -490,10 +497,7 @@
               }
             }
           }
-        },
-        "tags": [
-          "E-Commerce Platform"
-        ]
+        }
       }
     },
     "/api/orders/tracking/{trackingNumber}": {
