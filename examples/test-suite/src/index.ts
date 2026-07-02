@@ -9,6 +9,7 @@ import { zodRoutes } from "./routes/zodRoutes";
 import { valibotRoutes } from "./routes/valibotRoutes";
 import { typeboxRoutes } from "./routes/typeboxRoutes";
 import { enterpriseBillingRoutes } from "./routes/enterpriseBillingRoutes";
+import { exhaustiveRoutes } from "./routes/exhaustiveRoutes";
 import { docs } from "./routes/docs";
 
 const app1 = new Hono()
@@ -26,12 +27,13 @@ const app = app1
   .route("/zod", zodRoutes)
   .route("/valibot", valibotRoutes)
   .route("/typebox", typeboxRoutes)
-  .route("/enterprise", enterpriseBillingRoutes)
-  .route("/docs", docs);
+  .route("/enterprise", enterpriseBillingRoutes);
+
+const app2 = app.route("/exhaustive", exhaustiveRoutes).route("/docs", docs);
 
 serve(
   {
-    fetch: app.fetch,
+    fetch: app2.fetch,
     port: 3002,
   },
   (info) => {
@@ -39,4 +41,4 @@ serve(
   },
 );
 
-export type AppType = typeof app;
+export type AppType = typeof app2;
