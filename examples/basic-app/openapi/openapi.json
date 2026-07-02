@@ -19,7 +19,7 @@
   "paths": {
     "/api": {
       "get": {
-        "summary": "Auto-generated GET /api",
+        "summary": "Get Root",
         "responses": {
           "default": {
             "description": "Default fallback response",
@@ -31,7 +31,9 @@
                     "status": {
                       "type": "string"
                     },
-                    "version": {}
+                    "version": {
+                      "type": "string"
+                    }
                   },
                   "required": [
                     "status",
@@ -65,7 +67,9 @@
                   "email": {
                     "type": "string"
                   },
-                  "password": {}
+                  "password": {
+                    "type": "string"
+                  }
                 },
                 "required": [
                   "email",
@@ -89,7 +93,9 @@
                     "user": {
                       "type": "object",
                       "properties": {
-                        "email": {}
+                        "email": {
+                          "type": "string"
+                        }
                       },
                       "required": [
                         "email"
@@ -125,13 +131,17 @@
                   "firstName": {
                     "type": "string"
                   },
-                  "lastName": {},
-                  "email": {},
-                  "password": {},
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
                   "company": {
-                    "oneOf": [
-                      {}
-                    ]
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -153,25 +163,14 @@
                   "type": "object",
                   "properties": {
                     "success": {
-                      "oneOf": [
-                        {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        {
-                          "type": "boolean",
-                          "enum": [
-                            true
-                          ]
-                        }
-                      ]
+                      "type": "boolean"
                     },
                     "id": {
                       "type": "string"
                     },
-                    "email": {}
+                    "email": {
+                      "type": "string"
+                    }
                   },
                   "required": [
                     "success",
@@ -202,20 +201,7 @@
                   "type": "object",
                   "properties": {
                     "success": {
-                      "oneOf": [
-                        {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        {
-                          "type": "boolean",
-                          "enum": [
-                            true
-                          ]
-                        }
-                      ]
+                      "type": "boolean"
                     },
                     "message": {
                       "type": "string"
@@ -246,11 +232,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                }
-              ]
+              "type": "string"
             }
           },
           {
@@ -258,11 +240,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                }
-              ]
+              "type": "string"
             }
           },
           {
@@ -270,11 +248,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                }
-              ]
+              "type": "string"
             }
           },
           {
@@ -282,11 +256,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                }
-              ]
+              "type": "string"
             }
           }
         ],
@@ -306,16 +276,26 @@
                           "id": {
                             "type": "string"
                           },
-                          "name": {},
-                          "description": {},
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
                           "price": {
                             "type": "number"
                           },
-                          "currency": {},
-                          "inventoryCount": {},
+                          "currency": {
+                            "type": "string"
+                          },
+                          "inventoryCount": {
+                            "type": "number"
+                          },
                           "categories": {
                             "type": "array",
-                            "items": {}
+                            "items": {
+                              "type": "string"
+                            }
                           }
                         },
                         "required": [
@@ -332,9 +312,15 @@
                     "meta": {
                       "type": "object",
                       "properties": {
-                        "page": {},
-                        "limit": {},
-                        "total": {}
+                        "page": {
+                          "type": "number"
+                        },
+                        "limit": {
+                          "type": "number"
+                        },
+                        "total": {
+                          "type": "number"
+                        }
                       },
                       "required": [
                         "page",
@@ -383,16 +369,26 @@
                     "id": {
                       "type": "string"
                     },
-                    "name": {},
-                    "description": {},
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
                     "price": {
                       "type": "number"
                     },
-                    "currency": {},
-                    "inventoryCount": {},
+                    "currency": {
+                      "type": "string"
+                    },
+                    "inventoryCount": {
+                      "type": "number"
+                    },
                     "categories": {
                       "type": "array",
-                      "items": {}
+                      "items": {
+                        "type": "string"
+                      }
                     }
                   },
                   "required": [
@@ -435,10 +431,18 @@
                   "shippingAddress": {
                     "type": "object",
                     "properties": {
-                      "line1": {},
-                      "city": {},
-                      "countryCode": {},
-                      "postalCode": {}
+                      "line1": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "countryCode": {
+                        "type": "string"
+                      },
+                      "postalCode": {
+                        "type": "string"
+                      }
                     },
                     "required": [
                       "line1",
@@ -466,26 +470,17 @@
                   "type": "object",
                   "properties": {
                     "success": {
-                      "oneOf": [
-                        {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        {
-                          "type": "boolean",
-                          "enum": [
-                            true
-                          ]
-                        }
-                      ]
+                      "type": "boolean"
                     },
                     "orderId": {
                       "type": "string"
                     },
-                    "status": {},
-                    "estimatedShippingDate": {}
+                    "status": {
+                      "type": "string"
+                    },
+                    "estimatedShippingDate": {
+                      "type": "string"
+                    }
                   },
                   "required": [
                     "success",
@@ -529,21 +524,27 @@
                     "trackingNumber": {
                       "type": "string"
                     },
-                    "status": {},
+                    "status": {
+                      "type": "string"
+                    },
                     "location": {
                       "type": "object",
                       "properties": {
                         "lat": {
                           "type": "number"
                         },
-                        "lng": {}
+                        "lng": {
+                          "type": "number"
+                        }
                       },
                       "required": [
                         "lat",
                         "lng"
                       ]
                     },
-                    "estimatedDelivery": {}
+                    "estimatedDelivery": {
+                      "type": "string"
+                    }
                   },
                   "required": [
                     "trackingNumber",
@@ -560,7 +561,7 @@
     },
     "/api/docs": {
       "get": {
-        "summary": "Auto-generated GET /api/docs",
+        "summary": "Get Docs",
         "responses": {
           "default": {
             "description": "Generic status from T[\"status\"]",
@@ -581,7 +582,7 @@
     },
     "/api/docs/open-api": {
       "get": {
-        "summary": "Auto-generated GET /api/docs/open-api",
+        "summary": "Get Docs Open api",
         "responses": {
           "default": {
             "description": "Generic status from T[\"status\"]",

@@ -9,8 +9,31 @@ export function buildSchema(
 ): OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject {
   // Prevent infinite recursion on circular/recursive types
   if (depth > 40) return {};
-  if (seen.has(type)) return {};
-  seen.add(type);
+
+  const isPrimitive =
+    type.isString() ||
+    type.isNumber() ||
+    type.isBoolean() ||
+    (type.isStringLiteral && type.isStringLiteral()) ||
+    (type.isNumberLiteral && type.isNumberLiteral()) ||
+    (type.isNull && type.isNull()) ||
+    (type.isUndefined && type.isUndefined()) ||
+    type.getText() === "true" ||
+    type.getText() === "false";
+
+  if (!isPrimitive) {
+    if (seen.has(type)) return {};
+    seen.add(type);
+  }
+
+  // Handle Date
+  const symbol = type.getSymbol() || type.getAliasSymbol();
+  if (symbol && symbol.getName() === "Date") {
+    return {
+      type: "string",
+      format: "date-time",
+    };
+  }
 
   if (type.isStringLiteral && type.isStringLiteral()) {
     return {
@@ -31,28 +54,71 @@ export function buildSchema(
       enum: [text === "true"],
     };
   }
+
   if (type.isUnion()) {
     const members = type.getUnionTypes();
-    const lits = members.filter((u) => u.isStringLiteral());
+
+    // 1. Simplify boolean unions (true | false)
+    const hasTrue = members.some((m) => m.getText() === "true");
+    const hasFalse = members.some((m) => m.getText() === "false");
+    const onlyBools = members.every(
+      (m) =>
+        m.getText() === "true" ||
+        m.getText() === "false" ||
+        (m.isNull && m.isNull()) ||
+        (m.isUndefined && m.isUndefined())
+    );
+    if (hasTrue && hasFalse && onlyBools) {
+      const schema: OpenAPIV3.SchemaObject = {
+        type: "boolean",
+      };
+      if (members.some((m) => m.isNull && m.isNull())) {
+        schema.nullable = true;
+      }
+      return schema;
+    }
+
+    // 2. Simplify string enum unions
+    const lits = members.filter((u) => u.isStringLiteral && u.isStringLiteral());
     const onlyNull = members.every(
-      (u) => u.isStringLiteral() || u.isNull() || u.isUndefined(),
+      (u) =>
+        (u.isStringLiteral && u.isStringLiteral()) ||
+        (u.isNull && u.isNull()) ||
+        (u.isUndefined && u.isUndefined()),
     );
     if (lits.length && onlyNull) {
       const schema: OpenAPIV3.SchemaObject = {
         type: "string",
         enum: lits.map((u) => String(u.getLiteralValue())),
       };
-      if (members.some((u) => u.isNull() || u.isUndefined()))
+      if (members.some((u) => u.isNull && u.isNull()))
         schema.nullable = true;
       return schema;
     }
-    const nonNull = members.filter((u) => !u.isNull() && !u.isUndefined());
-    return {
-      oneOf: nonNull.map((u) =>
-        buildSchema(u, typeChecker, contextNode, seen, depth + 1),
-      ),
-    };
+
+    // 3. General unions: filter out null / undefined and wrap with oneOf
+    const hasNull = members.some((u) => u.isNull && u.isNull());
+    const nonNull = members.filter(
+      (u) => !(u.isNull && u.isNull()) && !(u.isUndefined && u.isUndefined())
+    );
+
+    let resultSchema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject;
+    if (nonNull.length === 1) {
+      resultSchema = buildSchema(nonNull[0], typeChecker, contextNode, seen, depth + 1);
+    } else {
+      resultSchema = {
+        oneOf: nonNull.map((u) =>
+          buildSchema(u, typeChecker, contextNode, seen, depth + 1),
+        ),
+      };
+    }
+
+    if (hasNull && typeof resultSchema === "object") {
+      (resultSchema as OpenAPIV3.SchemaObject).nullable = true;
+    }
+    return resultSchema;
   }
+
   if (type.isString()) return { type: "string" };
   if (type.isNumber()) return { type: "number" };
   if (type.isBoolean()) return { type: "boolean" };

@@ -18,7 +18,7 @@ import { extractJSDocs, type ParsedJSDoc } from "../utils/jsdoc";
 import { genParameters } from "../utils/parameters";
 import { genRequestBody } from "../utils/requestBody";
 import { buildSchema } from "../utils/buildSchema";
-import { groupBy, unwrapUnion } from "../utils/format";
+import { groupBy, unwrapUnion, generateDefaultSummary } from "../utils/format";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type OpenAPI = Record<string, any>;
@@ -119,8 +119,7 @@ GenerateParams & {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const op: any = {
-          summary:
-            jsDoc?.summary || `Auto-generated ${http.toUpperCase()} ${route}`,
+          summary: jsDoc?.summary || generateDefaultSummary(http, route),
         };
 
         if (jsDoc?.description) {
@@ -144,20 +143,26 @@ GenerateParams & {
         const byStatus = groupBy(variants, (v) => {
           const statusProp = v.getProperty("status");
           if (!statusProp) return "default";
-          const statusType = typeChecker.getTypeOfSymbolAtLocation(statusProp, aliasDecl);
+          const statusType = typeChecker.getTypeOfSymbolAtLocation(
+            statusProp,
+            aliasDecl,
+          );
           const s = statusType.getText();
-          
+
           if (statusType.isNumberLiteral()) {
             return String(statusType.getLiteralValue());
           }
-          
+
           return /^\d+$/.test(s) ? s : "default";
         });
         for (const [code, vs] of Object.entries(byStatus)) {
           const schemas = vs.map((v) => {
             const outProp = v.getProperty("output");
             if (!outProp) return {};
-            const outType = typeChecker.getTypeOfSymbolAtLocation(outProp, aliasDecl);
+            const outType = typeChecker.getTypeOfSymbolAtLocation(
+              outProp,
+              aliasDecl,
+            );
             return buildSchema(outType, typeChecker, aliasDecl);
           });
           const schema = schemas.length > 1 ? { oneOf: schemas } : schemas[0];

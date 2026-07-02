@@ -1,0 +1,1992 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Test Suite",
+    "version": "1.0.0",
+    "description": "Sandbox and Integration Test Suite for all parameter types, circular references, and edge cases."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Development Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "E-Commerce Platform"
+    }
+  ],
+  "paths": {
+    "/api": {
+      "get": {
+        "summary": "Get Root",
+        "responses": {
+          "default": {
+            "description": "Default fallback response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "version": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "version"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Authenticate User",
+        "description": "Authenticates a user and returns a signed JWT session token.",
+        "tags": [
+          "Authentication",
+          "E-Commerce Platform"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "email": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "email"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "token",
+                    "user"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "summary": "Register New Account",
+        "description": "Provisions a new user account in the system and sends a verification email.",
+        "tags": [
+          "Authentication",
+          "E-Commerce Platform"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "company": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "id",
+                    "email"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "summary": "Logout User",
+        "description": "Invalidates the current user session and clears authentication cookies.",
+        "tags": [
+          "Authentication",
+          "E-Commerce Platform"
+        ],
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products": {
+      "get": {
+        "summary": "List Catalog Products",
+        "description": "Returns a paginated list of all active products in the store catalog.",
+        "tags": [
+          "Catalog",
+          "E-Commerce Platform"
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "inStock",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "price": {
+                            "type": "number"
+                          },
+                          "currency": {
+                            "type": "string"
+                          },
+                          "inventoryCount": {
+                            "type": "number"
+                          },
+                          "categories": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "description",
+                          "price",
+                          "currency",
+                          "inventoryCount",
+                          "categories"
+                        ]
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "number"
+                        },
+                        "limit": {
+                          "type": "number"
+                        },
+                        "total": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "page",
+                        "limit",
+                        "total"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "meta"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/{productId}": {
+      "get": {
+        "summary": "Retrieve Product Details",
+        "description": "Fetches the full product details, including pricing and inventory data, by its unique ID.",
+        "tags": [
+          "Catalog",
+          "E-Commerce Platform"
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": "number"
+                    },
+                    "currency": {
+                      "type": "string"
+                    },
+                    "inventoryCount": {
+                      "type": "number"
+                    },
+                    "categories": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "description",
+                    "price",
+                    "currency",
+                    "inventoryCount",
+                    "categories"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders": {
+      "post": {
+        "summary": "Create Order",
+        "description": "Places a new order for a product and triggers the fulfillment pipeline.",
+        "tags": [
+          "Orders",
+          "E-Commerce Platform"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "productId": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "number"
+                  },
+                  "shippingAddress": {
+                    "type": "object",
+                    "properties": {
+                      "line1": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "countryCode": {
+                        "type": "string"
+                      },
+                      "postalCode": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "line1",
+                      "city",
+                      "countryCode",
+                      "postalCode"
+                    ]
+                  }
+                },
+                "required": [
+                  "productId",
+                  "quantity",
+                  "shippingAddress"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "orderId": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "estimatedShippingDate": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "orderId",
+                    "status",
+                    "estimatedShippingDate"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders/tracking/{trackingNumber}": {
+      "get": {
+        "summary": "Get Shipment Tracking",
+        "description": "Fetches real-time GPS tracking data for a specific shipment.",
+        "tags": [
+          "Logistics",
+          "E-Commerce Platform"
+        ],
+        "parameters": [
+          {
+            "name": "trackingNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "trackingNumber": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "location": {
+                      "type": "object",
+                      "properties": {
+                        "lat": {
+                          "type": "number"
+                        },
+                        "lng": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "lat",
+                        "lng"
+                      ]
+                    },
+                    "estimatedDelivery": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "trackingNumber",
+                    "status",
+                    "location",
+                    "estimatedDelivery"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tests/circular-test": {
+      "post": {
+        "summary": "Test Circular Schema Generation",
+        "description": "Test endpoint to check self-referencing circular structure handling.",
+        "tags": [
+          "Circular Testing",
+          "E-Commerce Platform"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "subcategories": {
+                          "type": "array",
+                          "items": {}
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "subcategories"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tests/mutual-circular-test": {
+      "post": {
+        "summary": "Test Mutually Recursive Schema Generation",
+        "description": "Test endpoint to check mutually recursive structures handling.",
+        "tags": [
+          "Circular Testing",
+          "E-Commerce Platform"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "nodeB": {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "number"
+                            },
+                            "nodeA": {}
+                          },
+                          "required": [
+                            "value"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tests/complex-test/{id}": {
+      "post": {
+        "summary": "Test Various Parameters",
+        "description": "Test endpoint to check query, headers, cookies, path parameters, and Date type formatting.",
+        "tags": [
+          "Parameter Testing",
+          "E-Commerce Platform"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "cookie",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "timestamp": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "timestamp"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tests/union-test": {
+      "post": {
+        "summary": "Test Union Type Simplifications",
+        "description": "Test endpoint to check boolean union simplifies to boolean, and nullable fields resolve to nullable.",
+        "tags": [
+          "Union Testing",
+          "E-Commerce Platform"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "isActive": {
+                    "type": "boolean",
+                    "nullable": true
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "user",
+                      "admin"
+                    ],
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "isActive",
+                  "role"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "isActive": {
+                          "type": "boolean",
+                          "nullable": true
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "admin"
+                          ],
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "isActive",
+                        "role"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/complex/org/{orgId}/projects/{projectId}/{subTaskId?}": {
+      "get": {
+        "summary": "Complex Path Parameters",
+        "description": "Route with multiple path parameters and an optional one.",
+        "tags": [
+          "Parameter Testing",
+          "E-Commerce Platform"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subTaskId",
+            "in": "path",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "params": {
+                      "type": "object",
+                      "properties": {
+                        "orgId": {
+                          "type": "string"
+                        },
+                        "projectId": {
+                          "type": "string"
+                        },
+                        "subTaskId": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "orgId",
+                        "projectId"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "params"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/complex/archive/{year{[0-9]{4}}}/{month{[0-9]{2}}}": {
+      "get": {
+        "summary": "Regex Path Parameters",
+        "description": "Route with regex constraints in parameters.",
+        "tags": [
+          "Parameter Testing",
+          "E-Commerce Platform"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "params": {
+                      "type": "object",
+                      "properties": {
+                        "year": {
+                          "type": "string"
+                        },
+                        "month": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "year",
+                        "month"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "params"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/complex/files/*": {
+      "get": {
+        "summary": "Wildcard Path Parameter",
+        "description": "Route using a wildcard parameter.",
+        "tags": [
+          "Parameter Testing",
+          "E-Commerce Platform"
+        ],
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "filePath": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "filePath"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/complex/upload-form": {
+      "post": {
+        "summary": "Multipart Form Data Validation",
+        "description": "Route that validates multipart/form-data or urlencoded form bodies.",
+        "tags": [
+          "Body Testing",
+          "E-Commerce Platform"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fileTitle": {
+                    "type": "string"
+                  },
+                  "fileSize": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileTitle",
+                  "fileSize"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "fileTitle": {
+                      "type": "string"
+                    },
+                    "fileSize": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "fileTitle",
+                    "fileSize"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/complex/any-method": {
+      "all": {
+        "summary": "All Complex Any method",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "method": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "method",
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/complex/union-responses": {
+      "get": {
+        "summary": "Union Status Code Responses",
+        "description": "Route returning different JSON schemas depending on status code.",
+        "tags": [
+          "Response Testing",
+          "E-Commerce Platform"
+        ],
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "payload": {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "payload"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/complex/ts-utilities": {
+      "get": {
+        "summary": "TypeScript Utility Shapes",
+        "description": "Route returning Omit, Record, Partial, and Readonly types.",
+        "tags": [
+          "Response Testing",
+          "E-Commerce Platform"
+        ],
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "withoutAge": {
+                      "type": "object",
+                      "properties": {
+                        "email": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "email",
+                        "id",
+                        "name",
+                        "tags"
+                      ]
+                    },
+                    "partialU": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {},
+                        "email": {},
+                        "age": {
+                          "type": "number"
+                        },
+                        "tags": {}
+                      }
+                    },
+                    "readonlyU": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "age": {
+                          "type": "number"
+                        },
+                        "tags": {}
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "email",
+                        "age",
+                        "tags"
+                      ]
+                    },
+                    "map": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "withoutAge",
+                    "partialU",
+                    "readonlyU",
+                    "map"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/complex/nested/info": {
+      "get": {
+        "summary": "Sub route info",
+        "description": "Get sub router info",
+        "tags": [
+          "Complex Routing",
+          "E-Commerce Platform"
+        ],
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "info": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "info"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/complex/nested/update": {
+      "post": {
+        "summary": "Sub route update",
+        "description": "Perform sub router update",
+        "tags": [
+          "Complex Routing",
+          "E-Commerce Platform"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "code"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "updated": {
+                      "type": "boolean"
+                    },
+                    "code": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "updated",
+                    "code"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/zod/all-features": {
+      "post": {
+        "summary": "Test All Zod Validations",
+        "description": "Test route receiving a request body constructed with all possible Zod features.",
+        "tags": [
+          "Zod Testing",
+          "E-Commerce Platform"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "str": {
+                    "type": "string"
+                  },
+                  "num": {
+                    "type": "number"
+                  },
+                  "bool": {
+                    "type": "boolean"
+                  },
+                  "big": {},
+                  "dt": {},
+                  "anyVal": {},
+                  "unknownVal": {},
+                  "nullVal": {},
+                  "emailStr": {
+                    "type": "string"
+                  },
+                  "urlStr": {
+                    "type": "string"
+                  },
+                  "uuidStr": {
+                    "type": "string"
+                  },
+                  "dateTimeStr": {
+                    "type": "string"
+                  },
+                  "minMaxStr": {
+                    "type": "string"
+                  },
+                  "regexStr": {
+                    "type": "string"
+                  },
+                  "integer": {
+                    "type": "number"
+                  },
+                  "positiveNum": {
+                    "type": "number"
+                  },
+                  "negativeNum": {
+                    "type": "number"
+                  },
+                  "minMaxNum": {
+                    "type": "number"
+                  },
+                  "strArray": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "setOfStrings": {},
+                  "tupleOfTwo": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ]
+                    },
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "tupleWithRest": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ]
+                    },
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "nestedObj": {
+                    "type": "object",
+                    "properties": {
+                      "nestedKey": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "nestedKey"
+                    ]
+                  },
+                  "partialObj": {
+                    "type": "object",
+                    "properties": {
+                      "x": {
+                        "type": "string"
+                      },
+                      "y": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "simpleUnion": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "discriminatedUnion": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "admin"
+                            ]
+                          },
+                          "adminRole": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "adminRole"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "member"
+                            ]
+                          },
+                          "memberCode": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "memberCode"
+                        ]
+                      }
+                    ]
+                  },
+                  "intersectionObj": {},
+                  "stringRecord": {
+                    "type": "object",
+                    "properties": {}
+                  },
+                  "numberRecord": {
+                    "type": "object",
+                    "properties": {}
+                  },
+                  "enumColors": {
+                    "type": "string",
+                    "enum": [
+                      "red",
+                      "green",
+                      "blue"
+                    ]
+                  },
+                  "nativeDirectionEnum": {},
+                  "literalValue": {
+                    "type": "string",
+                    "enum": [
+                      "fixed-value"
+                    ]
+                  },
+                  "nullableStr": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "transformedNumber": {
+                    "type": "string"
+                  },
+                  "preprocessedStr": {},
+                  "refinedStr": {
+                    "type": "string"
+                  },
+                  "brandedStr": {
+                    "type": "string"
+                  },
+                  "undefVal": {},
+                  "optionalStr": {},
+                  "nullishStr": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "defaultStr": {}
+                },
+                "required": [
+                  "str",
+                  "num",
+                  "bool",
+                  "big",
+                  "dt",
+                  "anyVal",
+                  "unknownVal",
+                  "nullVal",
+                  "emailStr",
+                  "urlStr",
+                  "uuidStr",
+                  "dateTimeStr",
+                  "minMaxStr",
+                  "regexStr",
+                  "integer",
+                  "positiveNum",
+                  "negativeNum",
+                  "minMaxNum",
+                  "strArray",
+                  "setOfStrings",
+                  "tupleOfTwo",
+                  "tupleWithRest",
+                  "nestedObj",
+                  "partialObj",
+                  "simpleUnion",
+                  "discriminatedUnion",
+                  "intersectionObj",
+                  "stringRecord",
+                  "numberRecord",
+                  "enumColors",
+                  "nativeDirectionEnum",
+                  "literalValue",
+                  "nullableStr",
+                  "transformedNumber",
+                  "preprocessedStr",
+                  "refinedStr",
+                  "brandedStr"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "str": {
+                          "type": "string"
+                        },
+                        "num": {
+                          "type": "number"
+                        },
+                        "bool": {
+                          "type": "boolean"
+                        },
+                        "big": {
+                          "type": "string"
+                        },
+                        "dt": {
+                          "type": "string"
+                        },
+                        "anyVal": {},
+                        "unknownVal": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "boolean",
+                              "enum": [
+                                false
+                              ]
+                            },
+                            {
+                              "type": "boolean",
+                              "enum": [
+                                true
+                              ]
+                            },
+                            {
+                              "type": "object",
+                              "properties": {}
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "boolean",
+                                    "enum": [
+                                      false
+                                    ]
+                                  },
+                                  {
+                                    "type": "boolean",
+                                    "enum": [
+                                      true
+                                    ]
+                                  },
+                                  {},
+                                  {}
+                                ],
+                                "nullable": true
+                              }
+                            }
+                          ],
+                          "nullable": true
+                        },
+                        "nullVal": {},
+                        "emailStr": {
+                          "type": "string"
+                        },
+                        "urlStr": {
+                          "type": "string"
+                        },
+                        "uuidStr": {
+                          "type": "string"
+                        },
+                        "dateTimeStr": {
+                          "type": "string"
+                        },
+                        "minMaxStr": {
+                          "type": "string"
+                        },
+                        "regexStr": {
+                          "type": "string"
+                        },
+                        "integer": {
+                          "type": "number"
+                        },
+                        "positiveNum": {
+                          "type": "number"
+                        },
+                        "negativeNum": {
+                          "type": "number"
+                        },
+                        "minMaxNum": {
+                          "type": "number"
+                        },
+                        "strArray": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "setOfStrings": {},
+                        "tupleOfTwo": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        },
+                        "tupleWithRest": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        },
+                        "nestedObj": {
+                          "type": "object",
+                          "properties": {
+                            "nestedKey": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "nestedKey"
+                          ]
+                        },
+                        "partialObj": {
+                          "type": "object",
+                          "properties": {
+                            "x": {
+                              "type": "string"
+                            },
+                            "y": {
+                              "type": "number"
+                            }
+                          }
+                        },
+                        "simpleUnion": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "discriminatedUnion": {
+                          "oneOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "admin"
+                                  ]
+                                },
+                                "adminRole": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "type",
+                                "adminRole"
+                              ]
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "member"
+                                  ]
+                                },
+                                "memberCode": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "type",
+                                "memberCode"
+                              ]
+                            }
+                          ]
+                        },
+                        "intersectionObj": {
+                          "type": "object",
+                          "properties": {
+                            "partA": {
+                              "type": "string"
+                            },
+                            "partB": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "partA",
+                            "partB"
+                          ]
+                        },
+                        "stringRecord": {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        "numberRecord": {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        "enumColors": {
+                          "type": "string",
+                          "enum": [
+                            "red",
+                            "green",
+                            "blue"
+                          ]
+                        },
+                        "nativeDirectionEnum": {},
+                        "literalValue": {
+                          "type": "string",
+                          "enum": [
+                            "fixed-value"
+                          ]
+                        },
+                        "optionalStr": {},
+                        "nullableStr": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "nullishStr": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "defaultStr": {
+                          "type": "string"
+                        },
+                        "transformedNumber": {
+                          "type": "number"
+                        },
+                        "preprocessedStr": {
+                          "type": "string"
+                        },
+                        "refinedStr": {
+                          "type": "string"
+                        },
+                        "brandedStr": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "str",
+                        "num",
+                        "bool",
+                        "big",
+                        "dt",
+                        "anyVal",
+                        "unknownVal",
+                        "nullVal",
+                        "emailStr",
+                        "urlStr",
+                        "uuidStr",
+                        "dateTimeStr",
+                        "minMaxStr",
+                        "regexStr",
+                        "integer",
+                        "positiveNum",
+                        "negativeNum",
+                        "minMaxNum",
+                        "strArray",
+                        "setOfStrings",
+                        "tupleOfTwo",
+                        "tupleWithRest",
+                        "nestedObj",
+                        "partialObj",
+                        "simpleUnion",
+                        "discriminatedUnion",
+                        "intersectionObj",
+                        "stringRecord",
+                        "numberRecord",
+                        "enumColors",
+                        "nativeDirectionEnum",
+                        "literalValue",
+                        "optionalStr",
+                        "nullableStr",
+                        "nullishStr",
+                        "defaultStr",
+                        "transformedNumber",
+                        "preprocessedStr",
+                        "refinedStr",
+                        "brandedStr"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/docs": {
+      "get": {
+        "summary": "Get Docs",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/docs/open-api": {
+      "get": {
+        "summary": "Get Docs Open api",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    }
+  }
+}
