@@ -39,7 +39,8 @@ export async function runGenerate(configPath: string) {
   };
   for (const apiGroup of apis) {
     // Normalize "/" and "" to the same thing — both mean "no extra prefix"
-    const normalizedPrefix = apiGroup.apiPrefix === "/" ? "" : apiGroup.apiPrefix;
+    const normalizedPrefix =
+      apiGroup.apiPrefix === "/" ? "" : apiGroup.apiPrefix;
     const normalizedGroup = { ...apiGroup, apiPrefix: normalizedPrefix };
 
     const sanitizedName = sanitizeApiPrefix(normalizedPrefix) || "root";
@@ -63,12 +64,15 @@ export async function runGenerate(configPath: string) {
   const merged = {
     ...config.openApi,
     tags: [] as { name: string }[],
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    paths: {} as Record<string, any>,
+    paths: {} as Record<
+      string,
+      import("openapi-types").OpenAPIV3.PathItemObject
+    >,
   };
 
   for (const apiGroup of apis) {
-    const normalizedPrefix = apiGroup.apiPrefix === "/" ? "" : apiGroup.apiPrefix;
+    const normalizedPrefix =
+      apiGroup.apiPrefix === "/" ? "" : apiGroup.apiPrefix;
     const name = sanitizeApiPrefix(normalizedPrefix) || "root";
     const openApiFile = path.join(openAPiOutputRoot, `${name}.json`);
 
@@ -96,14 +100,19 @@ export async function runGenerate(configPath: string) {
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    for (const [pathKey, operations] of Object.entries<any>(json.paths)) {
+    for (const [pathKey, operations] of Object.entries(
+      json.paths as Record<
+        string,
+        import("openapi-types").OpenAPIV3.PathItemObject
+      >,
+    )) {
       const prefixedPath =
         path.posix.join(normalizedPrefix, pathKey).replace(/\/+$/, "") || "/";
       if (!merged.paths[prefixedPath]) merged.paths[prefixedPath] = {};
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      for (const [method, operation] of Object.entries<any>(operations)) {
+      for (const [method, opVal] of Object.entries(operations)) {
+        const operation =
+          opVal as import("openapi-types").OpenAPIV3.OperationObject;
         const opKey = `${method.toLowerCase()} ${prefixedPath}`;
         const customApi = customApiMap.get(opKey);
 
@@ -124,7 +133,12 @@ export async function runGenerate(configPath: string) {
         }
 
         cleanDefaultResponse(operation, prefixedPath, method);
-        merged.paths[prefixedPath][method] = operation;
+        (
+          merged.paths[prefixedPath] as Record<
+            string,
+            import("openapi-types").OpenAPIV3.OperationObject
+          >
+        )[method] = operation;
       }
     }
   }

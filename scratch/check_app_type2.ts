@@ -1,0 +1,10 @@
+import { Project } from "ts-morph";
+const project = new Project({ tsConfigFilePath: "./examples/test-suite/tsconfig.json" });
+const sf = project.getSourceFileOrThrow("examples/test-suite/src/index.ts");
+const appType = sf.getTypeAliasOrThrow("AppType");
+const typeArgs = appType.getTypeNodeOrThrow().asKindOrThrow(183).getTypeArguments();
+const routesNode = typeArgs[1];
+const typeChecker = project.getTypeChecker();
+const schemaType = typeChecker.getTypeAtLocation(routesNode);
+const props = schemaType.getProperties().map(p => p.getName());
+console.log(props);

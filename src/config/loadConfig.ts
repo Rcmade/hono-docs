@@ -12,7 +12,7 @@ export async function loadConfig(configFile: string): Promise<HonoDocsConfig> {
   }
 
   // 2. Dynamically load the config via jiti
-  let configModule: unknown;
+  let configModule: object | { default: object } | null = null;
   try {
     const { createJiti } = await import("jiti");
     const jiti = createJiti(import.meta.url);

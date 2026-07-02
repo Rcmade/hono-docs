@@ -1,5 +1,6 @@
 import type { Project } from "ts-morph";
 import type { OpenAPIV3 } from "openapi-types";
+import type { VALIDATOR_TARGETS } from "../utils/constants";
 
 /**
  * The base OpenAPI configuration, excluding dynamically generated fields.
@@ -125,6 +126,33 @@ export type OpenApiPath = {
    * Path to the generated `openapi.json` file.
    */
   openApiPath: string;
+};
+
+/**
+ * Identifies which validation library a schema originated from.
+ */
+export type ValidatorLibrary =
+  | "zod"
+  | "valibot"
+  | "typebox"
+  | "yup"
+  | "unsupported";
+
+/**
+ * Valid slots that a Hono validator can target.
+ */
+export type ValidatorTarget = (typeof VALIDATOR_TARGETS)[number];
+
+/**
+ * Result returned by the schema resolver subsystem.
+ */
+export type SchemaResolverResult = {
+  /** Whether schema was resolved from live runtime or fell back to type inference */
+  source: "dynamic" | "fallback";
+  /** Which validation library was detected */
+  library: ValidatorLibrary;
+  /** The final OpenAPI-compliant schema object */
+  schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject;
 };
 
 /**

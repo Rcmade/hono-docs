@@ -1,33 +1,91 @@
+// src/utils/requestBody.ts
 import { buildSchema } from "./buildSchema";
+import { resolveValidatorSchema } from "../schema-resolver/index";
 import type { OpenAPIV3 } from "openapi-types";
+import type { Project, Type, TypeChecker, Node } from "ts-morph";
 
-export function genRequestBody(
-  type: import("ts-morph").Type,
-  typeChecker: import("ts-morph").TypeChecker,
-  contextNode: import("ts-morph").Node
-): OpenAPIV3.RequestBodyObject | null {
+export async function genRequestBody(
+  type: Type,
+  typeChecker: TypeChecker,
+  contextNode: Node,
+  // Optional enrichment params — backward compatible (callers without these still work)
+  routePath?: string,
+  method?: string,
+  project?: Project,
+  rootPath?: string,
+): Promise<OpenAPIV3.RequestBodyObject | null> {
   const inpProp = type.getProperty("input");
   if (!inpProp) return null;
   const inp = typeChecker.getTypeOfSymbolAtLocation(inpProp, contextNode);
   if (!inp) return null;
 
   const content: { [media: string]: OpenAPIV3.MediaTypeObject } = {};
-  
+
+  // ── JSON body ────────────────────────────────────────────────────────────────
   const jProp = inp.getProperty("json");
   if (jProp) {
     const jType = typeChecker.getTypeOfSymbolAtLocation(jProp, contextNode);
-    content["application/json"] = {
-      schema: buildSchema(jType, typeChecker, contextNode),
-    };
+
+    // Attempt runtime schema resolution for higher accuracy
+    let jsonSchema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject | null =
+      null;
+
+    if (routePath && method && project && rootPath) {
+      const resolved = await resolveValidatorSchema(
+        routePath,
+        method,
+        "json",
+        project,
+        typeChecker,
+        rootPath,
+      );
+      if (resolved) {
+        jsonSchema = resolved.schema as OpenAPIV3.SchemaObject;
+        console.log(
+          `  ✨ [${method.toUpperCase()} ${routePath}] json body enriched from ${resolved.library} validator (runtime)`,
+        );
+      }
+    }
+
+    // Fall back to type-based schema if resolution failed or no validator found
+    if (!jsonSchema) {
+      jsonSchema = buildSchema(jType, typeChecker, contextNode);
+    }
+
+    content["application/json"] = { schema: jsonSchema };
   }
-  
+
+  // ── Form body ────────────────────────────────────────────────────────────────
   const fProp = inp.getProperty("form");
   if (fProp) {
     const fType = typeChecker.getTypeOfSymbolAtLocation(fProp, contextNode);
-    content["multipart/form-data"] = {
-      schema: buildSchema(fType, typeChecker, contextNode),
-    };
+
+    let formSchema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject | null =
+      null;
+
+    if (routePath && method && project && rootPath) {
+      const resolved = await resolveValidatorSchema(
+        routePath,
+        method,
+        "form",
+        project,
+        typeChecker,
+        rootPath,
+      );
+      if (resolved) {
+        formSchema = resolved.schema as OpenAPIV3.SchemaObject;
+        console.log(
+          `  ✨ [${method.toUpperCase()} ${routePath}] form schema resolved from ${resolved.library} (runtime)`,
+        );
+      }
+    }
+
+    if (!formSchema) {
+      formSchema = buildSchema(fType, typeChecker, contextNode);
+    }
+
+    content["multipart/form-data"] = { schema: formSchema };
   }
-  
+
   return Object.keys(content).length ? { required: true, content } : null;
 }

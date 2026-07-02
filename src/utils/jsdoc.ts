@@ -1,4 +1,5 @@
 import { Project, SyntaxKind, ts } from "ts-morph";
+import { HONO_METHODS } from "./constants";
 
 export type ParsedJSDoc = {
   summary?: string;
@@ -41,7 +42,7 @@ export function extractJSDocs(
       const expr = call.getExpression();
       if (expr.isKind(SyntaxKind.PropertyAccessExpression)) {
         const name = expr.getName();
-        if (["get", "post", "put", "delete", "patch"].includes(name)) {
+        if (HONO_METHODS.has(name)) {
           const args = call.getArguments();
           if (args.length > 0 && args[0].isKind(SyntaxKind.StringLiteral)) {
             const routePath = args[0].getLiteralText();

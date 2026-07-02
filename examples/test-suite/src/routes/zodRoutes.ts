@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
+import { createAccountSchema } from "../schemas/complex/mergedSchema";
 
 // Native Enum for testing
 enum Direction {
@@ -86,6 +87,9 @@ const allZodFeaturesSchema = z.object({
 });
 
 export const zodRoutes = new Hono()
+  .post("/complex-merge", zValidator("json", createAccountSchema), (c) => {
+    return c.json({ success: true, data: c.req.valid("json") });
+  })
   /**
    * @summary Test All Zod Validations
    * @description Test route receiving a request body constructed with all possible Zod features.

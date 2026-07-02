@@ -49,6 +49,7 @@
   ],
   "dependencies": {
     "@rcmade/hono-docs": "link:",
+    "@valibot/to-json-schema": "^1.7.1",
     "esbuild-register": "^3.6.0",
     "jiti": "^2.7.0",
     "ts-morph": "^26.0.0",

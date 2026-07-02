@@ -1,3 +1,5 @@
+import type { OpenAPIV3 } from "openapi-types";
+
 export function sanitizeApiPrefix(prefix: string): string {
   return prefix
     .replace(/^\//, "")
@@ -22,21 +24,21 @@ export function normalizeImportPaths(typeText: string): string {
 }
 
 export function cleanDefaultResponse(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  operation: any,
+  operation: OpenAPIV3.OperationObject,
   pathKey: string,
   method: string,
 ) {
   const defaultResponse = operation.responses?.default;
   if (!defaultResponse) return;
 
-  const desc = defaultResponse.description ?? "";
+  const defResp = defaultResponse as OpenAPIV3.ResponseObject;
+  const desc = defResp.description ?? "";
 
   if (desc.includes("import(")) {
-    const content = defaultResponse.content;
+    const content = defResp.content;
 
     if (content && Object.keys(content).length > 0) {
-      defaultResponse.description = "Default fallback response";
+      defResp.description = "Default fallback response";
       console.log(
         `ℹ️ Cleaned 'default' description in ${method.toUpperCase()} ${pathKey}`,
       );

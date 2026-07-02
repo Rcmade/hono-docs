@@ -6,9 +6,12 @@ import { orderRoutes } from "./routes/orderRoutes";
 import { testRoutes } from "./routes/testRoutes";
 import { complexRoutes } from "./routes/complexRoutes";
 import { zodRoutes } from "./routes/zodRoutes";
+import { valibotRoutes } from "./routes/valibotRoutes";
+import { typeboxRoutes } from "./routes/typeboxRoutes";
+import { enterpriseBillingRoutes } from "./routes/enterpriseBillingRoutes";
 import { docs } from "./routes/docs";
 
-const app = new Hono()
+const app1 = new Hono()
   .basePath("/api")
   .get("/", (c) => {
     return c.json({ status: "Acme Corp API Online", version: "1.0.0" });
@@ -17,8 +20,13 @@ const app = new Hono()
   .route("/products", productRoutes)
   .route("/orders", orderRoutes)
   .route("/tests", testRoutes)
-  .route("/complex", complexRoutes)
+  .route("/complex", complexRoutes);
+
+const app = app1
   .route("/zod", zodRoutes)
+  .route("/valibot", valibotRoutes)
+  .route("/typebox", typeboxRoutes)
+  .route("/enterprise", enterpriseBillingRoutes)
   .route("/docs", docs);
 
 serve(

@@ -19,12 +19,14 @@ export function getLibDir(): string {
   return resolve(__dirnameEsm, "../../");
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function unwrapModule(module: any): unknown {
+export function unwrapModule(
+  module: object | { default: object } | null,
+): object | null {
   let result = module;
-  while (result && result.default) {
-    if (result.default === result) break;
-    result = result.default;
+  while (result && typeof result === "object" && "default" in result) {
+    const def = (result as { default: object }).default;
+    if (def === result) break;
+    result = def;
   }
   return result;
 }

@@ -20,8 +20,7 @@ import { genRequestBody } from "../utils/requestBody";
 import { buildSchema } from "../utils/buildSchema";
 import { groupBy, unwrapUnion, generateDefaultSummary } from "../utils/format";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type OpenAPI = Record<string, any>;
+import type { OpenAPIV3 } from "openapi-types";
 
 export async function generateOpenApi({
   config,
@@ -61,7 +60,7 @@ GenerateParams & {
 
   const routesNode = typeArgs[1];
 
-  const paths: OpenAPI = {};
+  const paths: Record<string, OpenAPIV3.PathItemObject> = {};
 
   // Extract all JSDocs globally from all project files
   const jsDocMap = extractJSDocs(project);
@@ -117,9 +116,9 @@ GenerateParams & {
           }
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const op: any = {
+        const op: OpenAPIV3.OperationObject = {
           summary: jsDoc?.summary || generateDefaultSummary(http, route),
+          responses: {},
         };
 
         if (jsDoc?.description) {
@@ -130,12 +129,28 @@ GenerateParams & {
           op.tags = jsDoc.tags;
         }
 
-        // parameters
-        const params = genParameters(variants[0], typeChecker, aliasDecl);
+        // parameters - try runtime schema resolution first, fall back to type-based
+        const params = await genParameters(
+          variants[0],
+          typeChecker,
+          aliasDecl,
+          route,
+          http,
+          project,
+          rootPath,
+        );
         if (params.length) op.parameters = params;
 
-        // requestBody
-        const rb = genRequestBody(variants[0], typeChecker, aliasDecl);
+        // requestBody — try runtime schema resolution first, fall back to type-based
+        const rb = await genRequestBody(
+          variants[0],
+          typeChecker,
+          aliasDecl,
+          route,
+          http,
+          project,
+          rootPath,
+        );
         if (rb) op.requestBody = rb;
 
         // responses
@@ -179,6 +194,7 @@ GenerateParams & {
           };
         }
 
+        // @ts-expect-error we are dynamically building the paths object
         paths[route][http] = op;
       }
     }
