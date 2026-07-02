@@ -10,18 +10,8 @@ export function buildSchema(
   // Prevent infinite recursion on circular/recursive types
   if (depth > 40) return {};
 
-  const isPrimitive =
-    type.isString() ||
-    type.isNumber() ||
-    type.isBoolean() ||
-    (type.isStringLiteral && type.isStringLiteral()) ||
-    (type.isNumberLiteral && type.isNumberLiteral()) ||
-    (type.isNull && type.isNull()) ||
-    (type.isUndefined && type.isUndefined()) ||
-    type.getText() === "true" ||
-    type.getText() === "false";
-
-  if (!isPrimitive) {
+  const isComplex = type.isObject() || type.isArray() || type.isTuple();
+  if (isComplex) {
     if (seen.has(type)) return {};
     seen.add(type);
   }

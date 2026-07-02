@@ -44,7 +44,7 @@ export async function resolveValidatorSchema(
     const schemaArgs = detectSchemaArgs(routeNode, typeChecker);
     if (!schemaArgs.length) return null;
 
-    const match = schemaArgs.find((s) => s.target === target) ?? schemaArgs[0];
+    const match = schemaArgs.find((s) => s.target === target);
     if (!match) return null;
 
     const library: ValidatorLibrary = match.library;

@@ -217,6 +217,25 @@ export type AppType = typeof app;
 
 The generator will produce accurate OpenAPI paths for every route at every nesting level, including deeply composed routers like `/api/orders/tracking/:trackingNumber`.
 
+### ⚠️ Important: TypeScript Chaining Limits
+When building large applications, chaining too many `.route()` calls on a single `Hono` instance (usually around 8-10 chains) will exceed TypeScript's internal instantiation depth limit. When this happens, TypeScript gives up and infers an empty `BlankSchema` for your app, causing `hono-docs` to see zero routes.
+
+To fix this, simply break your route chain into intermediate variables to reset TypeScript's depth counter:
+
+```ts
+// Calculate first batch of routes
+const app1 = new Hono()
+  .route("/auth", authRoutes)
+  .route("/products", productRoutes)
+  .route("/orders", orderRoutes)
+  .route("/tests", testRoutes);
+
+// Start a new chain using the locked-in type
+const app = app1
+  .route("/complex", complexRoutes)
+  .route("/docs", docs);
+```
+
 ---
 
 ## Serving the OpenAPI Docs
