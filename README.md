@@ -15,21 +15,21 @@
 
 ## Features
 
-| Feature | Description |
-|---|---|
-| 🔀 **Nested Routing** | Fully supports complex apps composed with `.route()` and `.basePath()`. Point to your single root `AppType` and every sub-route is auto-discovered. |
-| 📝 **JSDoc Extraction** | Write `@summary`, `@description`, `@tag`, and `@ignore` in comments above your routes. The engine automatically maps them to the correct nested path in the spec, even across multiple mount prefixes. |
+| Feature                               | Description                                                                                                                                                                                                                      |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🔀 **Nested Routing**                 | Fully supports complex apps composed with `.route()` and `.basePath()`. Point to your single root `AppType` and every sub-route is auto-discovered.                                                                              |
+| 📝 **JSDoc Extraction**               | Write `@summary`, `@description`, `@tag`, and `@ignore` in comments above your routes. The engine automatically maps them to the correct nested path in the spec, even across multiple mount prefixes.                           |
 | ✅ **Multi-Library Schema Inference** | Extracts full validation schemas for request bodies and responses from **Zod, Valibot, TypeBox, and Yup**. Automatically detects the library and uses runtime resolution for highest accuracy. Supports `oneOf` response unions. |
-| 🗂️ **Path Parameters** | Automatically generates `in: path` parameters from Hono path patterns like `/:id`. |
-| 🔍 **Input Parameters** | Extracts `query`, `header`, and `cookie` parameters with correct `required` flags from your validators. |
-| 📦 **Request Body** | Generates `requestBody` with `application/json` and `multipart/form-data` content types automatically. |
-| 🔢 **HTTP Status Codes** | Resolves exact HTTP status codes (e.g. `201`, `404`) from your route return types, not just generic `default`. Supports all methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `OPTIONS`, `HEAD`, `ALL`. |
-| 🏷️ **Tag Grouping** | Routes are automatically grouped by tags from JSDoc comments for clean, navigable documentation. |
-| 🧹 **Auto-Clean** | Automatically omits completely excluded or empty routes from the final spec. |
-| 🌐 **Cross-Platform** | Works on Windows, macOS, and Linux. Uses `jiti` for config loading with full `pathToFileURL` support. |
-| 🚀 **Zero Runtime Overhead** | All analysis is done at build time. Nothing is injected into your production bundle. |
-| ⚙️ **TypeScript & JS Configs** | Config files can be `.ts` or `.js` with full `defineConfig` type inference. |
-| 🔗 **Monorepo Ready** | Works seamlessly in `pnpm`/`npm`/`yarn` workspaces and monorepo setups. |
+| 🗂️ **Path Parameters**                | Automatically generates `in: path` parameters from Hono path patterns like `/:id`.                                                                                                                                               |
+| 🔍 **Input Parameters**               | Extracts `query`, `header`, and `cookie` parameters with correct `required` flags from your validators.                                                                                                                          |
+| 📦 **Request Body**                   | Generates `requestBody` with `application/json` and `multipart/form-data` content types automatically.                                                                                                                           |
+| 🔢 **HTTP Status Codes**              | Resolves exact HTTP status codes (e.g. `201`, `404`) from your route return types, not just generic `default`. Supports all methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `OPTIONS`, `HEAD`, `ALL`.                          |
+| 🏷️ **Tag Grouping**                   | Routes are automatically grouped by tags from JSDoc comments for clean, navigable documentation.                                                                                                                                 |
+| 🧹 **Auto-Clean**                     | Automatically omits completely excluded or empty routes from the final spec.                                                                                                                                                     |
+| 🌐 **Cross-Platform**                 | Works on Windows, macOS, and Linux. Uses `jiti` for config loading with full `pathToFileURL` support.                                                                                                                            |
+| 🚀 **Zero Runtime Overhead**          | All analysis is done at build time. Nothing is injected into your production bundle.                                                                                                                                             |
+| ⚙️ **TypeScript & JS Configs**        | Config files can be `.ts` or `.js` with full `defineConfig` type inference.                                                                                                                                                      |
+| 🔗 **Monorepo Ready**                 | Works seamlessly in `pnpm`/`npm`/`yarn` workspaces and monorepo setups.                                                                                                                                                          |
 
 ---
 
@@ -130,12 +130,14 @@ import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 
-export const authRoutes = new Hono()
-  .post(
-    "/login",
-    zValidator("json", z.object({ email: z.string().email(), password: z.string().min(8) })),
-    (c) => c.json({ token: "..." })
-  );
+export const authRoutes = new Hono().post(
+  "/login",
+  zValidator(
+    "json",
+    z.object({ email: z.string().email(), password: z.string().min(8) }),
+  ),
+  (c) => c.json({ token: "..." }),
+);
 ```
 
 ### 3. Add JSDoc Comments
@@ -149,21 +151,19 @@ export const authRoutes = new Hono()
    * @description Validates credentials and returns a signed JWT session token.
    * @tag Authentication
    */
-  .post(
-    "/login",
-    zValidator("json", loginSchema),
-    (c) => c.json({ token: "..." })
+  .post("/login", zValidator("json", loginSchema), (c) =>
+    c.json({ token: "..." }),
   );
 ```
 
 Supported JSDoc tags:
 
-| Tag | Description |
-|---|---|
-| `@summary` | Short one-line title shown in the docs UI |
-| `@description` | Longer markdown-friendly description for the endpoint |
-| `@tag` | Groups the endpoint under a named tag in the sidebar |
-| `@ignore` | (or `@exclude`, `@hide`) Completely omits the endpoint from the generated docs |
+| Tag            | Description                                                                    |
+| -------------- | ------------------------------------------------------------------------------ |
+| `@summary`     | Short one-line title shown in the docs UI                                      |
+| `@description` | Longer markdown-friendly description for the endpoint                          |
+| `@tag`         | Groups the endpoint under a named tag in the sidebar                           |
+| `@ignore`      | (or `@exclude`, `@hide`) Completely omits the endpoint from the generated docs |
 
 ### 4. Add an npm Script
 
@@ -171,8 +171,8 @@ Supported JSDoc tags:
 // package.json
 {
   "scripts": {
-    "docs": "npx @rcmade/hono-docs generate --config ./hono-docs.ts"
-  }
+    "docs": "npx @rcmade/hono-docs generate --config ./hono-docs.ts",
+  },
 }
 ```
 
@@ -208,10 +208,10 @@ import docs from "./routes/docs";
 const app = new Hono()
   .basePath("/api")
   .get("/", (c) => c.json({ status: "ok" }))
-  .route("/auth", authRoutes)        // → /api/auth/*
+  .route("/auth", authRoutes) // → /api/auth/*
   .route("/products", productRoutes) // → /api/products/*
-  .route("/orders", orderRoutes)     // → /api/orders/*
-  .route("/docs", docs);             // → /api/docs/*
+  .route("/orders", orderRoutes) // → /api/orders/*
+  .route("/docs", docs); // → /api/docs/*
 
 // ✅ A single root AppType captures your entire API surface
 export type AppType = typeof app;
@@ -220,6 +220,7 @@ export type AppType = typeof app;
 The generator will produce accurate OpenAPI paths for every route at every nesting level, including deeply composed routers like `/api/orders/tracking/:trackingNumber`.
 
 ### ⚠️ Important: TypeScript Chaining Limits
+
 When building large applications, chaining too many `.route()` calls on a single `Hono` instance (usually around 8-10 chains) will exceed TypeScript's internal instantiation depth limit. When this happens, TypeScript gives up and infers an empty `BlankSchema` for your app, causing `hono-docs` to see zero routes.
 
 To fix this, simply break your route chain into intermediate variables to reset TypeScript's depth counter:
@@ -233,9 +234,7 @@ const app1 = new Hono()
   .route("/tests", testRoutes);
 
 // Start a new chain using the locked-in type
-const app = app1
-  .route("/complex", complexRoutes)
-  .route("/docs", docs);
+const app = app1.route("/complex", complexRoutes).route("/docs", docs);
 ```
 
 ---
@@ -288,26 +287,26 @@ Visit `/api/docs` for the interactive UI and `/api/docs/open-api` for the raw JS
 
 All options live in your `defineConfig({ ... })` call:
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `tsConfigPath` | `string` | ✅ | Path to your project's `tsconfig.json` |
-| `openApi` | `OpenAPIConfig` | ✅ | Static OpenAPI document fields |
-| └ `openapi` | `string` | ✅ | OpenAPI version string (e.g. `"3.0.0"`) |
-| └ `info` | `{ title, version, description? }` | ✅ | API title, version, and optional description |
-| └ `servers` | `Array<{ url, description? }>` | ✅ | Server base URL(s) |
-| `outputs` | `{ openApiJson: string }` | ✅ | Output file paths |
-| └ `openApiJson` | `string` | ✅ | Where to write the merged `openapi.json` |
-| `apis` | `ApiGroup[]` | ✅ | Route groups to document |
-| └ `name` | `string` | ✅ | Human-readable name for this group |
-| └ `apiPrefix` | `string` | ✅ | URL prefix prepended to all paths in this group |
-| └ `appTypePath` | `string` | ✅ | Path to the file exporting `AppType` |
-| └ `api` | `Api[]` | — | Optional explicit endpoint overrides (see below) |
-| &nbsp;&nbsp;└ `api` | `string` | ✅ | Endpoint path without prefix, e.g. `/user/{id}` |
-| &nbsp;&nbsp;└ `method` | `"get" \| "post" \| "put" \| "patch" \| "delete" \| "options" \| "head" \| "all"` | ✅ | HTTP method |
-| &nbsp;&nbsp;└ `summary` | `string` | — | Short summary shown in docs |
-| &nbsp;&nbsp;└ `description` | `string` | — | Longer endpoint description |
-| &nbsp;&nbsp;└ `tag` | `string[]` | — | Tags for grouping in the sidebar |
-| `preDefineTypeContent` | `string` | — | Content injected at the top of generated `.d.ts` snapshots (e.g. `import { Env } from './types';`) to resolve missing global types. |
+| Field                       | Type                                                                              | Required | Description                                                                                                                         |
+| --------------------------- | --------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `tsConfigPath`              | `string`                                                                          | ✅       | Path to your project's `tsconfig.json`                                                                                              |
+| `openApi`                   | `OpenAPIConfig`                                                                   | ✅       | Static OpenAPI document fields                                                                                                      |
+| └ `openapi`                 | `string`                                                                          | ✅       | OpenAPI version string (e.g. `"3.0.0"`)                                                                                             |
+| └ `info`                    | `{ title, version, description? }`                                                | ✅       | API title, version, and optional description                                                                                        |
+| └ `servers`                 | `Array<{ url, description? }>`                                                    | ✅       | Server base URL(s)                                                                                                                  |
+| `outputs`                   | `{ openApiJson: string }`                                                         | ✅       | Output file paths                                                                                                                   |
+| └ `openApiJson`             | `string`                                                                          | ✅       | Where to write the merged `openapi.json`                                                                                            |
+| `apis`                      | `ApiGroup[]`                                                                      | ✅       | Route groups to document                                                                                                            |
+| └ `name`                    | `string`                                                                          | ✅       | Human-readable name for this group                                                                                                  |
+| └ `apiPrefix`               | `string`                                                                          | ✅       | URL prefix prepended to all paths in this group                                                                                     |
+| └ `appTypePath`             | `string`                                                                          | ✅       | Path to the file exporting `AppType`                                                                                                |
+| └ `api`                     | `Api[]`                                                                           | —        | Optional explicit endpoint overrides (see below)                                                                                    |
+| &nbsp;&nbsp;└ `api`         | `string`                                                                          | ✅       | Endpoint path without prefix, e.g. `/user/{id}`                                                                                     |
+| &nbsp;&nbsp;└ `method`      | `"get" \| "post" \| "put" \| "patch" \| "delete" \| "options" \| "head" \| "all"` | ✅       | HTTP method                                                                                                                         |
+| &nbsp;&nbsp;└ `summary`     | `string`                                                                          | —        | Short summary shown in docs                                                                                                         |
+| &nbsp;&nbsp;└ `description` | `string`                                                                          | —        | Longer endpoint description                                                                                                         |
+| &nbsp;&nbsp;└ `tag`         | `string[]`                                                                        | —        | Tags for grouping in the sidebar                                                                                                    |
+| `preDefineTypeContent`      | `string`                                                                          | —        | Content injected at the top of generated `.d.ts` snapshots (e.g. `import { Env } from './types';`) to resolve missing global types. |
 
 ---
 
