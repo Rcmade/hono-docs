@@ -71,6 +71,18 @@ const app = new Hono()
     }
     return c.json({ success: true, uploadedAt: new Date() }, 200);
   }
+)
+
+/**
+ * @summary Hidden Route
+ * @description This route should not appear in the OpenAPI docs at all.
+ * @ignore
+ */
+  .post(
+  "/hidden",
+  (c) => {
+    return c.json({ status: "hidden" }, 200);
+  }
 );
 
 export const exhaustiveRoutes = app;

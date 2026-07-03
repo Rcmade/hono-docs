@@ -5,6 +5,7 @@ export type ParsedJSDoc = {
   summary?: string;
   description?: string;
   tags?: string[];
+  exclude?: boolean;
 };
 
 export function extractJSDocs(
@@ -96,6 +97,8 @@ export function extractJSDocs(
                       parsed.description = tagComment;
                     } else if (tagName === "tag" && tagComment) {
                       parsed.tags!.push(tagComment);
+                    } else if (["ignore", "exclude", "hide"].includes(tagName)) {
+                      parsed.exclude = true;
                     }
                   });
 

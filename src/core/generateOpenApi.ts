@@ -116,6 +116,10 @@ GenerateParams & {
           }
         }
 
+        if (jsDoc?.exclude) {
+          continue;
+        }
+
         const op: OpenAPIV3.OperationObject = {
           summary: jsDoc?.summary || generateDefaultSummary(http, route),
           responses: {},
@@ -197,6 +201,13 @@ GenerateParams & {
         // @ts-expect-error we are dynamically building the paths object
         paths[route][http] = op;
       }
+    }
+  }
+
+  // Clean up any routes that ended up completely empty (e.g. all methods were excluded)
+  for (const route of Object.keys(paths)) {
+    if (Object.keys(paths[route]).length === 0) {
+      delete paths[route];
     }
   }
 

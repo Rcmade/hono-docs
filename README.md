@@ -9,7 +9,7 @@
 
 ## How It Works
 
-`hono-docs` uses **ts-morph** to statically analyze your Hono `AppType` at build time. It traverses your TypeScript types — including deeply nested `.route()` compositions — extracts Zod validation schemas, path/query/header parameters, request bodies, and JSDoc comments, then emits a fully merged `openapi.json` file. Zero runtime overhead.
+`hono-docs` uses **ts-morph** to statically analyze your Hono `AppType` at build time. It traverses your TypeScript types — including deeply nested `.route()` compositions — extracts validation schemas (Zod, Valibot, TypeBox, Yup), path/query/header/cookie parameters, request bodies, and JSDoc comments, then emits a fully merged `openapi.json` file. Zero runtime overhead.
 
 ---
 
@@ -18,13 +18,14 @@
 | Feature | Description |
 |---|---|
 | 🔀 **Nested Routing** | Fully supports complex apps composed with `.route()` and `.basePath()`. Point to your single root `AppType` and every sub-route is auto-discovered. |
-| 📝 **JSDoc Extraction** | Write `@summary`, `@description`, and `@tag` in comments above your routes. The engine automatically maps them to the correct nested path in the spec. |
-| ✅ **Zod Schema Inference** | Extracts full Zod validation schemas (including nested objects, optional fields, unions, arrays) for request bodies and responses — no extra config needed. |
+| 📝 **JSDoc Extraction** | Write `@summary`, `@description`, `@tag`, and `@ignore` in comments above your routes. The engine automatically maps them to the correct nested path in the spec, even across multiple mount prefixes. |
+| ✅ **Multi-Library Schema Inference** | Extracts full validation schemas for request bodies and responses from **Zod, Valibot, TypeBox, and Yup**. Automatically detects the library and uses runtime resolution for highest accuracy. Supports `oneOf` response unions. |
 | 🗂️ **Path Parameters** | Automatically generates `in: path` parameters from Hono path patterns like `/:id`. |
-| 🔍 **Query Parameters** | Extracts `in: query` parameters with correct `required` flags from your Zod validators. |
+| 🔍 **Input Parameters** | Extracts `query`, `header`, and `cookie` parameters with correct `required` flags from your validators. |
 | 📦 **Request Body** | Generates `requestBody` with `application/json` and `multipart/form-data` content types automatically. |
-| 🔢 **HTTP Status Codes** | Resolves exact HTTP status codes (e.g. `201`, `404`) from your route return types, not just generic `default`. |
+| 🔢 **HTTP Status Codes** | Resolves exact HTTP status codes (e.g. `201`, `404`) from your route return types, not just generic `default`. Supports all methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `OPTIONS`, `HEAD`, `ALL`. |
 | 🏷️ **Tag Grouping** | Routes are automatically grouped by tags from JSDoc comments for clean, navigable documentation. |
+| 🧹 **Auto-Clean** | Automatically omits completely excluded or empty routes from the final spec. |
 | 🌐 **Cross-Platform** | Works on Windows, macOS, and Linux. Uses `jiti` for config loading with full `pathToFileURL` support. |
 | 🚀 **Zero Runtime Overhead** | All analysis is done at build time. Nothing is injected into your production bundle. |
 | ⚙️ **TypeScript & JS Configs** | Config files can be `.ts` or `.js` with full `defineConfig` type inference. |
@@ -162,6 +163,7 @@ Supported JSDoc tags:
 | `@summary` | Short one-line title shown in the docs UI |
 | `@description` | Longer markdown-friendly description for the endpoint |
 | `@tag` | Groups the endpoint under a named tag in the sidebar |
+| `@ignore` | (or `@exclude`, `@hide`) Completely omits the endpoint from the generated docs |
 
 ### 4. Add an npm Script
 
@@ -301,11 +303,11 @@ All options live in your `defineConfig({ ... })` call:
 | └ `appTypePath` | `string` | ✅ | Path to the file exporting `AppType` |
 | └ `api` | `Api[]` | — | Optional explicit endpoint overrides (see below) |
 | &nbsp;&nbsp;└ `api` | `string` | ✅ | Endpoint path without prefix, e.g. `/user/{id}` |
-| &nbsp;&nbsp;└ `method` | `"get" \| "post" \| "put" \| "patch" \| "delete"` | ✅ | HTTP method |
+| &nbsp;&nbsp;└ `method` | `"get" \| "post" \| "put" \| "patch" \| "delete" \| "options" \| "head" \| "all"` | ✅ | HTTP method |
 | &nbsp;&nbsp;└ `summary` | `string` | — | Short summary shown in docs |
 | &nbsp;&nbsp;└ `description` | `string` | — | Longer endpoint description |
 | &nbsp;&nbsp;└ `tag` | `string[]` | — | Tags for grouping in the sidebar |
-| `preDefineTypeContent` | `string` | — | Content injected at the top of generated `.d.ts` snapshots |
+| `preDefineTypeContent` | `string` | — | Content injected at the top of generated `.d.ts` snapshots (e.g. `import { Env } from './types';`) to resolve missing global types. |
 
 ---
 
