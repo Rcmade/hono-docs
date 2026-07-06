@@ -5,12 +5,13 @@ export default defineConfig({
   openApi: {
     openapi: "3.0.0",
     info: {
-    title: "API Test Suite",
-    version: "1.0.0",
-    description: "Sandbox and Integration Test Suite for all parameter types, circular references, and edge cases.",
+      title: "API Test Suite",
+      version: "1.0.0",
+      description:
+        "Sandbox and Integration Test Suite for all parameter types, circular references, and edge cases.",
     },
     servers: [
-      { url: "http://localhost:3000", description: "Development Server" },
+      { url: "http://localhost:3002", description: "Development Server" },
     ],
   },
   outputs: {

@@ -170,6 +170,38 @@ const app = new Hono()
     const data = "success" as StatusResponse;
     return c.json(data, 200);
   }
+)
+
+.get(
+  "/ast/regex/:id{[0-9]+}/details/:code{[A-Z]{3}}",
+  (c) => c.json({ ok: true }, 200)
+)
+
+/**
+ * @summary Test Date Regex Parameter
+ * @description Extracts a complex regex with slashes and exact counts
+ */
+.get(
+  "/ast/regex/date/:date{\\d{4}-\\d{2}-\\d{2}}",
+  (c) => c.json({ date: c.req.param("date") }, 200)
+)
+
+/**
+ * @summary Test Literal OR Regex Parameter
+ * @description Tests regex that uses pipe for literal matching
+ */
+.get(
+  "/ast/regex/action/:type{buy|sell|trade}",
+  (c) => c.json({ action: c.req.param("type") }, 200)
+)
+
+/**
+ * @summary Test Wildcard Regex Parameter
+ * @description Tests wildcard catch-all regexes
+ */
+.get(
+  "/ast/regex/wildcard/:path{.*}",
+  (c) => c.json({ path: c.req.param("path") }, 200)
 );
 
 export const exhaustiveRoutes = app;

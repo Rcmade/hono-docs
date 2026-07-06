@@ -76,7 +76,16 @@ GenerateParams & {
   for (const t of types) {
     for (const routeProp of t.getProperties()) {
       const raw = routeProp.getName().replace(/"/g, "").replace(/'/g, "");
-      const route = raw.replace(/:([^/]+)/g, "{$1}");
+      const pathPatterns: Record<string, string> = {};
+      const regexExtractor = /:([^\/{}]+)(?:{(.+?)})?(?=\/|$)/g;
+      let match;
+      while ((match = regexExtractor.exec(raw)) !== null) {
+        if (match[2]) {
+          pathPatterns[match[1]] = match[2];
+        }
+      }
+
+      const route = raw.replace(/:([^\/{}]+)(?:{(.+?)})?(?=\/|$)/g, "{$1}");
       if (!paths[route]) paths[route] = {};
 
       // Get the type of the route methods object (e.g. { $get: ... })
@@ -134,27 +143,28 @@ GenerateParams & {
         }
 
         // parameters - try runtime schema resolution first, fall back to type-based
-        const params = await genParameters(
-          variants[0],
+        const params = await genParameters({
+          type: variants[0],
           typeChecker,
-          aliasDecl,
-          route,
-          http,
+          contextNode: aliasDecl,
+          routePath: raw,
+          method: http,
           project,
           rootPath,
-        );
+          pathPatterns,
+        });
         if (params.length) op.parameters = params;
 
         // requestBody — try runtime schema resolution first, fall back to type-based
-        const rb = await genRequestBody(
-          variants[0],
+        const rb = await genRequestBody({
+          type: variants[0],
           typeChecker,
-          aliasDecl,
-          route,
-          http,
+          contextNode: aliasDecl,
+          routePath: raw,
+          method: http,
           project,
           rootPath,
-        );
+        });
         if (rb) op.requestBody = rb;
 
         // responses

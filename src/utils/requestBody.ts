@@ -4,16 +4,20 @@ import { resolveValidatorSchema } from "../schema-resolver/index";
 import type { OpenAPIV3 } from "openapi-types";
 import type { Project, Type, TypeChecker, Node } from "ts-morph";
 
+export interface GenRequestBodyOptions {
+  type: Type;
+  typeChecker: TypeChecker;
+  contextNode: Node;
+  routePath?: string;
+  method?: string;
+  project?: Project;
+  rootPath?: string;
+}
+
 export async function genRequestBody(
-  type: Type,
-  typeChecker: TypeChecker,
-  contextNode: Node,
-  // Optional enrichment params — backward compatible (callers without these still work)
-  routePath?: string,
-  method?: string,
-  project?: Project,
-  rootPath?: string,
+  options: GenRequestBodyOptions
 ): Promise<OpenAPIV3.RequestBodyObject | null> {
+  const { type, typeChecker, contextNode, routePath, method, project, rootPath } = options;
   const inpProp = type.getProperty("input");
   if (!inpProp) return null;
   const inp = typeChecker.getTypeOfSymbolAtLocation(inpProp, contextNode);
