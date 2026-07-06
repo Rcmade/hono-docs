@@ -1403,7 +1403,21 @@
                     },
                     "map": {
                       "type": "object",
-                      "properties": {}
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "keyName": {
+                            "type": "string"
+                          },
+                          "count": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "keyName",
+                          "count"
+                        ]
+                      }
                     }
                   },
                   "required": [
@@ -1688,11 +1702,7 @@
                             },
                             {
                               "type": "object",
-                              "properties": {}
-                            },
-                            {
-                              "type": "array",
-                              "items": {
+                              "additionalProperties": {
                                 "oneOf": [
                                   {
                                     "type": "string"
@@ -1713,11 +1723,44 @@
                                     ]
                                   },
                                   {},
-                                  {}
+                                  {},
+                                  {},
+                                  {
+                                    "type": "array",
+                                    "items": {
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "boolean",
+                                          "enum": [
+                                            false
+                                          ]
+                                        },
+                                        {
+                                          "type": "boolean",
+                                          "enum": [
+                                            true
+                                          ]
+                                        },
+                                        {},
+                                        {}
+                                      ],
+                                      "nullable": true
+                                    }
+                                  },
+                                  {
+                                    "type": "object"
+                                  }
                                 ],
                                 "nullable": true
                               }
-                            }
+                            },
+                            {}
                           ],
                           "nullable": true
                         },
@@ -1878,11 +1921,15 @@
                         },
                         "stringRecord": {
                           "type": "object",
-                          "properties": {}
+                          "additionalProperties": {
+                            "type": "string"
+                          }
                         },
                         "numberRecord": {
                           "type": "object",
-                          "properties": {}
+                          "additionalProperties": {
+                            "type": "number"
+                          }
                         },
                         "enumColors": {
                           "type": "string",
@@ -3031,7 +3078,10 @@
                     },
                     "customData": {
                       "type": "object",
-                      "properties": {}
+                      "additionalProperties": {
+                        "type": "string",
+                        "nullable": true
+                      }
                     },
                     "history": {
                       "type": "array",
@@ -3046,7 +3096,90 @@
                           },
                           "previousState": {
                             "type": "object",
-                            "properties": {},
+                            "additionalProperties": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "boolean",
+                                  "enum": [
+                                    false
+                                  ]
+                                },
+                                {
+                                  "type": "boolean",
+                                  "enum": [
+                                    true
+                                  ]
+                                },
+                                {
+                                  "type": "object",
+                                  "additionalProperties": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      },
+                                      {
+                                        "type": "boolean",
+                                        "enum": [
+                                          false
+                                        ]
+                                      },
+                                      {
+                                        "type": "boolean",
+                                        "enum": [
+                                          true
+                                        ]
+                                      },
+                                      {},
+                                      {},
+                                      {},
+                                      {
+                                        "type": "array",
+                                        "items": {
+                                          "oneOf": [
+                                            {
+                                              "type": "string"
+                                            },
+                                            {
+                                              "type": "number"
+                                            },
+                                            {
+                                              "type": "boolean",
+                                              "enum": [
+                                                false
+                                              ]
+                                            },
+                                            {
+                                              "type": "boolean",
+                                              "enum": [
+                                                true
+                                              ]
+                                            },
+                                            {},
+                                            {}
+                                          ],
+                                          "nullable": true
+                                        }
+                                      },
+                                      {
+                                        "type": "object"
+                                      }
+                                    ],
+                                    "nullable": true
+                                  }
+                                },
+                                {}
+                              ],
+                              "nullable": true
+                            },
                             "nullable": true
                           }
                         },
@@ -3381,6 +3514,219 @@
         }
       }
     },
+    "/api/exhaustive/ast/record": {
+      "get": {
+        "summary": "Test Record AST Fallback",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Returns a Record<string, number> to test AST index signature parsing",
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/exhaustive/ast/intersection": {
+      "get": {
+        "summary": "Test Intersection AST Fallback",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "active": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "active"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Returns an intersection type (A & B) to test AST allOf parsing",
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/exhaustive/ast/any": {
+      "get": {
+        "summary": "Test Any AST Fallback",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "description": "Returns an any type to ensure the generator doesn't crash",
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/exhaustive/ast/record-any": {
+      "get": {
+        "summary": "Test Record<string, any> AST Fallback",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              }
+            }
+          }
+        },
+        "description": "Returns a Record<string, any>",
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/exhaustive/ast/complex-record": {
+      "get": {
+        "summary": "Test Complex Nested Record",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "metadata": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "oneOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "boolean",
+                              "enum": [
+                                false
+                              ]
+                            },
+                            {
+                              "type": "boolean",
+                              "enum": [
+                                true
+                              ]
+                            }
+                          ]
+                        }
+                      },
+                      "tags": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "metadata",
+                      "tags"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Returns a deeply nested Record with unions",
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/exhaustive/ast/union": {
+      "get": {
+        "summary": "Test AST Union Fallback",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "success"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "pending"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "code": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "code"
+                      ]
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          }
+        },
+        "description": "Returns a union of literal strings and objects",
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
     "/api/docs": {
       "get": {
         "summary": "Get Docs",
@@ -3390,8 +3736,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {}
+                  "type": "object"
                 }
               }
             }
@@ -3411,8 +3756,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {}
+                  "type": "object"
                 }
               }
             }

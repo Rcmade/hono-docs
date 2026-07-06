@@ -109,6 +109,14 @@ export function buildSchema(
     return resultSchema;
   }
 
+  if (type.isIntersection()) {
+    return {
+      allOf: type
+        .getIntersectionTypes()
+        .map((t) => buildSchema(t, typeChecker, contextNode, seen, depth + 1)),
+    };
+  }
+
   if (type.isString()) return { type: "string" };
   if (type.isNumber()) return { type: "number" };
   if (type.isBoolean()) return { type: "boolean" };
@@ -169,9 +177,35 @@ export function buildSchema(
 
     const res: OpenAPIV3.SchemaObject = {
       type: "object",
-      properties: propsMap,
     };
+    
+    if (Object.keys(propsMap).length > 0) {
+      res.properties = propsMap;
+    }
+    
     if (req.length) res.required = req;
+
+    const stringIndexType = type.getStringIndexType();
+    const numberIndexType = type.getNumberIndexType();
+
+    if (stringIndexType) {
+      res.additionalProperties = buildSchema(
+        stringIndexType,
+        typeChecker,
+        contextNode,
+        seen,
+        depth + 1
+      ) as OpenAPIV3.SchemaObject;
+    } else if (numberIndexType) {
+      res.additionalProperties = buildSchema(
+        numberIndexType,
+        typeChecker,
+        contextNode,
+        seen,
+        depth + 1
+      ) as OpenAPIV3.SchemaObject;
+    }
+
     return res;
   }
 
