@@ -1,4 +1,5 @@
 {
+  "security": [],
   "openapi": "3.0.0",
   "info": {
     "title": "API Test Suite",
@@ -11,7 +12,6 @@
       "description": "Development Server"
     }
   ],
-  "security": [],
   "tags": [
     {
       "name": "E-Commerce Platform"
@@ -36,13 +36,18 @@
                       "type": "string"
                     }
                   },
-                  "required": ["status", "version"]
+                  "required": [
+                    "status",
+                    "version"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/auth/login": {
@@ -66,17 +71,25 @@
                           "type": "string"
                         }
                       },
-                      "required": ["email"]
+                      "required": [
+                        "email"
+                      ]
                     }
                   },
-                  "required": ["token", "user"]
+                  "required": [
+                    "token",
+                    "user"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Authenticates a user and returns a signed JWT session token.",
-        "tags": ["Authentication", "E-Commerce Platform"],
+        "tags": [
+          "Authentication",
+          "E-Commerce Platform"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -96,7 +109,10 @@
                     "description": "User's password"
                   }
                 },
-                "required": ["email", "password"],
+                "required": [
+                  "email",
+                  "password"
+                ],
                 "additionalProperties": false
               }
             }
@@ -125,14 +141,21 @@
                       "type": "string"
                     }
                   },
-                  "required": ["success", "id", "email"]
+                  "required": [
+                    "success",
+                    "id",
+                    "email"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Provisions a new user account in the system and sends a verification email.",
-        "tags": ["Authentication", "E-Commerce Platform"],
+        "tags": [
+          "Authentication",
+          "E-Commerce Platform"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -166,7 +189,12 @@
                     "type": "string"
                   }
                 },
-                "required": ["firstName", "lastName", "email", "password"],
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "password"
+                ],
                 "additionalProperties": false
               }
             }
@@ -192,14 +220,20 @@
                       "type": "string"
                     }
                   },
-                  "required": ["success", "message"]
+                  "required": [
+                    "success",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Invalidates the current user session and clears authentication cookies.",
-        "tags": ["Authentication", "E-Commerce Platform"]
+        "tags": [
+          "Authentication",
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/products": {
@@ -267,17 +301,27 @@
                           "type": "number"
                         }
                       },
-                      "required": ["page", "limit", "total"]
+                      "required": [
+                        "page",
+                        "limit",
+                        "total"
+                      ]
                     }
                   },
-                  "required": ["data", "meta"]
+                  "required": [
+                    "data",
+                    "meta"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Returns a paginated list of all active products in the store catalog.",
-        "tags": ["Catalog", "E-Commerce Platform"],
+        "tags": [
+          "Catalog",
+          "E-Commerce Platform"
+        ],
         "parameters": [
           {
             "name": "category",
@@ -365,7 +409,10 @@
           }
         },
         "description": "Fetches the full product details, including pricing and inventory data, by its unique ID.",
-        "tags": ["Catalog", "E-Commerce Platform"],
+        "tags": [
+          "Catalog",
+          "E-Commerce Platform"
+        ],
         "parameters": [
           {
             "name": "productId",
@@ -414,7 +461,10 @@
           }
         },
         "description": "Places a new order for a product and triggers the fulfillment pipeline.",
-        "tags": ["Orders", "E-Commerce Platform"],
+        "tags": [
+          "Orders",
+          "E-Commerce Platform"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -452,12 +502,21 @@
                         "type": "string"
                       }
                     },
-                    "required": ["line1", "city", "countryCode", "postalCode"],
+                    "required": [
+                      "line1",
+                      "city",
+                      "countryCode",
+                      "postalCode"
+                    ],
                     "additionalProperties": false,
                     "description": "Destination address"
                   }
                 },
-                "required": ["productId", "quantity", "shippingAddress"],
+                "required": [
+                  "productId",
+                  "quantity",
+                  "shippingAddress"
+                ],
                 "additionalProperties": false
               }
             }
@@ -492,7 +551,10 @@
                           "type": "number"
                         }
                       },
-                      "required": ["lat", "lng"]
+                      "required": [
+                        "lat",
+                        "lng"
+                      ]
                     },
                     "estimatedDelivery": {
                       "type": "string"
@@ -510,7 +572,10 @@
           }
         },
         "description": "Fetches real-time GPS tracking data for a specific shipment.",
-        "tags": ["Logistics", "E-Commerce Platform"],
+        "tags": [
+          "Logistics",
+          "E-Commerce Platform"
+        ],
         "parameters": [
           {
             "name": "trackingNumber",
@@ -548,17 +613,26 @@
                           "items": {}
                         }
                       },
-                      "required": ["name", "subcategories"]
+                      "required": [
+                        "name",
+                        "subcategories"
+                      ]
                     }
                   },
-                  "required": ["success", "data"]
+                  "required": [
+                    "success",
+                    "data"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Test endpoint to check self-referencing circular structure handling.",
-        "tags": ["Circular Testing", "E-Commerce Platform"],
+        "tags": [
+          "Circular Testing",
+          "E-Commerce Platform"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -576,7 +650,10 @@
                     }
                   }
                 },
-                "required": ["name", "subcategories"],
+                "required": [
+                  "name",
+                  "subcategories"
+                ],
                 "additionalProperties": false
               }
             }
@@ -612,20 +689,30 @@
                             },
                             "nodeA": {}
                           },
-                          "required": ["value"]
+                          "required": [
+                            "value"
+                          ]
                         }
                       },
-                      "required": ["name"]
+                      "required": [
+                        "name"
+                      ]
                     }
                   },
-                  "required": ["success", "data"]
+                  "required": [
+                    "success",
+                    "data"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Test endpoint to check mutually recursive structures handling.",
-        "tags": ["Circular Testing", "E-Commerce Platform"],
+        "tags": [
+          "Circular Testing",
+          "E-Commerce Platform"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -650,11 +737,15 @@
                         ]
                       }
                     },
-                    "required": ["value"],
+                    "required": [
+                      "value"
+                    ],
                     "additionalProperties": false
                   }
                 },
-                "required": ["name"],
+                "required": [
+                  "name"
+                ],
                 "additionalProperties": false
               }
             }
@@ -680,14 +771,20 @@
                       "type": "string"
                     }
                   },
-                  "required": ["success", "timestamp"]
+                  "required": [
+                    "success",
+                    "timestamp"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Test endpoint to check query, headers, cookies, path parameters, and Date type formatting.",
-        "tags": ["Parameter Testing", "E-Commerce Platform"],
+        "tags": [
+          "Parameter Testing",
+          "E-Commerce Platform"
+        ],
         "parameters": [
           {
             "name": "page",
@@ -755,21 +852,33 @@
                         },
                         "role": {
                           "type": "string",
-                          "enum": ["user", "admin"],
+                          "enum": [
+                            "user",
+                            "admin"
+                          ],
                           "nullable": true
                         }
                       },
-                      "required": ["isActive", "role"]
+                      "required": [
+                        "isActive",
+                        "role"
+                      ]
                     }
                   },
-                  "required": ["success", "data"]
+                  "required": [
+                    "success",
+                    "data"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Test endpoint to check boolean union simplifies to boolean, and nullable fields resolve to nullable.",
-        "tags": ["Union Testing", "E-Commerce Platform"],
+        "tags": [
+          "Union Testing",
+          "E-Commerce Platform"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -783,11 +892,17 @@
                   },
                   "role": {
                     "type": "string",
-                    "enum": ["user", "admin"],
+                    "enum": [
+                      "user",
+                      "admin"
+                    ],
                     "nullable": true
                   }
                 },
-                "required": ["isActive", "role"]
+                "required": [
+                  "isActive",
+                  "role"
+                ]
               }
             }
           }
@@ -821,17 +936,26 @@
                           "type": "string"
                         }
                       },
-                      "required": ["orgId", "projectId"]
+                      "required": [
+                        "orgId",
+                        "projectId"
+                      ]
                     }
                   },
-                  "required": ["success", "params"]
+                  "required": [
+                    "success",
+                    "params"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Route with multiple path parameters and an optional one.",
-        "tags": ["Parameter Testing", "E-Commerce Platform"],
+        "tags": [
+          "Parameter Testing",
+          "E-Commerce Platform"
+        ],
         "parameters": [
           {
             "name": "orgId",
@@ -884,10 +1008,16 @@
                           "type": "string"
                         }
                       },
-                      "required": ["year", "month"]
+                      "required": [
+                        "year",
+                        "month"
+                      ]
                     }
                   },
-                  "required": ["success", "params"]
+                  "required": [
+                    "success",
+                    "params"
+                  ]
                 }
               }
             }
@@ -913,7 +1043,9 @@
             }
           }
         ],
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/complex/files/*": {
@@ -934,14 +1066,20 @@
                       "type": "string"
                     }
                   },
-                  "required": ["success", "filePath"]
+                  "required": [
+                    "success",
+                    "filePath"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Route using a wildcard parameter.",
-        "tags": ["Parameter Testing", "E-Commerce Platform"]
+        "tags": [
+          "Parameter Testing",
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/complex/upload-form": {
@@ -965,14 +1103,21 @@
                       "type": "number"
                     }
                   },
-                  "required": ["success", "fileTitle", "fileSize"]
+                  "required": [
+                    "success",
+                    "fileTitle",
+                    "fileSize"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Route that validates multipart/form-data or urlencoded form bodies.",
-        "tags": ["Body Testing", "E-Commerce Platform"],
+        "tags": [
+          "Body Testing",
+          "E-Commerce Platform"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -987,7 +1132,10 @@
                     "type": "string"
                   }
                 },
-                "required": ["fileTitle", "fileSize"]
+                "required": [
+                  "fileTitle",
+                  "fileSize"
+                ]
               }
             }
           }
@@ -1012,14 +1160,20 @@
                       "type": "string"
                     }
                   },
-                  "required": ["method", "message"]
+                  "required": [
+                    "method",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Route responding to any HTTP method.",
-        "tags": ["Method Testing", "E-Commerce Platform"]
+        "tags": [
+          "Method Testing",
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/complex/union-responses": {
@@ -1043,10 +1197,15 @@
                           "type": "number"
                         }
                       },
-                      "required": ["value"]
+                      "required": [
+                        "value"
+                      ]
                     }
                   },
-                  "required": ["success", "payload"]
+                  "required": [
+                    "success",
+                    "payload"
+                  ]
                 }
               }
             }
@@ -1065,14 +1224,20 @@
                       "type": "string"
                     }
                   },
-                  "required": ["success", "error"]
+                  "required": [
+                    "success",
+                    "error"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Route returning different JSON schemas depending on status code.",
-        "tags": ["Response Testing", "E-Commerce Platform"]
+        "tags": [
+          "Response Testing",
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/complex/ts-utilities": {
@@ -1108,7 +1273,12 @@
                           }
                         }
                       },
-                      "required": ["email", "id", "name", "tags"]
+                      "required": [
+                        "email",
+                        "id",
+                        "name",
+                        "tags"
+                      ]
                     },
                     "partialU": {
                       "type": "object",
@@ -1145,7 +1315,13 @@
                         },
                         "tags": {}
                       },
-                      "required": ["id", "name", "email", "age", "tags"]
+                      "required": [
+                        "id",
+                        "name",
+                        "email",
+                        "age",
+                        "tags"
+                      ]
                     },
                     "map": {
                       "type": "object",
@@ -1159,7 +1335,10 @@
                             "type": "number"
                           }
                         },
-                        "required": ["keyName", "count"]
+                        "required": [
+                          "keyName",
+                          "count"
+                        ]
                       }
                     }
                   },
@@ -1176,7 +1355,10 @@
           }
         },
         "description": "Route returning Omit, Record, Partial, and Readonly types.",
-        "tags": ["Response Testing", "E-Commerce Platform"]
+        "tags": [
+          "Response Testing",
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/complex/nested/info": {
@@ -1194,14 +1376,19 @@
                       "type": "string"
                     }
                   },
-                  "required": ["info"]
+                  "required": [
+                    "info"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Get sub router info",
-        "tags": ["Complex Routing", "E-Commerce Platform"]
+        "tags": [
+          "Complex Routing",
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/complex/nested/update": {
@@ -1222,14 +1409,20 @@
                       "type": "number"
                     }
                   },
-                  "required": ["updated", "code"]
+                  "required": [
+                    "updated",
+                    "code"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Perform sub router update",
-        "tags": ["Complex Routing", "E-Commerce Platform"],
+        "tags": [
+          "Complex Routing",
+          "E-Commerce Platform"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -1241,7 +1434,9 @@
                     "type": "number"
                   }
                 },
-                "required": ["code"]
+                "required": [
+                  "code"
+                ]
               }
             }
           }
@@ -1270,7 +1465,11 @@
                         },
                         "role": {
                           "type": "string",
-                          "enum": ["ADMIN", "USER", "GUEST"]
+                          "enum": [
+                            "ADMIN",
+                            "USER",
+                            "GUEST"
+                          ]
                         },
                         "domain": {
                           "type": "string"
@@ -1280,16 +1479,29 @@
                           "properties": {
                             "theme": {
                               "type": "string",
-                              "enum": ["light", "dark"]
+                              "enum": [
+                                "light",
+                                "dark"
+                              ]
                             }
                           },
-                          "required": ["theme"]
+                          "required": [
+                            "theme"
+                          ]
                         }
                       },
-                      "required": ["id", "role", "domain", "preferences"]
+                      "required": [
+                        "id",
+                        "role",
+                        "domain",
+                        "preferences"
+                      ]
                     }
                   },
-                  "required": ["success", "data"]
+                  "required": [
+                    "success",
+                    "data"
+                  ]
                 }
               }
             }
@@ -1309,7 +1521,11 @@
                   },
                   "role": {
                     "type": "string",
-                    "enum": ["ADMIN", "USER", "GUEST"]
+                    "enum": [
+                      "ADMIN",
+                      "USER",
+                      "GUEST"
+                    ]
                   },
                   "domain": {
                     "type": "string"
@@ -1320,20 +1536,32 @@
                       "theme": {
                         "default": "light",
                         "type": "string",
-                        "enum": ["light", "dark"]
+                        "enum": [
+                          "light",
+                          "dark"
+                        ]
                       }
                     },
-                    "required": ["theme"],
+                    "required": [
+                      "theme"
+                    ],
                     "additionalProperties": false
                   }
                 },
-                "required": ["id", "role", "domain", "preferences"],
+                "required": [
+                  "id",
+                  "role",
+                  "domain",
+                  "preferences"
+                ],
                 "additionalProperties": false
               }
             }
           }
         },
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/zod/all-features": {
@@ -1379,11 +1607,15 @@
                             },
                             {
                               "type": "boolean",
-                              "enum": [false]
+                              "enum": [
+                                false
+                              ]
                             },
                             {
                               "type": "boolean",
-                              "enum": [true]
+                              "enum": [
+                                true
+                              ]
                             },
                             {
                               "type": "object",
@@ -1397,11 +1629,15 @@
                                   },
                                   {
                                     "type": "boolean",
-                                    "enum": [false]
+                                    "enum": [
+                                      false
+                                    ]
                                   },
                                   {
                                     "type": "boolean",
-                                    "enum": [true]
+                                    "enum": [
+                                      true
+                                    ]
                                   },
                                   {},
                                   {},
@@ -1418,11 +1654,15 @@
                                         },
                                         {
                                           "type": "boolean",
-                                          "enum": [false]
+                                          "enum": [
+                                            false
+                                          ]
                                         },
                                         {
                                           "type": "boolean",
-                                          "enum": [true]
+                                          "enum": [
+                                            true
+                                          ]
                                         },
                                         {},
                                         {}
@@ -1516,7 +1756,9 @@
                               "type": "string"
                             }
                           },
-                          "required": ["nestedKey"]
+                          "required": [
+                            "nestedKey"
+                          ]
                         },
                         "partialObj": {
                           "type": "object",
@@ -1546,26 +1788,36 @@
                               "properties": {
                                 "type": {
                                   "type": "string",
-                                  "enum": ["admin"]
+                                  "enum": [
+                                    "admin"
+                                  ]
                                 },
                                 "adminRole": {
                                   "type": "string"
                                 }
                               },
-                              "required": ["type", "adminRole"]
+                              "required": [
+                                "type",
+                                "adminRole"
+                              ]
                             },
                             {
                               "type": "object",
                               "properties": {
                                 "type": {
                                   "type": "string",
-                                  "enum": ["member"]
+                                  "enum": [
+                                    "member"
+                                  ]
                                 },
                                 "memberCode": {
                                   "type": "number"
                                 }
                               },
-                              "required": ["type", "memberCode"]
+                              "required": [
+                                "type",
+                                "memberCode"
+                              ]
                             }
                           ]
                         },
@@ -1579,7 +1831,10 @@
                               "type": "number"
                             }
                           },
-                          "required": ["partA", "partB"]
+                          "required": [
+                            "partA",
+                            "partB"
+                          ]
                         },
                         "stringRecord": {
                           "type": "object",
@@ -1595,12 +1850,18 @@
                         },
                         "enumColors": {
                           "type": "string",
-                          "enum": ["red", "green", "blue"]
+                          "enum": [
+                            "red",
+                            "green",
+                            "blue"
+                          ]
                         },
                         "nativeDirectionEnum": {},
                         "literalValue": {
                           "type": "string",
-                          "enum": ["fixed-value"]
+                          "enum": [
+                            "fixed-value"
+                          ]
                         },
                         "optionalStr": {
                           "type": "string"
@@ -1673,14 +1934,20 @@
                       ]
                     }
                   },
-                  "required": ["success", "data"]
+                  "required": [
+                    "success",
+                    "data"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Test route receiving a request body constructed with all possible Zod features.",
-        "tags": ["Zod Testing", "E-Commerce Platform"],
+        "tags": [
+          "Zod Testing",
+          "E-Commerce Platform"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -1704,7 +1971,9 @@
                   "nullVal": {
                     "type": "string",
                     "nullable": true,
-                    "enum": [null]
+                    "enum": [
+                      null
+                    ]
                   },
                   "undefVal": {},
                   "emailStr": {
@@ -1798,7 +2067,9 @@
                         "type": "string"
                       }
                     },
-                    "required": ["nestedKey"],
+                    "required": [
+                      "nestedKey"
+                    ],
                     "additionalProperties": false
                   },
                   "partialObj": {
@@ -1830,13 +2101,18 @@
                         "properties": {
                           "type": {
                             "type": "string",
-                            "enum": ["admin"]
+                            "enum": [
+                              "admin"
+                            ]
                           },
                           "adminRole": {
                             "type": "string"
                           }
                         },
-                        "required": ["type", "adminRole"],
+                        "required": [
+                          "type",
+                          "adminRole"
+                        ],
                         "additionalProperties": false
                       },
                       {
@@ -1844,13 +2120,18 @@
                         "properties": {
                           "type": {
                             "type": "string",
-                            "enum": ["member"]
+                            "enum": [
+                              "member"
+                            ]
                           },
                           "memberCode": {
                             "type": "number"
                           }
                         },
-                        "required": ["type", "memberCode"],
+                        "required": [
+                          "type",
+                          "memberCode"
+                        ],
                         "additionalProperties": false
                       }
                     ]
@@ -1864,7 +2145,9 @@
                             "type": "string"
                           }
                         },
-                        "required": ["partA"],
+                        "required": [
+                          "partA"
+                        ],
                         "additionalProperties": false
                       },
                       {
@@ -1874,7 +2157,9 @@
                             "type": "number"
                           }
                         },
-                        "required": ["partB"],
+                        "required": [
+                          "partB"
+                        ],
                         "additionalProperties": false
                       }
                     ]
@@ -1893,15 +2178,26 @@
                   },
                   "enumColors": {
                     "type": "string",
-                    "enum": ["red", "green", "blue"]
+                    "enum": [
+                      "red",
+                      "green",
+                      "blue"
+                    ]
                   },
                   "nativeDirectionEnum": {
                     "type": "string",
-                    "enum": ["UP", "DOWN", "LEFT", "RIGHT"]
+                    "enum": [
+                      "UP",
+                      "DOWN",
+                      "LEFT",
+                      "RIGHT"
+                    ]
                   },
                   "literalValue": {
                     "type": "string",
-                    "enum": ["fixed-value"]
+                    "enum": [
+                      "fixed-value"
+                    ]
                   },
                   "optionalStr": {
                     "type": "string"
@@ -1991,11 +2287,15 @@
                       "properties": {
                         "typed": {
                           "type": "boolean",
-                          "enum": [true]
+                          "enum": [
+                            true
+                          ]
                         },
                         "success": {
                           "type": "boolean",
-                          "enum": [false]
+                          "enum": [
+                            false
+                          ]
                         },
                         "output": {
                           "type": "object",
@@ -2013,34 +2313,56 @@
                               "type": "string"
                             }
                           },
-                          "required": ["id", "email", "age", "country"]
+                          "required": [
+                            "id",
+                            "email",
+                            "age",
+                            "country"
+                          ]
                         },
                         "issues": {
                           "type": "array",
                           "items": {
-                            "oneOf": [{}, {}]
+                            "oneOf": [
+                              {},
+                              {}
+                            ]
                           },
                           "minItems": 2,
                           "maxItems": 2
                         }
                       },
-                      "required": ["typed", "success", "output", "issues"]
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
                     },
                     {
                       "type": "object",
                       "properties": {
                         "typed": {
                           "type": "boolean",
-                          "enum": [false]
+                          "enum": [
+                            false
+                          ]
                         },
                         "success": {
                           "type": "boolean",
-                          "enum": [false]
+                          "enum": [
+                            false
+                          ]
                         },
                         "output": {},
                         "issues": {}
                       },
-                      "required": ["typed", "success", "output", "issues"]
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
                     }
                   ]
                 }
@@ -2073,10 +2395,18 @@
                           "type": "string"
                         }
                       },
-                      "required": ["id", "email", "age", "country"]
+                      "required": [
+                        "id",
+                        "email",
+                        "age",
+                        "country"
+                      ]
                     }
                   },
-                  "required": ["success", "data"]
+                  "required": [
+                    "success",
+                    "data"
+                  ]
                 }
               }
             }
@@ -2108,12 +2438,19 @@
                     "maxLength": 2
                   }
                 },
-                "required": ["id", "email", "age", "country"]
+                "required": [
+                  "id",
+                  "email",
+                  "age",
+                  "country"
+                ]
               }
             }
           }
         },
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/typebox/tb-create": {
@@ -2143,10 +2480,17 @@
                           "type": "number"
                         }
                       },
-                      "required": ["email", "id", "age"]
+                      "required": [
+                        "email",
+                        "id",
+                        "age"
+                      ]
                     }
                   },
-                  "required": ["success", "data"]
+                  "required": [
+                    "success",
+                    "data"
+                  ]
                 }
               }
             }
@@ -2158,7 +2502,11 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["id", "email", "age"],
+                "required": [
+                  "id",
+                  "email",
+                  "age"
+                ],
                 "properties": {
                   "id": {
                     "format": "uuid",
@@ -2178,7 +2526,9 @@
             }
           }
         },
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/enterprise/orgs/{orgId}/billing/invoices/{invoiceId}/adjust": {
@@ -2198,11 +2548,15 @@
                           "properties": {
                             "typed": {
                               "type": "boolean",
-                              "enum": [true]
+                              "enum": [
+                                true
+                              ]
                             },
                             "success": {
                               "type": "boolean",
-                              "enum": [false]
+                              "enum": [
+                                false
+                              ]
                             },
                             "output": {
                               "type": "object",
@@ -2214,34 +2568,54 @@
                                   "type": "string"
                                 }
                               },
-                              "required": ["orgId", "invoiceId"]
+                              "required": [
+                                "orgId",
+                                "invoiceId"
+                              ]
                             },
                             "issues": {
                               "type": "array",
                               "items": {
-                                "oneOf": [{}, {}]
+                                "oneOf": [
+                                  {},
+                                  {}
+                                ]
                               },
                               "minItems": 2,
                               "maxItems": 2
                             }
                           },
-                          "required": ["typed", "success", "output", "issues"]
+                          "required": [
+                            "typed",
+                            "success",
+                            "output",
+                            "issues"
+                          ]
                         },
                         {
                           "type": "object",
                           "properties": {
                             "typed": {
                               "type": "boolean",
-                              "enum": [false]
+                              "enum": [
+                                false
+                              ]
                             },
                             "success": {
                               "type": "boolean",
-                              "enum": [false]
+                              "enum": [
+                                false
+                              ]
                             },
                             "output": {},
                             "issues": {}
                           },
-                          "required": ["typed", "success", "output", "issues"]
+                          "required": [
+                            "typed",
+                            "success",
+                            "output",
+                            "issues"
+                          ]
                         }
                       ]
                     },
@@ -2252,11 +2626,15 @@
                           "properties": {
                             "typed": {
                               "type": "boolean",
-                              "enum": [true]
+                              "enum": [
+                                true
+                              ]
                             },
                             "success": {
                               "type": "boolean",
-                              "enum": [false]
+                              "enum": [
+                                false
+                              ]
                             },
                             "output": {
                               "type": "object",
@@ -2269,29 +2647,46 @@
                             "issues": {
                               "type": "array",
                               "items": {
-                                "oneOf": [{}, {}]
+                                "oneOf": [
+                                  {},
+                                  {}
+                                ]
                               },
                               "minItems": 2,
                               "maxItems": 2
                             }
                           },
-                          "required": ["typed", "success", "output", "issues"]
+                          "required": [
+                            "typed",
+                            "success",
+                            "output",
+                            "issues"
+                          ]
                         },
                         {
                           "type": "object",
                           "properties": {
                             "typed": {
                               "type": "boolean",
-                              "enum": [false]
+                              "enum": [
+                                false
+                              ]
                             },
                             "success": {
                               "type": "boolean",
-                              "enum": [false]
+                              "enum": [
+                                false
+                              ]
                             },
                             "output": {},
                             "issues": {}
                           },
-                          "required": ["typed", "success", "output", "issues"]
+                          "required": [
+                            "typed",
+                            "success",
+                            "output",
+                            "issues"
+                          ]
                         }
                       ]
                     }
@@ -2323,7 +2718,10 @@
                           "type": "string"
                         }
                       },
-                      "required": ["orgId", "invoiceId"]
+                      "required": [
+                        "orgId",
+                        "invoiceId"
+                      ]
                     },
                     "query": {
                       "type": "object",
@@ -2371,13 +2769,19 @@
                             },
                             "type": {
                               "type": "string",
-                              "enum": ["summary"]
+                              "enum": [
+                                "summary"
+                              ]
                             },
                             "groupBy": {
                               "type": "array",
                               "items": {
                                 "type": "string",
-                                "enum": ["user", "department", "project"]
+                                "enum": [
+                                  "user",
+                                  "department",
+                                  "project"
+                                ]
                               }
                             }
                           },
@@ -2403,7 +2807,9 @@
                             },
                             "type": {
                               "type": "string",
-                              "enum": ["detailed"]
+                              "enum": [
+                                "detailed"
+                              ]
                             },
                             "includeTaxes": {
                               "type": "boolean"
@@ -2534,7 +2940,9 @@
                       },
                       "type": {
                         "type": "string",
-                        "enum": ["summary"]
+                        "enum": [
+                          "summary"
+                        ]
                       },
                       "groupBy": {
                         "minItems": 1,
@@ -2542,7 +2950,11 @@
                         "type": "array",
                         "items": {
                           "type": "string",
-                          "enum": ["department", "project", "user"]
+                          "enum": [
+                            "department",
+                            "project",
+                            "user"
+                          ]
                         }
                       }
                     },
@@ -2576,7 +2988,9 @@
                       },
                       "type": {
                         "type": "string",
-                        "enum": ["detailed"]
+                        "enum": [
+                          "detailed"
+                        ]
                       },
                       "includeTaxes": {
                         "default": false,
@@ -2609,7 +3023,9 @@
             }
           }
         },
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/enterprise/orgs/{orgId}/billing/invoices/{invoiceId}/dispute": {
@@ -2630,7 +3046,10 @@
                       "type": "string"
                     }
                   },
-                  "required": ["success", "status"]
+                  "required": [
+                    "success",
+                    "status"
+                  ]
                 }
               }
             }
@@ -2643,7 +3062,11 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["wrong_amount", "duplicate", "other"]
+              "enum": [
+                "wrong_amount",
+                "duplicate",
+                "other"
+              ]
             }
           },
           {
@@ -2652,7 +3075,11 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["high", "normal", "low"]
+              "enum": [
+                "high",
+                "normal",
+                "low"
+              ]
             }
           },
           {
@@ -2689,12 +3116,16 @@
                     }
                   }
                 },
-                "required": ["disputedAmount"]
+                "required": [
+                  "disputedAmount"
+                ]
               }
             }
           }
         },
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/exhaustive/full/{userId}/docs/{documentId}": {
@@ -2723,13 +3154,21 @@
                     },
                     "status": {
                       "type": "string",
-                      "enum": ["active", "archived", "deleted"]
+                      "enum": [
+                        "active",
+                        "archived",
+                        "deleted"
+                      ]
                     },
                     "permissions": {
                       "type": "array",
                       "items": {
                         "type": "string",
-                        "enum": ["admin", "read", "write"]
+                        "enum": [
+                          "admin",
+                          "read",
+                          "write"
+                        ]
                       }
                     },
                     "auditInfo": {
@@ -2742,7 +3181,10 @@
                           "type": "string"
                         }
                       },
-                      "required": ["createdBy", "createdAt"]
+                      "required": [
+                        "createdBy",
+                        "createdAt"
+                      ]
                     },
                     "metrics": {
                       "type": "array",
@@ -2798,11 +3240,15 @@
                                 },
                                 {
                                   "type": "boolean",
-                                  "enum": [false]
+                                  "enum": [
+                                    false
+                                  ]
                                 },
                                 {
                                   "type": "boolean",
-                                  "enum": [true]
+                                  "enum": [
+                                    true
+                                  ]
                                 },
                                 {
                                   "type": "object",
@@ -2816,11 +3262,15 @@
                                       },
                                       {
                                         "type": "boolean",
-                                        "enum": [false]
+                                        "enum": [
+                                          false
+                                        ]
                                       },
                                       {
                                         "type": "boolean",
-                                        "enum": [true]
+                                        "enum": [
+                                          true
+                                        ]
                                       },
                                       {},
                                       {},
@@ -2837,11 +3287,15 @@
                                             },
                                             {
                                               "type": "boolean",
-                                              "enum": [false]
+                                              "enum": [
+                                                false
+                                              ]
                                             },
                                             {
                                               "type": "boolean",
-                                              "enum": [true]
+                                              "enum": [
+                                                true
+                                              ]
                                             },
                                             {},
                                             {}
@@ -2863,7 +3317,11 @@
                             "nullable": true
                           }
                         },
-                        "required": ["action", "timestamp", "previousState"]
+                        "required": [
+                          "action",
+                          "timestamp",
+                          "previousState"
+                        ]
                       }
                     }
                   },
@@ -2886,7 +3344,10 @@
           }
         },
         "description": "Validates cookies, headers, path, query, json body, and highly complex TS response types.",
-        "tags": ["Exhaustive Validation", "E-Commerce Platform"],
+        "tags": [
+          "Exhaustive Validation",
+          "E-Commerce Platform"
+        ],
         "parameters": [
           {
             "name": "filters",
@@ -2978,7 +3439,10 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["allow", "deny"]
+              "enum": [
+                "allow",
+                "deny"
+              ]
             }
           }
         ],
@@ -3012,11 +3476,15 @@
                         "anyOf": [
                           {
                             "type": "string",
-                            "enum": ["dark"]
+                            "enum": [
+                              "dark"
+                            ]
                           },
                           {
                             "type": "string",
-                            "enum": ["light"]
+                            "enum": [
+                              "light"
+                            ]
                           }
                         ]
                       },
@@ -3024,7 +3492,10 @@
                         "type": "boolean"
                       }
                     },
-                    "required": ["theme", "notifications"],
+                    "required": [
+                      "theme",
+                      "notifications"
+                    ],
                     "additionalProperties": false
                   },
                   "event": {
@@ -3034,7 +3505,9 @@
                         "properties": {
                           "type": {
                             "type": "string",
-                            "enum": ["click"]
+                            "enum": [
+                              "click"
+                            ]
                           },
                           "x": {
                             "type": "number"
@@ -3043,7 +3516,11 @@
                             "type": "number"
                           }
                         },
-                        "required": ["type", "x", "y"],
+                        "required": [
+                          "type",
+                          "x",
+                          "y"
+                        ],
                         "additionalProperties": false
                       },
                       {
@@ -3051,19 +3528,28 @@
                         "properties": {
                           "type": {
                             "type": "string",
-                            "enum": ["keypress"]
+                            "enum": [
+                              "keypress"
+                            ]
                           },
                           "key": {
                             "type": "string"
                           }
                         },
-                        "required": ["type", "key"],
+                        "required": [
+                          "type",
+                          "key"
+                        ],
                         "additionalProperties": false
                       }
                     ]
                   }
                 },
-                "required": ["metadata", "settings", "event"],
+                "required": [
+                  "metadata",
+                  "settings",
+                  "event"
+                ],
                 "additionalProperties": false
               }
             }
@@ -3089,7 +3575,10 @@
                       "type": "string"
                     }
                   },
-                  "required": ["success", "uploadedAt"]
+                  "required": [
+                    "success",
+                    "uploadedAt"
+                  ]
                 }
               }
             }
@@ -3108,14 +3597,20 @@
                       "type": "number"
                     }
                   },
-                  "required": ["error", "code"]
+                  "required": [
+                    "error",
+                    "code"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Validates multipart/form-data schemas and error unions.",
-        "tags": ["Exhaustive Validation", "E-Commerce Platform"],
+        "tags": [
+          "Exhaustive Validation",
+          "E-Commerce Platform"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -3143,7 +3638,11 @@
                     }
                   }
                 },
-                "required": ["description", "tags", "file"],
+                "required": [
+                  "description",
+                  "tags",
+                  "file"
+                ],
                 "additionalProperties": false
               }
             }
@@ -3170,7 +3669,9 @@
           }
         },
         "description": "Returns a Record<string, number> to test AST index signature parsing",
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/exhaustive/ast/intersection": {
@@ -3191,14 +3692,19 @@
                       "type": "boolean"
                     }
                   },
-                  "required": ["id", "active"]
+                  "required": [
+                    "id",
+                    "active"
+                  ]
                 }
               }
             }
           }
         },
         "description": "Returns an intersection type (A & B) to test AST allOf parsing",
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/exhaustive/ast/any": {
@@ -3217,7 +3723,9 @@
           }
         },
         "description": "Returns an any type to ensure the generator doesn't crash",
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/exhaustive/ast/record-any": {
@@ -3237,7 +3745,9 @@
           }
         },
         "description": "Returns a Record<string, any>",
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/exhaustive/ast/complex-record": {
@@ -3265,11 +3775,15 @@
                             },
                             {
                               "type": "boolean",
-                              "enum": [false]
+                              "enum": [
+                                false
+                              ]
                             },
                             {
                               "type": "boolean",
-                              "enum": [true]
+                              "enum": [
+                                true
+                              ]
                             }
                           ]
                         }
@@ -3282,7 +3796,11 @@
                         }
                       }
                     },
-                    "required": ["id", "metadata", "tags"]
+                    "required": [
+                      "id",
+                      "metadata",
+                      "tags"
+                    ]
                   }
                 }
               }
@@ -3290,7 +3808,9 @@
           }
         },
         "description": "Returns a deeply nested Record with unions",
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/exhaustive/ast/union": {
@@ -3305,11 +3825,15 @@
                   "oneOf": [
                     {
                       "type": "string",
-                      "enum": ["success"]
+                      "enum": [
+                        "success"
+                      ]
                     },
                     {
                       "type": "string",
-                      "enum": ["pending"]
+                      "enum": [
+                        "pending"
+                      ]
                     },
                     {
                       "type": "object",
@@ -3321,7 +3845,10 @@
                           "type": "number"
                         }
                       },
-                      "required": ["error", "code"]
+                      "required": [
+                        "error",
+                        "code"
+                      ]
                     }
                   ],
                   "nullable": true
@@ -3331,7 +3858,9 @@
           }
         },
         "description": "Returns a union of literal strings and objects",
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/exhaustive/ast/regex/{id}/details/{code}": {
@@ -3349,7 +3878,9 @@
                       "type": "boolean"
                     }
                   },
-                  "required": ["ok"]
+                  "required": [
+                    "ok"
+                  ]
                 }
               }
             }
@@ -3375,7 +3906,9 @@
             }
           }
         ],
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/exhaustive/ast/regex/date/{date}": {
@@ -3393,7 +3926,9 @@
                       "type": "string"
                     }
                   },
-                  "required": ["date"]
+                  "required": [
+                    "date"
+                  ]
                 }
               }
             }
@@ -3410,7 +3945,9 @@
             }
           }
         ],
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/exhaustive/ast/regex/action/{type}": {
@@ -3428,7 +3965,9 @@
                       "type": "string"
                     }
                   },
-                  "required": ["action"]
+                  "required": [
+                    "action"
+                  ]
                 }
               }
             }
@@ -3445,7 +3984,9 @@
             }
           }
         ],
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/exhaustive/ast/regex/wildcard/{path}": {
@@ -3463,7 +4004,9 @@
                       "type": "string"
                     }
                   },
-                  "required": ["path"]
+                  "required": [
+                    "path"
+                  ]
                 }
               }
             }
@@ -3480,7 +4023,9 @@
             }
           }
         ],
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/exhaustive/query/array-styling": {
@@ -3498,7 +4043,9 @@
                       "type": "boolean"
                     }
                   },
-                  "required": ["ok"]
+                  "required": [
+                    "ok"
+                  ]
                 }
               }
             }
@@ -3540,7 +4087,9 @@
             "explode": true
           }
         ],
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/exhaustive/query/mixed-styling/{id}": {
@@ -3558,7 +4107,9 @@
                       "type": "boolean"
                     }
                   },
-                  "required": ["ok"]
+                  "required": [
+                    "ok"
+                  ]
                 }
               }
             }
@@ -3634,7 +4185,9 @@
             }
           }
         ],
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/exhaustive/headers/ast": {
@@ -3652,7 +4205,9 @@
                       "type": "boolean"
                     }
                   },
-                  "required": ["ok"]
+                  "required": [
+                    "ok"
+                  ]
                 }
               }
             },
@@ -3673,7 +4228,9 @@
           }
         },
         "description": "Verifies AST extraction of c.header",
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/exhaustive/headers/jsdoc": {
@@ -3691,7 +4248,9 @@
                       "type": "boolean"
                     }
                   },
-                  "required": ["ok"]
+                  "required": [
+                    "ok"
+                  ]
                 }
               }
             },
@@ -3712,7 +4271,9 @@
           }
         },
         "description": "Verifies JSDoc extraction of",
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/exhaustive/headers/mixed": {
@@ -3730,7 +4291,9 @@
                       "type": "boolean"
                     }
                   },
-                  "required": ["ok"]
+                  "required": [
+                    "ok"
+                  ]
                 }
               }
             },
@@ -3751,7 +4314,9 @@
           }
         },
         "description": "Verifies JSDoc overrides AST fallback",
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/docs": {
@@ -3769,7 +4334,9 @@
             }
           }
         },
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/docs/open-api": {
@@ -3787,7 +4354,9 @@
             }
           }
         },
-        "tags": ["E-Commerce Platform"]
+        "tags": [
+          "E-Commerce Platform"
+        ]
       }
     }
   }
