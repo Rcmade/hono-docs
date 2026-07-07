@@ -7,8 +7,7 @@ export default defineConfig({
     info: {
       title: "API Test Suite",
       version: "1.0.0",
-      description:
-        "Sandbox and Integration Test Suite for all parameter types, circular references, and edge cases.",
+      description: "Sandbox and Integration Test Suite.",
     },
     servers: [
       { url: "http://localhost:3002", description: "Development Server" },
@@ -21,7 +20,7 @@ export default defineConfig({
     {
       name: "E-Commerce Platform",
       apiPrefix: "",
-      appTypePath: "src/index.ts", // Uses the root Hono AppType containing all grouped routes
+      appTypePath: "src/index.ts",
     },
   ],
 });

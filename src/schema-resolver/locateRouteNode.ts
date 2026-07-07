@@ -27,6 +27,8 @@ export function locateRouteNode(
 ): CallExpression | null {
   const targetPath = normalizeToHonoPath(routePath);
 
+  let fallbackNode: CallExpression | null = null;
+
   for (const sourceFile of project.getSourceFiles()) {
     const calls = sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression);
 
@@ -56,21 +58,26 @@ export function locateRouteNode(
 
       const rawPath = firstArg.getText().replace(/^['"`]|['"`]$/g, "");
 
-      // Match exact path, suffix match, or trailing slash handling
+      // 1. Exact match or strong suffix match
       if (
         rawPath === targetPath ||
-        targetPath.endsWith(rawPath) ||
-        (rawPath === "/" &&
-          !targetPath.includes(":") &&
-          !targetPath.includes("{"))
+        (rawPath !== "/" && targetPath.endsWith(rawPath))
       ) {
-        // If it's a bare "/", we accept the first matching method in the project.
-        // In most well-structured APIs, a specific path like `/api/products`
-        // maps to exactly one `.get("/")` in its sub-router.
         return call;
+      }
+
+      // 2. Fallback match for root mount points
+      if (
+        rawPath === "/" &&
+        !targetPath.includes(":") &&
+        !targetPath.includes("{")
+      ) {
+        if (!fallbackNode) {
+          fallbackNode = call;
+        }
       }
     }
   }
 
-  return null;
+  return fallbackNode;
 }

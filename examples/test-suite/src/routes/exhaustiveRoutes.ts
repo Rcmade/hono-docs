@@ -203,9 +203,50 @@ const app = new Hono()
   .get(
     "/query/mixed-styling/:id",
     zValidator("param", z.object({ id: z.string() })),
-    zValidator("query", z.object({ tags: z.array(z.string()), page: z.number() })),
-    zValidator("header", z.object({ "x-tags": z.array(z.string()).optional(), "x-id": z.string().optional() })),
+    zValidator(
+      "query",
+      z.object({ tags: z.array(z.string()), page: z.number() }),
+    ),
+    zValidator(
+      "header",
+      z.object({
+        "x-tags": z.array(z.string()).optional(),
+        "x-id": z.string().optional(),
+      }),
+    ),
     (c) => c.json({ ok: true }, 200),
-  );
+  )
+
+  /**
+   * @summary Test AST Response Headers
+   * @description Verifies AST extraction of c.header
+   */
+  .get("/headers/ast", (c) => {
+    c.header("X-RateLimit-Limit", "1000");
+    c.header("X-RateLimit-Remaining", "999");
+    return c.json({ ok: true }, 200);
+  })
+
+  /**
+   * @summary Test JSDoc Response Headers
+   * @description Verifies JSDoc extraction of @responseHeader
+   * @responseHeader 200 X-Trace-Id string The trace ID
+   * @responseHeader 200 Set-Cookie string The session cookie
+   */
+  .get("/headers/jsdoc", (c) => {
+    // Simulating middleware setting the headers
+    return c.json({ ok: true }, 200);
+  })
+
+  /**
+   * @summary Test Hybrid Response Headers
+   * @description Verifies JSDoc overrides AST fallback
+   * @responseHeader 200 X-Cache string Overridden description from JSDoc
+   */
+  .get("/headers/mixed", (c) => {
+    c.header("X-Cache", "MISS"); // AST will find this, but JSDoc should provide the description
+    c.header("X-Server", "Hono"); // AST will find this exclusively
+    return c.json({ ok: true }, 200);
+  });
 
 export const exhaustiveRoutes = app;

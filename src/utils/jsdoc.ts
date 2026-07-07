@@ -1,16 +1,20 @@
 import { Project, SyntaxKind, ts } from "ts-morph";
 import { HONO_METHODS } from "./constants";
 
+import type { OpenAPIV3 } from "openapi-types";
+
 export type ParsedJSDoc = {
   summary?: string;
   description?: string;
   tags?: string[];
   exclude?: boolean;
+  responseHeaders?: Record<
+    string,
+    { name: string; schema: OpenAPIV3.HeaderObject }[]
+  >;
 };
 
-export function extractJSDocs(
-  project: Project,
-): Map<string, ParsedJSDoc[]> {
+export function extractJSDocs(project: Project): Map<string, ParsedJSDoc[]> {
   const map = new Map<string, ParsedJSDoc[]>();
 
   // 1. Build a map of router variable names to all prefixes they are mounted at
@@ -19,7 +23,10 @@ export function extractJSDocs(
     const calls = sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression);
     for (const call of calls) {
       const expr = call.getExpression();
-      if (expr.isKind(SyntaxKind.PropertyAccessExpression) && expr.getName() === "route") {
+      if (
+        expr.isKind(SyntaxKind.PropertyAccessExpression) &&
+        expr.getName() === "route"
+      ) {
         const args = call.getArguments();
         if (args.length === 2 && args[0].isKind(SyntaxKind.StringLiteral)) {
           // Trim whitespace and strip trailing slash from the prefix
@@ -73,7 +80,8 @@ export function extractJSDocs(
                     length?: number,
                   ) => { jsDoc?: ts.JSDoc } | undefined;
                 };
-                const jsdocBlock = tsCompiler.parseIsolatedJSDocComment(comment);
+                const jsdocBlock =
+                  tsCompiler.parseIsolatedJSDocComment(comment);
                 if (jsdocBlock && jsdocBlock.jsDoc) {
                   const doc = jsdocBlock.jsDoc;
 
@@ -97,18 +105,58 @@ export function extractJSDocs(
                       parsed.description = tagComment;
                     } else if (tagName === "tag" && tagComment) {
                       parsed.tags!.push(tagComment);
-                    } else if (["ignore", "exclude", "hide"].includes(tagName)) {
+                    } else if (
+                      ["ignore", "exclude", "hide"].includes(tagName)
+                    ) {
                       parsed.exclude = true;
+                    } else if (
+                      tagName.toLowerCase() === "responseheader" &&
+                      tagComment
+                    ) {
+                      // Format: @responseHeader 200 X-RateLimit-Limit [integer] Max requests
+                      const match = tagComment.match(
+                        /^(\d{3})\s+([a-zA-Z0-9\-_]+)(?:\s+\[([a-zA-Z]+)\])?(?:\s+(.*))?$/,
+                      );
+                      if (match) {
+                        const statusCode = match[1];
+                        const headerName = match[2];
+                        const type = match[3] || "string";
+                        const description = match[4] || "";
+
+                        if (!parsed.responseHeaders)
+                          parsed.responseHeaders = {};
+                        if (!parsed.responseHeaders[statusCode])
+                          parsed.responseHeaders[statusCode] = [];
+
+                        const headerObj: OpenAPIV3.HeaderObject = {
+                          schema:
+                            type === "array"
+                              ? { type: "array", items: { type: "string" } }
+                              : {
+                                  type: type as OpenAPIV3.NonArraySchemaObjectType,
+                                },
+                        };
+                        if (description) {
+                          headerObj.description = description;
+                        }
+
+                        parsed.responseHeaders[statusCode].push({
+                          name: headerName,
+                          schema: headerObj,
+                        });
+                      }
                     }
                   });
 
                   // Hono path is something like "/user/:id", we must match what's generated in `generateOpenApi.ts`
                   // `generateOpenApi` replaces `:id` with `{id}`.
                   let openApiPath = routePath.replace(/:([^/]+)/g, "{$1}");
-                  
+
                   // Attempt to find if this route is part of a mounted sub-router.
                   // Walk up to the nearest VariableDeclaration to get the router variable name.
-                  const varDecl = call.getFirstAncestorByKind(SyntaxKind.VariableDeclaration);
+                  const varDecl = call.getFirstAncestorByKind(
+                    SyntaxKind.VariableDeclaration,
+                  );
                   if (varDecl) {
                     const routerName = varDecl.getName();
                     const prefixes = routeMounts.get(routerName);
@@ -116,24 +164,30 @@ export function extractJSDocs(
                       // Use the first mount prefix (most common case).
                       // If mounted at multiple paths, the suffix-match fallback in generateOpenApi handles it.
                       const prefix = prefixes[0];
-                      openApiPath = prefix + (openApiPath === "/" ? "" : openApiPath);
+                      openApiPath =
+                        prefix + (openApiPath === "/" ? "" : openApiPath);
                     }
                   }
 
                   const key = `${name.toLowerCase()} ${openApiPath}`;
-                  
+
                   if (!map.has(key)) {
                     map.set(key, []);
                   }
                   map.get(key)!.push(parsed);
-                  
+
                   // If the router is mounted at multiple prefixes, also register under each additional prefix
                   if (varDecl) {
                     const prefixes2 = routeMounts.get(varDecl.getName());
                     if (prefixes2 && prefixes2.length > 1) {
-                      const baseOpenApiPath = routePath.replace(/:([^/]+)/g, "{$1}");
+                      const baseOpenApiPath = routePath.replace(
+                        /:([^/]+)/g,
+                        "{$1}",
+                      );
                       for (const extraPrefix of prefixes2.slice(1)) {
-                        const extraPath = extraPrefix + (baseOpenApiPath === "/" ? "" : baseOpenApiPath);
+                        const extraPath =
+                          extraPrefix +
+                          (baseOpenApiPath === "/" ? "" : baseOpenApiPath);
                         const extraKey = `${name.toLowerCase()} ${extraPath}`;
                         if (!map.has(extraKey)) map.set(extraKey, []);
                         map.get(extraKey)!.push(parsed);

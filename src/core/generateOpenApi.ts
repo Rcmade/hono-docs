@@ -19,6 +19,8 @@ import { genParameters } from "../utils/parameters";
 import { genRequestBody } from "../utils/requestBody";
 import { buildSchema } from "../utils/buildSchema";
 import { groupBy, unwrapUnion, generateDefaultSummary } from "../utils/format";
+import { locateRouteNode } from "../schema-resolver/locateRouteNode";
+import { extractASTHeaders } from "../utils/responseHeaders";
 
 import type { OpenAPIV3 } from "openapi-types";
 
@@ -195,7 +197,8 @@ GenerateParams & {
             return buildSchema(outType, typeChecker, aliasDecl);
           });
           const schema = schemas.length > 1 ? { oneOf: schemas } : schemas[0];
-          op.responses[code] = {
+
+          const responseObj: OpenAPIV3.ResponseObject = {
             description:
               code === "default"
                 ? `Generic status from ${vs[0]
@@ -206,6 +209,26 @@ GenerateParams & {
                 : `Status ${code}`,
             content: { "application/json": { schema } },
           };
+
+          const routeNode = locateRouteNode(http, raw, project);
+          const astHeaders = routeNode ? extractASTHeaders(routeNode) : [];
+          const jsdocHeaders = jsDoc?.responseHeaders?.[code] || [];
+
+          if (astHeaders.length > 0 || jsdocHeaders.length > 0) {
+            responseObj.headers = {};
+
+            // Apply AST headers first (fallback)
+            for (const h of astHeaders) {
+              responseObj.headers[h.name] = h.schema;
+            }
+
+            // Apply JSDoc headers (overrides AST)
+            for (const h of jsdocHeaders) {
+              responseObj.headers[h.name] = h.schema;
+            }
+          }
+
+          op.responses[code] = responseObj;
         }
 
         // @ts-expect-error we are dynamically building the paths object

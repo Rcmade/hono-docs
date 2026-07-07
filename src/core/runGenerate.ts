@@ -62,6 +62,7 @@ export async function runGenerate(configPath: string) {
   }
 
   const merged = {
+    security: [],
     ...config.openApi,
     tags: [] as { name: string }[],
     paths: {} as Record<
