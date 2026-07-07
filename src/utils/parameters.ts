@@ -4,6 +4,16 @@ import { resolveValidatorSchema } from "../schema-resolver/index";
 import { VALIDATOR_TARGETS } from "./constants";
 import type { Project, Type, TypeChecker, Node } from "ts-morph";
 
+function isArraySchema(
+  schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject,
+): boolean {
+  if ("$ref" in schema) return false;
+  if (schema.type === "array") return true;
+  if (schema.oneOf) return schema.oneOf.some(isArraySchema);
+  if (schema.anyOf) return schema.anyOf.some(isArraySchema);
+  return false;
+}
+
 export interface GenParamsOptions {
   type: Type;
   typeChecker: TypeChecker;
@@ -101,11 +111,14 @@ export async function genParameters(
           if (!schemaObj.type) schemaObj.type = "string";
         }
 
+        const isArray = src === "query" && isArraySchema(schemaObj);
+
         params.push({
           name: key,
           in: src === "param" ? "path" : src,
           required: mergedRequired.includes(key),
           schema: schemaObj,
+          ...(isArray ? { style: "form", explode: true } : {}),
         });
       }
     } else {
@@ -125,11 +138,14 @@ export async function genParameters(
           if (!schema.type) schema.type = "string";
         }
 
+        const isArray = src === "query" && isArraySchema(schema);
+
         params.push({
           name,
           in: src === "param" ? "path" : src,
           required: !f.isOptional(),
           schema,
+          ...(isArray ? { style: "form", explode: true } : {}),
         });
       }
     }
