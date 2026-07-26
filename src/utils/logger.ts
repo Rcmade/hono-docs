@@ -141,7 +141,6 @@ export const logger = {
         }
       }
     } catch {} finally {
-      // Always clear the buffer — even if rendering failed
       _buffer.length = 0;
     }
   },

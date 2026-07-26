@@ -183,13 +183,31 @@ Supported JSDoc tags:
 npm run docs
 ```
 
-Output:
-
 ```text
-Initializing ts-morph with tsConfig: ./tsconfig.json
-✅ Wrote: output/types/.d.ts
-✅ OpenAPI written to output/openapi/.json
-✅ Final merged OpenAPI spec written to: ./openapi/openapi.json
+  ◆  hono-docs v1.2.0  ·  ./hono-docs.ts  ·  ./tsconfig.json
+
+  🔍  Analyzing routes...
+      POST    /api/auth/login                               →  zod json
+      POST    /api/auth/register                            →  zod json
+      POST    /api/orders                                   →  zod json
+      POST    /api/enterprise/orgs/:…ces/:invoiceId/adjust  →  valibot query · param  typebox header  zod json
+
+            ↳ 4 endpoints enriched
+
+
+  📊  Validators detected
+
+      zod      █████████████████░░░  4 routes
+      valibot  ███░░░░░░░░░░░░░░░░░  1 route
+      typebox  ███░░░░░░░░░░░░░░░░░  1 route
+
+
+  📄  Output written
+
+      ./openapi/openapi.json  127.8 KB
+
+
+  ✨  Done in 355ms
 ```
 
 ---
