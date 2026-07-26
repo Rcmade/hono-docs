@@ -19,7 +19,7 @@
 | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 🔀 **Nested Routing**                 | Fully supports complex apps composed with `.route()` and `.basePath()`. Point to your single root `AppType` and every sub-route is auto-discovered.                                                                              |
 | 📝 **JSDoc Extraction**               | Write `@summary`, `@description`, `@tag`, and `@ignore` in comments above your routes. The engine automatically maps them to the correct nested path in the spec, even across multiple mount prefixes.                           |
-| ✅ **Multi-Library Schema Inference** | Extracts full validation schemas for request bodies and responses from **Zod, Valibot, TypeBox, and Yup**. Automatically detects the library and uses runtime resolution for highest accuracy. Supports `oneOf` response unions. |
+| ✅ **Multi-Library Schema Inference** | Extracts full validation schemas for request bodies and responses from **Zod (v3 & v4), Valibot, TypeBox, and Yup**. Automatically detects the library and uses runtime resolution for highest accuracy. Supports `oneOf` response unions. |
 | 🗂️ **Path Parameters**                | Automatically generates `in: path` parameters from Hono path patterns like `/:id`.                                                                                                                                               |
 | 🔍 **Input Parameters**               | Extracts `query`, `header`, and `cookie` parameters with correct `required` flags from your validators.                                                                                                                          |
 | 📦 **Request Body**                   | Generates `requestBody` with `application/json` and `multipart/form-data` content types automatically.                                                                                                                           |
@@ -158,12 +158,13 @@ export const authRoutes = new Hono()
 
 Supported JSDoc tags:
 
-| Tag            | Description                                                                    |
-| -------------- | ------------------------------------------------------------------------------ |
-| `@summary`     | Short one-line title shown in the docs UI                                      |
-| `@description` | Longer markdown-friendly description for the endpoint                          |
-| `@tag`         | Groups the endpoint under a named tag in the sidebar                           |
-| `@ignore`      | (or `@exclude`, `@hide`) Completely omits the endpoint from the generated docs |
+| Tag               | Description                                                                    |
+| ----------------- | ------------------------------------------------------------------------------ |
+| `@summary`        | Short one-line title shown in the docs UI                                      |
+| `@description`    | Longer markdown-friendly description for the endpoint                          |
+| `@tag`            | Groups the endpoint under a named tag in the sidebar                           |
+| `@responseHeader` | Specifies custom response header name, type, and description                   |
+| `@ignore`         | (or `@exclude`, `@hide`) Completely omits the endpoint from the generated docs |
 
 ### 4. Add an npm Script
 
