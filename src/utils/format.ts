@@ -36,17 +36,10 @@ export function cleanDefaultResponse(
 
   if (desc.includes("import(")) {
     const content = defResp.content;
-
     if (content && Object.keys(content).length > 0) {
       defResp.description = "Default fallback response";
-      console.log(
-        `ℹ️ Cleaned 'default' description in ${method.toUpperCase()} ${pathKey}`,
-      );
     } else {
       delete operation.responses.default;
-      console.log(
-        `🗑️ Removed empty 'default' in ${method.toUpperCase()} ${pathKey}`,
-      );
     }
   }
 }

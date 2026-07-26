@@ -254,6 +254,5 @@ GenerateParams & {
 
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, JSON.stringify(spec, null, 2), "utf-8");
-  console.log(`✅ OpenAPI written to ${outputPath}`);
   return { openApiPath: outputPath };
 }

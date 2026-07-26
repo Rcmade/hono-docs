@@ -35,6 +35,5 @@ export async function generateTypes({
   const preContent = config.preDefineTypeContent || "";
 
   fs.writeFileSync(outputPath, `${preContent}\n${result}`, "utf-8");
-  console.log(`✅ Wrote: ${outputPath}`);
   return { appTypePath: outputPath, name: fileName };
 }

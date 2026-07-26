@@ -1,6 +1,7 @@
 import { buildSchema } from "./buildSchema";
 import type { OpenAPIV3 } from "openapi-types";
 import { resolveValidatorSchema } from "../schema-resolver/index";
+import { logger } from "./logger";
 import { VALIDATOR_TARGETS } from "./constants";
 import type { Project, Type, TypeChecker, Node } from "ts-morph";
 
@@ -80,9 +81,7 @@ export async function genParameters(
           mergedRequired = Array.isArray(dynamicSchema.required)
             ? dynamicSchema.required
             : [];
-          console.log(
-            `  ✨ [${method.toUpperCase()} ${routePath}] ${src} parameters enriched from ${resolved.library} (runtime)`,
-          );
+          logger.record(method, routePath, src, resolved.library);
         } else if (resolved.schema.allOf) {
           dynamicSchema = resolved.schema;
           const reqSet = new Set<string>();
@@ -95,9 +94,7 @@ export async function genParameters(
             }
           }
           if (reqSet.size > 0) mergedRequired = Array.from(reqSet);
-          console.log(
-            `  ✨ [${method.toUpperCase()} ${routePath}] ${src} parameters enriched from ${resolved.library} (runtime)`,
-          );
+          logger.record(method, routePath, src, resolved.library);
         }
       }
     }

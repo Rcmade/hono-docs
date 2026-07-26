@@ -7,24 +7,29 @@ import { generateOpenApi } from "./generateOpenApi";
 import { Api } from "../types";
 import { cleanDefaultResponse, sanitizeApiPrefix } from "../utils/format";
 import { getLibDir } from "../utils/libDir";
+import { logger } from "../utils/logger";
 
 export async function runGenerate(configPath: string) {
+  const startTime = Date.now();
   const config = await loadConfig(configPath);
   const rootPath = process.cwd();
-  console.log("Initializing ts-morph with tsConfig:", config.tsConfigPath);
+
+  // Resolve lib directory once — used for version detection and output paths
+  const libDir = getLibDir();
+
+  // Resolve published package version from package.json
+  let pkgVersion = "";
+  try {
+    const pkgRaw = fs.readFileSync(path.join(libDir, "package.json"), "utf-8");
+    pkgVersion = (JSON.parse(pkgRaw) as { version?: string }).version ?? "";
+  } catch {}
+
+  logger.banner(pkgVersion, configPath, config.tsConfigPath);
+  logger.analyzing();
+
   const project = new Project({
     tsConfigFilePath: resolve(rootPath, config.tsConfigPath),
   });
-
-  // const isDevMode =
-  //   __dirname.includes("/src/") || __dirname.includes("\\src\\");
-
-  // const libDir = isDevMode
-  //   ? path.resolve(__dirname, "../../")
-  //   : // : path.dirname(require.resolve("@rcmade/hono-docs/package.json"));
-  //     path.dirname(fileURLToPath(import.meta.url));
-  const libDir = getLibDir();
-  console.log("Library root directory:", libDir);
 
   const apis = config.apis;
 
@@ -78,7 +83,7 @@ export async function runGenerate(configPath: string) {
     const openApiFile = path.join(openAPiOutputRoot, `${name}.json`);
 
     if (!fs.existsSync(openApiFile)) {
-      console.warn(`⚠️ Missing OpenAPI file: ${openApiFile}`);
+      logger.warn(`Missing OpenAPI file: ${openApiFile}`);
       continue;
     }
 
@@ -147,7 +152,10 @@ export async function runGenerate(configPath: string) {
   const outputPath = path.join(rootPath, config.outputs.openApiJson);
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
-  fs.writeFileSync(outputPath, `${JSON.stringify(merged, null, 2)}\n`);
+  const specContent = `${JSON.stringify(merged, null, 2)}\n`;
+  fs.writeFileSync(outputPath, specContent);
 
-  console.log(`✅ Final merged OpenAPI spec written to: ${outputPath}`);
+  logger.summary();
+  logger.output(config.outputs.openApiJson, Buffer.byteLength(specContent, "utf-8"));
+  logger.done(Date.now() - startTime);
 }

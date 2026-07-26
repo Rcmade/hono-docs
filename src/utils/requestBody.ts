@@ -1,6 +1,7 @@
 // src/utils/requestBody.ts
 import { buildSchema } from "./buildSchema";
 import { resolveValidatorSchema } from "../schema-resolver/index";
+import { logger } from "./logger";
 import type { OpenAPIV3 } from "openapi-types";
 import type { Project, Type, TypeChecker, Node } from "ts-morph";
 
@@ -45,9 +46,7 @@ export async function genRequestBody(
       );
       if (resolved) {
         jsonSchema = resolved.schema as OpenAPIV3.SchemaObject;
-        console.log(
-          `  ✨ [${method.toUpperCase()} ${routePath}] json body enriched from ${resolved.library} validator (runtime)`,
-        );
+        logger.record(method, routePath, "json", resolved.library);
       }
     }
 
@@ -78,9 +77,7 @@ export async function genRequestBody(
       );
       if (resolved) {
         formSchema = resolved.schema as OpenAPIV3.SchemaObject;
-        console.log(
-          `  ✨ [${method.toUpperCase()} ${routePath}] form schema resolved from ${resolved.library} (runtime)`,
-        );
+        logger.record(method, routePath, "form", resolved.library);
       }
     }
 
