@@ -138,7 +138,7 @@ export async function runGenerate(configPath: string) {
           }
         }
 
-        cleanDefaultResponse(operation, prefixedPath, method);
+        cleanDefaultResponse(operation);
         (
           merged.paths[prefixedPath] as Record<
             string,

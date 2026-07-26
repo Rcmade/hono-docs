@@ -25,8 +25,6 @@ export function normalizeImportPaths(typeText: string): string {
 
 export function cleanDefaultResponse(
   operation: OpenAPIV3.OperationObject,
-  pathKey: string,
-  method: string,
 ) {
   const defaultResponse = operation.responses?.default;
   if (!defaultResponse) return;
