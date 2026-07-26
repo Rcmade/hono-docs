@@ -1,0 +1,28 @@
+{
+  "name": "test-suite-zod-v3",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "docs": "hono-docs generate --config ./hono-docs.ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.19.9",
+    "@hono/typebox-validator": "^1.1.0",
+    "@hono/valibot-validator": "^0.6.1",
+    "@hono/zod-validator": "^0.7.6",
+    "@scalar/hono-api-reference": "^0.9.44",
+    "@sinclair/typebox": "^0.34.49",
+    "@valibot/to-json-schema": "^1.7.1",
+    "hono": "^4.12.1",
+    "valibot": "^1.4.2",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@rcmade/hono-docs": "^1.1.1",
+    "@types/node": "^20.19.33",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

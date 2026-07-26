@@ -1,8 +1,9 @@
 // src/schema-resolver/converters/zodConverter.ts
 // Converts a live Zod schema instance to OpenAPI-compatible JSON Schema.
-// Uses Zod v4's native z.toJSONSchema() — zero extra dependencies needed.
+// Supports Zod v4 (via native z.toJSONSchema()) and Zod v3 (via zod-to-json-schema dependency).
 
 import type { OpenAPIV3 } from "openapi-types";
+import { zodToJsonSchema } from "zod-to-json-schema";
 
 /**
  * Converts a live Zod schema to an OpenAPI 3.0-compatible JSON Schema.
@@ -45,26 +46,43 @@ export async function convertZodSchema(
       zodModule?.z?.toJSONSchema ??
       zodModule?.default?.toJSONSchema;
 
-    if (typeof toJSONSchema !== "function") {
-      // Zod v3 — no native toJSONSchema; would need zod-to-json-schema
-      // For now return null to fall back to type-based
+    if (typeof toJSONSchema === "function") {
+      const result = toJSONSchema(zodSchema, {
+        target: "openapi-3.0",
+        // Map unrepresentable types (bigint, custom) to {}
+        unrepresentable: "any",
+        errorMessages: true,
+      });
+
+      if (result && typeof result === "object") {
+        // Strip $schema field not needed in inline OpenAPI schemas
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { $schema: _schema, ...clean } = result as Record<
+          string,
+          unknown
+        >;
+        return clean as OpenAPIV3.SchemaObject;
+      }
+
+      return (result as OpenAPIV3.SchemaObject) ?? null;
+    }
+
+    // Zod v3 Fallback: Use bundled zod-to-json-schema dependency
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const converter: any = zodToJsonSchema;
+      const res = converter(zodSchema, { target: "openApi3", errorMessages: true });
+      if (res && typeof res === "object") {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { $schema: _schema, ...clean } = res as Record<string, unknown>;
+        return clean as OpenAPIV3.SchemaObject;
+      }
+    } catch {
+      // Fallback to static AST type-based
       return null;
     }
 
-    const result = toJSONSchema(zodSchema, {
-      target: "openapi-3.0",
-      // Map unrepresentable types (bigint, custom) to {}
-      unrepresentable: "any",
-    });
-
-    if (result && typeof result === "object") {
-      // Strip $schema field not needed in inline OpenAPI schemas
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { $schema: _schema, ...clean } = result as Record<string, unknown>;
-      return clean as OpenAPIV3.SchemaObject;
-    }
-
-    return (result as OpenAPIV3.SchemaObject) ?? null;
+    return null;
   } catch {
     return null;
   }

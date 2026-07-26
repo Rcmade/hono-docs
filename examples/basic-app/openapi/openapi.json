@@ -1,4 +1,5 @@
 {
+  "security": [],
   "openapi": "3.0.0",
   "info": {
     "title": "Acme Corp E-Commerce API",
@@ -52,33 +53,6 @@
     "/api/auth/login": {
       "post": {
         "summary": "Authenticate User",
-        "description": "Authenticates a user and returns a signed JWT session token.",
-        "tags": [
-          "Authentication",
-          "E-Commerce Platform"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "email",
-                  "password"
-                ]
-              }
-            }
-          }
-        },
         "responses": {
           "default": {
             "description": "Generic status from T[\"status\"]",
@@ -110,13 +84,8 @@
               }
             }
           }
-        }
-      }
-    },
-    "/api/auth/register": {
-      "post": {
-        "summary": "Register New Account",
-        "description": "Provisions a new user account in the system and sends a verification email.",
+        },
+        "description": "Authenticates a user and returns a signed JWT session token.",
         "tags": [
           "Authentication",
           "E-Commerce Platform"
@@ -128,32 +97,32 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "firstName": {
-                    "type": "string"
-                  },
-                  "lastName": {
-                    "type": "string"
-                  },
                   "email": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "email",
+                    "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
+                    "description": "User's registered email address"
                   },
                   "password": {
-                    "type": "string"
-                  },
-                  "company": {
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 8,
+                    "description": "User's password"
                   }
                 },
                 "required": [
-                  "firstName",
-                  "lastName",
                   "email",
                   "password"
-                ]
+                ],
+                "additionalProperties": false
               }
             }
           }
-        },
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "summary": "Register New Account",
         "responses": {
           "201": {
             "description": "Status 201",
@@ -181,17 +150,61 @@
               }
             }
           }
+        },
+        "description": "Provisions a new user account in the system and sends a verification email.",
+        "tags": [
+          "Authentication",
+          "E-Commerce Platform"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "minLength": 2,
+                    "description": "User's first name"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "minLength": 2,
+                    "description": "User's last name"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
+                    "description": "A valid corporate or personal email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 12,
+                    "description": "A strong password (12+ characters)"
+                  },
+                  "company": {
+                    "description": "Company name, if applicable",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "password"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
         }
       }
     },
     "/api/auth/logout": {
       "post": {
         "summary": "Logout User",
-        "description": "Invalidates the current user session and clears authentication cookies.",
-        "tags": [
-          "Authentication",
-          "E-Commerce Platform"
-        ],
         "responses": {
           "default": {
             "description": "Generic status from T[\"status\"]",
@@ -215,51 +228,17 @@
               }
             }
           }
-        }
+        },
+        "description": "Invalidates the current user session and clears authentication cookies.",
+        "tags": [
+          "Authentication",
+          "E-Commerce Platform"
+        ]
       }
     },
     "/api/products": {
       "get": {
         "summary": "List Catalog Products",
-        "description": "Returns a paginated list of all active products in the store catalog.",
-        "tags": [
-          "Catalog",
-          "E-Commerce Platform"
-        ],
-        "parameters": [
-          {
-            "name": "category",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "inStock",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "default": {
             "description": "Generic status from T[\"status\"]",
@@ -337,27 +316,51 @@
               }
             }
           }
-        }
-      }
-    },
-    "/api/products/{productId}": {
-      "get": {
-        "summary": "Retrieve Product Details",
-        "description": "Fetches the full product details, including pricing and inventory data, by its unique ID.",
+        },
+        "description": "Returns a paginated list of all active products in the store catalog.",
         "tags": [
           "Catalog",
           "E-Commerce Platform"
         ],
         "parameters": [
           {
-            "name": "productId",
-            "in": "path",
-            "required": true,
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "inStock",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
             "schema": {
               "type": "string"
             }
           }
-        ],
+        ]
+      }
+    },
+    "/api/products/{productId}": {
+      "get": {
+        "summary": "Retrieve Product Details",
         "responses": {
           "default": {
             "description": "Generic status from T[\"status\"]",
@@ -404,63 +407,27 @@
               }
             }
           }
-        }
+        },
+        "description": "Fetches the full product details, including pricing and inventory data, by its unique ID.",
+        "tags": [
+          "Catalog",
+          "E-Commerce Platform"
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
       }
     },
     "/api/orders": {
       "post": {
         "summary": "Create Order",
-        "description": "Places a new order for a product and triggers the fulfillment pipeline.",
-        "tags": [
-          "Orders",
-          "E-Commerce Platform"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "productId": {
-                    "type": "string"
-                  },
-                  "quantity": {
-                    "type": "number"
-                  },
-                  "shippingAddress": {
-                    "type": "object",
-                    "properties": {
-                      "line1": {
-                        "type": "string"
-                      },
-                      "city": {
-                        "type": "string"
-                      },
-                      "countryCode": {
-                        "type": "string"
-                      },
-                      "postalCode": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "line1",
-                      "city",
-                      "countryCode",
-                      "postalCode"
-                    ]
-                  }
-                },
-                "required": [
-                  "productId",
-                  "quantity",
-                  "shippingAddress"
-                ]
-              }
-            }
-          }
-        },
         "responses": {
           "201": {
             "description": "Status 201",
@@ -492,27 +459,74 @@
               }
             }
           }
+        },
+        "description": "Places a new order for a product and triggers the fulfillment pipeline.",
+        "tags": [
+          "Orders",
+          "E-Commerce Platform"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "productId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                    "description": "ID of the product to order"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991,
+                    "description": "Number of items"
+                  },
+                  "shippingAddress": {
+                    "type": "object",
+                    "properties": {
+                      "line1": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "countryCode": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 2
+                      },
+                      "postalCode": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "line1",
+                      "city",
+                      "countryCode",
+                      "postalCode"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Destination address"
+                  }
+                },
+                "required": [
+                  "productId",
+                  "quantity",
+                  "shippingAddress"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
         }
       }
     },
     "/api/orders/tracking/{trackingNumber}": {
       "get": {
         "summary": "Get Shipment Tracking",
-        "description": "Fetches real-time GPS tracking data for a specific shipment.",
-        "tags": [
-          "Logistics",
-          "E-Commerce Platform"
-        ],
-        "parameters": [
-          {
-            "name": "trackingNumber",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "default": {
             "description": "Generic status from T[\"status\"]",
@@ -556,7 +570,22 @@
               }
             }
           }
-        }
+        },
+        "description": "Fetches real-time GPS tracking data for a specific shipment.",
+        "tags": [
+          "Logistics",
+          "E-Commerce Platform"
+        ],
+        "parameters": [
+          {
+            "name": "trackingNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
       }
     },
     "/api/docs": {
@@ -568,8 +597,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {}
+                  "type": "object"
                 }
               }
             }
@@ -589,8 +617,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {}
+                  "type": "object"
                 }
               }
             }
