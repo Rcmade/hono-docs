@@ -53,6 +53,9 @@ export async function genRequestBody(
     // Fall back to type-based schema if resolution failed or no validator found
     if (!jsonSchema) {
       jsonSchema = buildSchema(jType, typeChecker, contextNode);
+      if (routePath && method) {
+        logger.record(method, routePath, "json", "ts type");
+      }
     }
 
     content["application/json"] = { schema: jsonSchema };
@@ -83,6 +86,9 @@ export async function genRequestBody(
 
     if (!formSchema) {
       formSchema = buildSchema(fType, typeChecker, contextNode);
+      if (routePath && method) {
+        logger.record(method, routePath, "form", "ts type");
+      }
     }
 
     content["multipart/form-data"] = { schema: formSchema };

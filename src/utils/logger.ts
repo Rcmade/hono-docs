@@ -1,6 +1,8 @@
 // src/utils/logger.ts
 // Grouped-by-phase terminal output for hono-docs CLI.
 
+import type { HttpMethod, SchemaEngine, ValidatorLibrary, ValidatorTarget } from "../types";
+
 const c = {
   reset: "\x1b[0m",
   bold: "\x1b[1m",
@@ -20,7 +22,7 @@ function col(ansi: string, text: string): string {
   return `${ansi}${text}${c.reset}`;
 }
 
-const METHOD_COLORS: Record<string, string> = {
+const METHOD_COLORS: Record<HttpMethod, string> & Record<string, string | undefined> = {
   GET: c.bold + c.green,
   POST: c.bold + c.cyan,
   PUT: c.bold + c.yellow,
@@ -36,11 +38,14 @@ function formatMethod(method: string): string {
   return col(ansi, method.toUpperCase().padEnd(6));
 }
 
-const VALIDATOR_COLORS: Record<string, string> = {
+const VALIDATOR_COLORS: Record<SchemaEngine, string> & Record<string, string | undefined> = {
   zod: c.cyan,
   valibot: c.magenta,
   typebox: c.orange,
   yup: c.yellow,
+  unsupported: c.red,
+  "ts type": c.blue,
+  "no input": c.gray,
 };
 
 function formatValidator(lib: string): string {
@@ -56,7 +61,8 @@ function progressBar(count: number, total: number, width = 20): string {
 type RouteEntry = {
   method: string;
   path: string;
-  sources: { src: string; library: string }[];
+  hasDoc?: boolean;
+  sources: { src: ValidatorTarget; library: ValidatorLibrary | "ts type" }[];
 };
 
 const _buffer: RouteEntry[] = [];
@@ -71,76 +77,147 @@ export const logger = {
         `  ${col(c.dim, "·")}  ${col(c.white, configPath)}` +
         `  ${col(c.dim, "·")}  ${col(c.white, tsConfig)}\n\n`,
       );
-    } catch {}
+    } catch { }
   },
 
   /** Print the "🔍 Analyzing routes..." phase header. */
   analyzing(): void {
     try {
       process.stdout.write(`\n  🔍  ${col(c.bold + c.white, "Analyzing routes...")}\n\n`);
-    } catch {}
+    } catch { }
   },
 
-  /** Buffer a single enriched route — flushed later via logger.summary(). */
-  record(method: string, routePath: string, source: string, library: string): void {
+  /** Register a discovered route before schema evaluation. */
+  registerRoute(method: string, routePath: string, hasDoc = false): void {
     try {
-      const existing = _buffer.find((r) => r.method === method && r.path === routePath);
+      const m = method.toUpperCase();
+      const existing = _buffer.find((r) => r.method === m && r.path === routePath);
       if (existing) {
-        existing.sources.push({ src: source, library });
+        existing.hasDoc = Boolean(existing.hasDoc || hasDoc);
       } else {
-        _buffer.push({ method, path: routePath, sources: [{ src: source, library }] });
+        _buffer.push({ method: m, path: routePath, hasDoc, sources: [] });
       }
-    } catch {}
+    } catch { }
   },
 
-  /** Flush buffered routes + print validator progress bars. */
+  /** Buffer a single enriched route input source — flushed later via logger.summary(). */
+  record(
+    method: string,
+    routePath: string,
+    source: ValidatorTarget,
+    library: ValidatorLibrary | "ts type",
+  ): void {
+    try {
+      const m = method.toUpperCase();
+      const existing = _buffer.find((r) => r.method === m && r.path === routePath);
+      if (existing) {
+        if (!existing.sources.some((s) => s.src === source && s.library === library)) {
+          existing.sources.push({ src: source, library });
+        }
+      } else {
+        _buffer.push({ method: m, path: routePath, sources: [{ src: source, library }] });
+      }
+    } catch { }
+  },
+
+  /** Flush buffered routes + print documentation and schema engine dashboards. */
   summary(): void {
     try {
-      for (const { method, path, sources } of _buffer) {
-        const grouped: Record<string, string[]> = {};
-        for (const { src, library } of sources) {
-          (grouped[library] ??= []).push(src);
-        }
-        const tagsStr = Object.entries(grouped)
-          .map(([lib, srcs]) => `${formatValidator(lib)} ${col(c.dim, srcs.join(" · "))}`)
-          .join(col(c.dim, "  "));
+      if (_buffer.length === 0) {
+        process.stdout.write(
+          `      ${col(c.yellow, "📭  No API endpoints were discovered in the target application.")}\n` +
+          `      ${col(c.dim, "    Please verify your appTypePath in your configuration and check that route types are exported.")}\n`,
+        );
+        return;
+      }
 
+      for (const { method, path, sources } of _buffer) {
         const truncPath =
           path.length > 44 ? path.slice(0, 22) + "…" + path.slice(-21) : path;
+        const methodStr = formatMethod(method);
+        const pathStr = col(c.white, truncPath.padEnd(44));
 
-        process.stdout.write(
-          `      ${formatMethod(method)}  ${col(c.white, truncPath.padEnd(44))}` +
-          `  ${col(c.dim, "→")}  ${tagsStr}\n`,
-        );
+        if (sources.length === 0) {
+          process.stdout.write(`      ${methodStr}  ${pathStr}  ${col(c.dim, "→  no input")}\n`);
+        } else {
+          const grouped: Record<string, string[]> = {};
+          for (const { src, library } of sources) {
+            (grouped[library] ??= []).push(src);
+          }
+          const tagsStr = Object.entries(grouped)
+            .map(([lib, srcs]) => `${formatValidator(lib)} ${col(c.dim, srcs.join(" · "))}`)
+            .join(col(c.dim, "  "));
+          process.stdout.write(`      ${methodStr}  ${pathStr}  ${col(c.dim, "→")}  ${tagsStr}\n`);
+        }
       }
 
       const total = _buffer.length;
+      const methodCounts: Record<string, number> = {};
+      let docCount = 0;
+
+      for (const r of _buffer) {
+        methodCounts[r.method] = (methodCounts[r.method] ?? 0) + 1;
+        if (r.hasDoc) docCount++;
+      }
+
+      const methodOrder = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD", "ALL"];
+      const methodParts = Object.entries(methodCounts)
+        .sort(
+          ([a], [b]) =>
+            (methodOrder.indexOf(a) !== -1 ? methodOrder.indexOf(a) : 99) -
+            (methodOrder.indexOf(b) !== -1 ? methodOrder.indexOf(b) : 99),
+        )
+        .map(([m, cnt]) => `${col(METHOD_COLORS[m] ?? (c.bold + c.white), m)}: ${cnt}`)
+        .join(col(c.dim, " · "));
+
+      const docPercentage = Math.round((docCount / total) * 100);
+
+      process.stdout.write(`\n\n  📊  ${col(c.bold + c.white, "Documentation Summary")}\n\n`);
+      process.stdout.write(
+        `      ${col(c.dim, "Endpoints Discovered  :")}  ${col(c.bold + c.white, `${total} total`)}  ${col(c.dim, "(")} ${methodParts} ${col(c.dim, ")")}\n`,
+      );
+      process.stdout.write(
+        `      ${col(c.dim, "JSDoc Coverage        :")}  ${col(c.white, `${docCount} / ${total} routes documented (${docPercentage}%)`)}\n`,
+      );
+
       const libCounts: Record<string, number> = {};
       for (const r of _buffer) {
-        const seen = new Set<string>();
-        for (const { library } of r.sources) {
-          if (!seen.has(library)) {
-            libCounts[library] = (libCounts[library] ?? 0) + 1;
-            seen.add(library);
+        if (r.sources.length === 0) {
+          libCounts["no input"] = (libCounts["no input"] ?? 0) + 1;
+        } else {
+          const seen = new Set<string>();
+          for (const { library } of r.sources) {
+            if (!seen.has(library)) {
+              libCounts[library] = (libCounts[library] ?? 0) + 1;
+              seen.add(library);
+            }
           }
         }
       }
 
-      process.stdout.write(
-        `\n            ${col(c.dim, "↳")} ${col(c.bold + c.white, String(total))} ${col(c.dim, "endpoints enriched")}\n`,
-      );
-
       if (Object.keys(libCounts).length > 0) {
-        process.stdout.write(`\n\n  📊  ${col(c.bold + c.white, "Validators detected")}\n\n`);
+        process.stdout.write(`\n\n  ⚙️  ${col(c.bold + c.white, "Schema Resolution Engine")}\n\n`);
         const maxLen = Math.max(...Object.keys(libCounts).map((k) => k.length));
-        for (const [lib, cnt] of Object.entries(libCounts)) {
+
+        const libOrder = ["zod", "valibot", "typebox", "yup", "ts type", "no input"];
+        const sortedLibs = Object.entries(libCounts).sort(([a], [b]) => {
+          const ia = libOrder.indexOf(a.toLowerCase());
+          const ib = libOrder.indexOf(b.toLowerCase());
+          return (ia === -1 ? 50 : ia) - (ib === -1 ? 50 : ib);
+        });
+
+        for (const [lib, cnt] of sortedLibs) {
+          let label = "(Dynamic)";
+          if (lib === "ts type") label = "(Static AST)";
+          if (lib === "no input") label = "(No validation required)";
+
           process.stdout.write(
-            `      ${col(VALIDATOR_COLORS[lib] ?? c.white, lib.padEnd(maxLen + 2))}` +
-            `${progressBar(cnt, total)}  ${col(c.dim, `${cnt} routes`)}\n`,
+            `      ${col(VALIDATOR_COLORS[lib.toLowerCase()] ?? c.white, lib.padEnd(maxLen + 2))}` +
+            `${progressBar(cnt, total)}  ${col(c.white, `${cnt} ${cnt === 1 ? "route " : "routes"}`)}  ${col(c.dim, label)}\n`,
           );
         }
       }
-    } catch {} finally {
+    } catch { } finally {
       _buffer.length = 0;
     }
   },
@@ -152,7 +229,7 @@ export const logger = {
         sizeBytes != null ? col(c.dim, `  ${(sizeBytes / 1024).toFixed(1)} KB`) : "";
       process.stdout.write(`\n\n  📄  ${col(c.bold + c.white, "Output written")}\n\n`);
       process.stdout.write(`      ${col(c.cyan + c.bold, outputPath)}${sizeStr}\n`);
-    } catch {}
+    } catch { }
   },
 
   /** Print the final success line with elapsed time. */
@@ -161,13 +238,13 @@ export const logger = {
       process.stdout.write(
         `\n\n  ${col(c.bold + c.green, "✨  Done")} ${col(c.dim, `in ${elapsedMs}ms`)}\n\n`,
       );
-    } catch {}
+    } catch { }
   },
 
   /** Print a non-fatal warning. */
   warn(message: string): void {
     try {
       process.stdout.write(`  ${col(c.yellow, "⚠")}  ${col(c.dim, message)}\n`);
-    } catch {}
+    } catch { }
   },
 };

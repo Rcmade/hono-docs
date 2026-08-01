@@ -121,7 +121,11 @@ export async function genParameters(
     } else {
       // Fallback: Use AST type inference
       const srcType = typeChecker.getTypeOfSymbolAtLocation(p, contextNode);
-      for (const f of srcType.getProperties()) {
+      const props = srcType.getProperties();
+      if (props.length > 0 && routePath && method) {
+        logger.record(method, routePath, src, "ts type");
+      }
+      for (const f of props) {
         const ft = typeChecker.getTypeOfSymbolAtLocation(f, contextNode);
         const name = f.getName();
         const schema = buildSchema(

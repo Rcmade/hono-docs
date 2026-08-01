@@ -1,4 +1,4 @@
-export const HONO_METHODS = new Set([
+export const HONO_METHOD_NAMES = [
   "get",
   "post",
   "put",
@@ -7,7 +7,9 @@ export const HONO_METHODS = new Set([
   "options",
   "head",
   "all",
-]);
+] as const;
+
+export const HONO_METHODS = new Set<string>(HONO_METHOD_NAMES);
 
 export const VALIDATOR_TARGETS = [
   "json",

@@ -1,6 +1,12 @@
 import type { Project } from "ts-morph";
 import type { OpenAPIV3 } from "openapi-types";
-import type { VALIDATOR_TARGETS } from "../utils/constants";
+import type { HONO_METHOD_NAMES, VALIDATOR_TARGETS } from "../utils/constants";
+
+/** Supported lowercase Hono HTTP methods */
+export type HonoMethod = (typeof HONO_METHOD_NAMES)[number];
+
+/** Supported uppercase HTTP methods for documentation and logging */
+export type HttpMethod = Uppercase<HonoMethod>;
 
 /**
  * The base OpenAPI configuration, excluding dynamically generated fields.
@@ -137,6 +143,9 @@ export type ValidatorLibrary =
   | "typebox"
   | "yup"
   | "unsupported";
+
+/** Supported schema resolution engine labels used in documentation and CLI logging */
+export type SchemaEngine = ValidatorLibrary | "ts type" | "no input";
 
 /**
  * Valid slots that a Hono validator can target.

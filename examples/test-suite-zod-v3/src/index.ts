@@ -11,6 +11,7 @@ import { typeboxRoutes } from "./routes/typeboxRoutes";
 import { enterpriseBillingRoutes } from "./routes/enterpriseBillingRoutes";
 import { exhaustiveRoutes } from "./routes/exhaustiveRoutes";
 import { docs } from "./routes/docs";
+import { schemaTestCaseRoutes } from "./routes/schemaTestCases";
 
 const app1 = new Hono()
   .basePath("/api")
@@ -29,7 +30,7 @@ const app = app1
   .route("/typebox", typeboxRoutes)
   .route("/enterprise", enterpriseBillingRoutes);
 
-const app2 = app.route("/exhaustive", exhaustiveRoutes).route("/docs", docs);
+const app2 = app.route("/exhaustive", exhaustiveRoutes).route("/docs", docs).route("/test-cases", schemaTestCaseRoutes);
 
 serve(
   {

@@ -21,6 +21,7 @@ import { buildSchema } from "../utils/buildSchema";
 import { groupBy, unwrapUnion, generateDefaultSummary } from "../utils/format";
 import { locateRouteNode } from "../schema-resolver/locateRouteNode";
 import { extractASTHeaders } from "../utils/responseHeaders";
+import { logger } from "../utils/logger";
 
 import type { OpenAPIV3 } from "openapi-types";
 
@@ -32,13 +33,13 @@ export async function generateOpenApi({
   rootPath,
   outputRoot,
 }: // {
-//   config: HonoDocsConfig;
-//   snapshotPath: AppTypeSnapshotPath;
-// }
-GenerateParams & {
-  snapshotPath: AppTypeSnapshotPath;
-  apiGroup: ApiGroup;
-}): Promise<OpenApiPath> {
+  //   config: HonoDocsConfig;
+  //   snapshotPath: AppTypeSnapshotPath;
+  // }
+  GenerateParams & {
+    snapshotPath: AppTypeSnapshotPath;
+    apiGroup: ApiGroup;
+  }): Promise<OpenApiPath> {
   const sf = project.addSourceFileAtPath(
     path.resolve(rootPath, snapshotPath.appTypePath),
   );
@@ -131,6 +132,13 @@ GenerateParams & {
           continue;
         }
 
+        const hasDoc = !!(
+          jsDoc?.summary ||
+          jsDoc?.description ||
+          (jsDoc?.tags && jsDoc?.tags?.length > 0)
+        );
+        logger.registerRoute(http, raw, hasDoc);
+
         const op: OpenAPIV3.OperationObject = {
           summary: jsDoc?.summary || generateDefaultSummary(http, route),
           responses: {},
@@ -202,10 +210,10 @@ GenerateParams & {
             description:
               code === "default"
                 ? `Generic status from ${vs[0]
-                    .getProperty("status")!
-                    .getValueDeclarationOrThrow()
-                    .getType()
-                    .getText()}`
+                  .getProperty("status")!
+                  .getValueDeclarationOrThrow()
+                  .getType()
+                  .getText()}`
                 : `Status ${code}`,
             content: { "application/json": { schema } },
           };
