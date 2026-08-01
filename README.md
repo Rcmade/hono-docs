@@ -184,28 +184,31 @@ npm run docs
 ```
 
 ```text
-  ◆  hono-docs v1.2.0  ·  ./hono-docs.ts  ·  ./tsconfig.json
+  ◆  hono-docs v1.2.2  ·  ./hono-docs.ts  ·  ./tsconfig.json
 
   🔍  Analyzing routes...
+      GET     /api                                          →  no input
       POST    /api/auth/login                               →  zod json
-      POST    /api/auth/register                            →  zod json
-      POST    /api/orders                                   →  zod json
+      GET     /api/products/:productId                      →  ts type param
+      POST    /api/test-cases/case-inline                   →  ts type json
       POST    /api/enterprise/orgs/:…ces/:invoiceId/adjust  →  valibot query · param  typebox header  zod json
 
-            ↳ 4 endpoints enriched
+  📊  Documentation Summary
 
+      Endpoints Discovered  :  5 total  ( GET: 2 · POST: 3 )
+      JSDoc Coverage        :  3 / 5 routes documented (60%)
 
-  📊  Validators detected
+  ⚙️  Schema Resolution Engine
 
-      zod      █████████████████░░░  4 routes
-      valibot  ███░░░░░░░░░░░░░░░░░  1 route
-      typebox  ███░░░░░░░░░░░░░░░░░  1 route
-
+      zod       ████████████░░░░░░░░  3 routes  (Dynamic)
+      valibot   ████░░░░░░░░░░░░░░░  1 route   (Dynamic)
+      typebox   ████░░░░░░░░░░░░░░░  1 route   (Dynamic)
+      ts type   ████████░░░░░░░░░░░░  2 routes  (Static AST)
+      no input  ████████░░░░░░░░░░░░  2 routes  (No validation required)
 
   📄  Output written
 
-      ./openapi/openapi.json  127.8 KB
-
+      ./openapi/openapi.json  132.5 KB
 
   ✨  Done in 355ms
 ```
