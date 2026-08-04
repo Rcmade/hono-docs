@@ -9,7 +9,7 @@
 
 ## How It Works
 
-`hono-docs` uses **ts-morph** to statically analyze your Hono `AppType` at build time. It traverses your TypeScript types — including deeply nested `.route()` compositions — extracts validation schemas (Zod, Valibot, TypeBox, Yup), path/query/header/cookie parameters, request bodies, and JSDoc comments, then emits a fully merged `openapi.json` file. Zero runtime overhead.
+`hono-docs` uses **ts-morph** to statically analyze your Hono `AppType` at build time. It traverses your TypeScript types — including deeply nested `.route()` compositions — extracts validation schemas (Zod, Valibot, TypeBox), path/query/header/cookie parameters, request bodies, and JSDoc comments, then emits a fully merged `openapi.json` file. Zero runtime overhead.
 
 ---
 
@@ -18,8 +18,9 @@
 | Feature                               | Description                                                                                                                                                                                                                      |
 | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 🔀 **Nested Routing**                 | Fully supports complex apps composed with `.route()` and `.basePath()`. Point to your single root `AppType` and every sub-route is auto-discovered.                                                                              |
+| ⚡ **Incremental Caching**            | Automatically caches route definitions and validator schemas between builds. Unchanged endpoints and schemas are served from cache without regenerating.                                                                     |
 | 📝 **JSDoc Extraction**               | Write `@summary`, `@description`, `@tag`, and `@ignore` in comments above your routes. The engine automatically maps them to the correct nested path in the spec, even across multiple mount prefixes.                           |
-| ✅ **Multi-Library Schema Inference** | Extracts full validation schemas for request bodies and responses from **Zod (v3 & v4), Valibot, TypeBox, and Yup**. Automatically detects the library and uses runtime resolution for highest accuracy. Supports `oneOf` response unions. |
+| ✅ **Multi-Library Schema Inference** | Extracts full validation schemas for request bodies and responses from **Zod (v3 & v4), Valibot, and TypeBox**. Automatically detects the library and uses runtime resolution for highest accuracy. Supports `oneOf` response unions. |
 | 🗂️ **Path Parameters**                | Automatically generates `in: path` parameters from Hono path patterns like `/:id`.                                                                                                                                               |
 | 🔍 **Input Parameters**               | Extracts `query`, `header`, and `cookie` parameters with correct `required` flags from your validators.                                                                                                                          |
 | 📦 **Request Body**                   | Generates `requestBody` with `application/json` and `multipart/form-data` content types automatically.                                                                                                                           |
@@ -45,6 +46,7 @@
   - [4. Add an npm Script](#4-add-an-npm-script)
   - [5. Run the Generator](#5-run-the-generator)
 - [Nested Routing (Grouped AppType)](#nested-routing-grouped-apptype)
+- [Incremental Caching](#incremental-caching)
 - [Serving the OpenAPI Docs](#serving-the-openapi-docs)
 - [Configuration Reference](#configuration-reference)
 - [CLI Usage](#cli-usage)
@@ -97,7 +99,7 @@ export default defineConfig({
   apis: [
     {
       name: "My App",
-      apiPrefix: "/api",
+      apiPrefix: "",
       appTypePath: "src/index.ts", // Path to the file exporting your AppType
     },
   ],
@@ -163,8 +165,26 @@ Supported JSDoc tags:
 | `@summary`        | Short one-line title shown in the docs UI                                      |
 | `@description`    | Longer markdown-friendly description for the endpoint                          |
 | `@tag`            | Groups the endpoint under a named tag in the sidebar                           |
-| `@responseHeader` | Specifies custom response header name, type, and description                   |
+| `@responseHeader` | Documents a response header: `@responseHeader <status> <name> [<type>] <desc>` |
 | `@ignore`         | (or `@exclude`, `@hide`) Completely omits the endpoint from the generated docs |
+
+Example with a response header:
+
+```ts
+import { Hono } from "hono";
+
+export const userRoutes = new Hono()
+  /**
+   * @summary List users
+   * @description Returns a paginated user directory.
+   * @tag Users
+   * @responseHeader 200 X-Total-Count [integer] Total number of users
+   */
+  .get("/users", (c) => {
+    c.header("X-Total-Count", "100");
+    return c.json({ users: [] });
+  });
+```
 
 ### 4. Add an npm Script
 
@@ -184,7 +204,7 @@ npm run docs
 ```
 
 ```text
-  ◆  hono-docs v1.2.2  ·  ./hono-docs.ts  ·  ./tsconfig.json
+  ◆  hono-docs v1.2.3  ·  ./hono-docs.ts  ·  ./tsconfig.json
 
   🔍  Analyzing routes...
       GET     /api                                          →  no input
@@ -261,6 +281,30 @@ const app = app1.route("/complex", complexRoutes).route("/docs", docs);
 
 ---
 
+## Incremental Caching
+
+`hono-docs` caches generated OpenAPI schemas between builds by checking file dependency hashes. On subsequent executions, routes and schemas that have not been modified are loaded directly from cache rather than being regenerated. No extra config is required — caching is on by default.
+
+### Bypassing the Cache (`--no-cache`)
+
+To disable caching and force a clean build (for example, in CI/CD pipelines), pass the `--no-cache` flag:
+
+```bash
+# Via CLI
+npx @rcmade/hono-docs generate --config ./hono-docs.ts --no-cache
+
+# Or via npm script
+npm run docs -- --no-cache
+```
+
+### How Caching Works
+
+- **Unchanged builds:** When no source files in an API group have been modified, the generator skips analysis and reuses the cached group output.
+- **Partial updates:** When a route handler or schema file changes, only affected endpoints are reanalyzed; unchanged routes stay cached.
+- **Automatic invalidation:** Edits to your `hono-docs` config, `tsconfig`, or a package version bump clear the cache automatically.
+
+---
+
 ## Serving the OpenAPI Docs
 
 We recommend **Scalar** for a beautiful, interactive API reference UI.
@@ -297,9 +341,11 @@ const docs = new Hono()
     return c.json(JSON.parse(raw));
   });
 
-export type AppType = typeof docs;
+export type DocsType = typeof docs;
 export default docs;
 ```
+
+Mount this under your main app (for example `.route("/docs", docs)`). Keep pointing `appTypePath` at your **root** app’s `AppType`, not this docs module.
 
 Visit `/api/docs` for the interactive UI and `/api/docs/open-api` for the raw JSON spec.
 
@@ -320,7 +366,7 @@ All options live in your `defineConfig({ ... })` call:
 | └ `openApiJson`             | `string`                                                                          | ✅       | Where to write the merged `openapi.json`                                                                                            |
 | `apis`                      | `ApiGroup[]`                                                                      | ✅       | Route groups to document                                                                                                            |
 | └ `name`                    | `string`                                                                          | ✅       | Human-readable name for this group                                                                                                  |
-| └ `apiPrefix`               | `string`                                                                          | ✅       | URL prefix prepended to all paths in this group                                                                                     |
+| └ `apiPrefix`               | `string`                                                                          | ✅       | Extra URL prefix prepended at merge time. Use `""` when `AppType` already includes the full path (typical with `.basePath()`).      |
 | └ `appTypePath`             | `string`                                                                          | ✅       | Path to the file exporting `AppType`                                                                                                |
 | └ `api`                     | `Api[]`                                                                           | —        | Optional explicit endpoint overrides (see below)                                                                                    |
 | &nbsp;&nbsp;└ `api`         | `string`                                                                          | ✅       | Endpoint path without prefix, e.g. `/user/{id}`                                                                                     |
@@ -335,11 +381,12 @@ All options live in your `defineConfig({ ... })` call:
 ## CLI Usage
 
 ```text
-Usage: hono-docs generate --config <path>
+Usage: hono-docs generate --config <path> [options]
 
 Options:
-  -c, --config   Path to your hono-docs config file (.ts or .js)   [required]
-  -h, --help     Show help
+  -c, --config     Path to your hono-docs config file (.ts or .js)   [required]
+      --no-cache   Bypass the incremental cache and force full regeneration
+  -h, --help       Show help
 ```
 
 ---
@@ -349,7 +396,11 @@ Options:
 ```ts
 import { runGenerate } from "@rcmade/hono-docs";
 
+// Standard run (uses incremental caching automatically)
 await runGenerate("./hono-docs.ts");
+
+// Force clean regeneration (bypass cache)
+await runGenerate("./hono-docs.ts", { noCache: true });
 ```
 
 ---
