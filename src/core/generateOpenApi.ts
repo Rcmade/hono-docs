@@ -19,9 +19,10 @@ import { genParameters } from "../utils/parameters";
 import { genRequestBody } from "../utils/requestBody";
 import { buildSchema } from "../utils/buildSchema";
 import { groupBy, unwrapUnion, generateDefaultSummary } from "../utils/format";
-import { locateRouteNode } from "../schema-resolver/locateRouteNode";
+import { locateRouteEntry } from "../schema-resolver/routeIndex";
 import { extractASTHeaders } from "../utils/responseHeaders";
 import { logger } from "../utils/logger";
+import type { CacheManager } from "../cache/index";
 
 import type { OpenAPIV3 } from "openapi-types";
 
@@ -32,6 +33,7 @@ export async function generateOpenApi({
   project,
   rootPath,
   outputRoot,
+  cacheManager,
 }: // {
   //   config: HonoDocsConfig;
   //   snapshotPath: AppTypeSnapshotPath;
@@ -39,6 +41,7 @@ export async function generateOpenApi({
   GenerateParams & {
     snapshotPath: AppTypeSnapshotPath;
     apiGroup: ApiGroup;
+    cacheManager?: CacheManager;
   }): Promise<OpenApiPath> {
   const sf = project.addSourceFileAtPath(
     path.resolve(rootPath, snapshotPath.appTypePath),
@@ -64,6 +67,37 @@ export async function generateOpenApi({
   const routesNode = typeArgs[1];
 
   const paths: Record<string, OpenAPIV3.PathItemObject> = {};
+
+  // Memoized dependency tracer to ensure instantaneous per-route caching without repeated AST traversals
+  const fileDependenciesCache = new Map<string, { hash: string; files: string[] }>();
+  const getRouteDepInfo = (filePath: string): { hash: string; files: string[] } => {
+    if (!cacheManager) return { hash: "", files: [] };
+    const cached = fileDependenciesCache.get(filePath);
+    if (cached) return cached;
+
+    const visited = new Set<string>();
+    const queue = [filePath];
+    while (queue.length > 0) {
+      const fp = queue.pop()!;
+      const realFp = fs.existsSync(fp) ? fs.realpathSync(fp) : fp;
+      if (visited.has(realFp)) continue;
+      visited.add(realFp);
+      const currSf = project.getSourceFile(realFp) || project.getSourceFile(fp);
+      if (!currSf) continue;
+      for (const ref of currSf.getReferencedSourceFiles()) {
+        const refPath = ref.getFilePath();
+        const realRef = fs.existsSync(refPath) ? fs.realpathSync(refPath) : refPath;
+        if (!realRef.includes("node_modules")) {
+          queue.push(realRef);
+        }
+      }
+    }
+    const files = Array.from(visited);
+    const hash = cacheManager.hashGroup(files);
+    const result = { hash, files };
+    fileDependenciesCache.set(filePath, result);
+    return result;
+  };
 
   // Extract all JSDocs globally from all project files
   const jsDocMap = extractJSDocs(project);
@@ -102,6 +136,7 @@ export async function generateOpenApi({
         const name = methodSymbol.getName(); // e.g. "$get"
         if (!name.startsWith("$")) continue;
         const http = name.slice(1).toLowerCase(); // "get", "post", etc.
+        const routeEntry = locateRouteEntry(http, raw, project);
 
         // Get the type of the method (e.g. { input: ..., output: ... })
         const methodType = typeChecker.getTypeOfSymbolAtLocation(
@@ -111,6 +146,37 @@ export async function generateOpenApi({
         if (!methodType) continue;
 
         const variants = unwrapUnion(methodType);
+
+        let depHash = "";
+        let depFiles: string[] = [];
+        const routeKey = `${http.toLowerCase()} ${raw}`;
+
+        if (cacheManager) {
+          if (routeEntry?.sourceFilePath) {
+            const depInfo = getRouteDepInfo(routeEntry.sourceFilePath);
+            depHash = depInfo.hash;
+            depFiles = depInfo.files;
+            if (depHash) {
+              const routeCache = cacheManager.getRouteCache(routeKey, depHash);
+              if (routeCache) {
+                logger.recordSources(
+                  http,
+                  raw,
+                  routeCache.sources || [],
+                  !!(
+                    routeCache.operation.summary ||
+                    routeCache.operation.description ||
+                    (routeCache.operation.tags &&
+                      routeCache.operation.tags.length > 0)
+                  ),
+                );
+                // @ts-expect-error we are dynamically building the paths object
+                paths[route][http] = routeCache.operation;
+                continue;
+              }
+            }
+          }
+        }
 
         const exactKey = `${http} ${route}`;
         let jsDoc: ParsedJSDoc | undefined;
@@ -162,6 +228,7 @@ export async function generateOpenApi({
           project,
           rootPath,
           pathPatterns,
+          cacheManager,
         });
         if (params.length) op.parameters = params;
 
@@ -174,6 +241,7 @@ export async function generateOpenApi({
           method: http,
           project,
           rootPath,
+          cacheManager,
         });
         if (rb) op.requestBody = rb;
 
@@ -218,7 +286,7 @@ export async function generateOpenApi({
             content: { "application/json": { schema } },
           };
 
-          const routeNode = locateRouteNode(http, raw, project);
+          const routeNode = routeEntry?.call ?? null;
           const astHeaders = routeNode ? extractASTHeaders(routeNode) : [];
           const jsdocHeaders = jsDoc?.responseHeaders?.[code] || [];
 
@@ -237,6 +305,11 @@ export async function generateOpenApi({
           }
 
           op.responses[code] = responseObj;
+        }
+
+        if (cacheManager && depHash && depFiles.length > 0) {
+          const sources = logger.getRouteSources(http, raw);
+          cacheManager.setRouteCache(routeKey, depHash, op, sources, depFiles);
         }
 
         // @ts-expect-error we are dynamically building the paths object

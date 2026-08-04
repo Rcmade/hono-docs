@@ -20,6 +20,7 @@ export function extractJSDocs(project: Project): Map<string, ParsedJSDoc[]> {
   // 1. Build a map of router variable names to all prefixes they are mounted at
   const routeMounts = new Map<string, string[]>();
   for (const sourceFile of project.getSourceFiles()) {
+    if (!sourceFile.getFullText().includes(".route(")) continue;
     const calls = sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression);
     for (const call of calls) {
       const expr = call.getExpression();
@@ -43,7 +44,9 @@ export function extractJSDocs(project: Project): Map<string, ParsedJSDoc[]> {
   }
 
   // 2. Extract JSDocs and apply prefixes if matched
+  const quickCheckRegex = /\.(get|post|put|delete|patch|all|options|head)\s*\(/i;
   for (const sourceFile of project.getSourceFiles()) {
+    if (!quickCheckRegex.test(sourceFile.getFullText())) continue;
     const calls = sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression);
 
     for (const call of calls) {

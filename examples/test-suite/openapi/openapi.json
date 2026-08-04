@@ -4358,6 +4358,4478 @@
           "E-Commerce Platform"
         ]
       }
+    },
+    "/api/stress/item/list": {
+      "get": {
+        "summary": "Get Stress Item List",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/item/create": {
+      "post": {
+        "summary": "Create Stress Item Create",
+        "responses": {
+          "201": {
+            "description": "Status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "created": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "created"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/item/{id}": {
+      "get": {
+        "summary": "Get Stress Item By Id",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "type"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/item/{id}/update": {
+      "put": {
+        "summary": "Update Stress Item By Id Update",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "updated": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "updated"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/item/{id}/delete": {
+      "delete": {
+        "summary": "Delete Stress Item By Id Delete",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "deleted"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/item/{id}/status": {
+      "patch": {
+        "summary": "Update Stress Item By Id Status",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/item/{id}/details": {
+      "get": {
+        "summary": "Get Stress Item By Id Details",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "details": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "details"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/item/{id}/archive": {
+      "post": {
+        "summary": "Create Stress Item By Id Archive",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "archived": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "archived"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/item/{id}/restore": {
+      "post": {
+        "summary": "Create Stress Item By Id Restore",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "restored": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "restored"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/item/search": {
+      "get": {
+        "summary": "Get Stress Item Search",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "query": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "results",
+                    "query"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/order/list": {
+      "get": {
+        "summary": "Get Stress Order List",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/order/create": {
+      "post": {
+        "summary": "Create Stress Order Create",
+        "responses": {
+          "201": {
+            "description": "Status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "created": {
+                      "type": "boolean"
+                    },
+                    "orderId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "created",
+                    "orderId"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/order/{id}": {
+      "get": {
+        "summary": "Get Stress Order By Id",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "type"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/order/{id}/update": {
+      "put": {
+        "summary": "Update Stress Order By Id Update",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "updated": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "updated"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/order/{id}/delete": {
+      "delete": {
+        "summary": "Delete Stress Order By Id Delete",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "deleted"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/order/{id}/status": {
+      "patch": {
+        "summary": "Update Stress Order By Id Status",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/order/{id}/details": {
+      "get": {
+        "summary": "Get Stress Order By Id Details",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "details": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "details"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/order/{id}/archive": {
+      "post": {
+        "summary": "Create Stress Order By Id Archive",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "archived": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "archived"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/order/{id}/restore": {
+      "post": {
+        "summary": "Create Stress Order By Id Restore",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "restored": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "restored"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/order/search": {
+      "get": {
+        "summary": "Get Stress Order Search",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "query": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "results",
+                    "query"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/user/list": {
+      "get": {
+        "summary": "Retrieve all users",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "headers": {
+              "X-Total-Count": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "100"
+              }
+            }
+          }
+        },
+        "description": "Fetches a paginated user directory.",
+        "tags": [
+          "Users",
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/user/create": {
+      "post": {
+        "summary": "Create a user",
+        "responses": {
+          "201": {
+            "description": "Status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "userId"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Register a new active user account.",
+        "tags": [
+          "Users",
+          "E-Commerce Platform"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stress/user/{id}": {
+      "get": {
+        "summary": "Get Stress User By Id",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "role"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/user/{id}/update": {
+      "put": {
+        "summary": "Update Stress User By Id Update",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "updated": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "updated"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/user/{id}/delete": {
+      "delete": {
+        "summary": "Delete Stress User By Id Delete",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "deleted"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/user/{id}/status": {
+      "patch": {
+        "summary": "Update Stress User By Id Status",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/user/{id}/details": {
+      "get": {
+        "summary": "Get Stress User By Id Details",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bio": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "bio"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/user/{id}/archive": {
+      "post": {
+        "summary": "Create Stress User By Id Archive",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "archived": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "archived"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/user/{id}/restore": {
+      "post": {
+        "summary": "Create Stress User By Id Restore",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "restored": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "restored"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/stress/user/search": {
+      "get": {
+        "summary": "Get Stress User Search",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/zod-item/json": {
+      "post": {
+        "summary": "Create Multi Zod item Json",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string"
+                        },
+                        "count": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "count"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "title",
+                  "count"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/zod-item/query": {
+      "get": {
+        "summary": "Get Multi Zod item Query",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/zod-item/{id}/param": {
+      "get": {
+        "summary": "Get Multi Zod item By Id Param",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/zod-item/form": {
+      "post": {
+        "summary": "Multipart Form Test",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uploaded": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "uploaded"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Validates multipart/form-data schemas and error unions.",
+        "tags": [
+          "Exhaustive Validation",
+          "E-Commerce Platform"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fileUrl": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "maxLength": 500
+                  }
+                },
+                "required": [
+                  "fileUrl",
+                  "notes"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/multi/zod-item/update": {
+      "put": {
+        "summary": "Update Multi Zod item Update",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "updated": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "updated"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "title",
+                  "count"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/zod-item/{id}": {
+      "delete": {
+        "summary": "Delete Multi Zod item By Id",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "deleted"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/zod-item/{id}/patch": {
+      "patch": {
+        "summary": "Update Multi Zod item By Id Patch",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "patched": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "patched"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "title",
+                  "count"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/zod-item/bulk": {
+      "post": {
+        "summary": "Create Multi Zod item Bulk",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bulk": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "bulk"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "title",
+                    "count"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/zod-item/{id}/verify": {
+      "get": {
+        "summary": "Get Multi Zod item By Id Verify",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "verified": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "verified"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/zod-item/clone": {
+      "post": {
+        "summary": "Create Multi Zod item Clone",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "cloned": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "cloned"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sourceId": {
+                    "type": "string"
+                  },
+                  "targetName": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "sourceId",
+                  "targetName"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/valibot-item/json": {
+      "post": {
+        "summary": "Create Multi Valibot item Json",
+        "responses": {
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {
+                          "type": "object",
+                          "properties": {
+                            "username": {
+                              "type": "string"
+                            },
+                            "age": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "username",
+                            "age"
+                          ]
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {},
+                              {}
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {},
+                        "issues": {}
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "ok"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "age": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "username",
+                  "age"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/valibot-item/query": {
+      "get": {
+        "summary": "Get Multi Valibot item Query",
+        "responses": {
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {
+                          "type": "object",
+                          "properties": {
+                            "filter": {
+                              "type": "string"
+                            },
+                            "page": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {},
+                              {}
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {},
+                        "issues": {}
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/valibot-item/code/{code}": {
+      "get": {
+        "summary": "Get Multi Valibot item Code By Code",
+        "responses": {
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {
+                          "type": "object",
+                          "properties": {
+                            "code": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "code"
+                          ]
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {},
+                              {}
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {},
+                        "issues": {}
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 10
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/valibot-item/update": {
+      "put": {
+        "summary": "Update Multi Valibot item Update",
+        "responses": {
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {
+                          "type": "object",
+                          "properties": {
+                            "username": {
+                              "type": "string"
+                            },
+                            "age": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "username",
+                            "age"
+                          ]
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {},
+                              {}
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {},
+                        "issues": {}
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "modified": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "modified"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "age": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "username",
+                  "age"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/valibot-item/remove/{code}": {
+      "delete": {
+        "summary": "Delete Multi Valibot item Remove By Code",
+        "responses": {
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {
+                          "type": "object",
+                          "properties": {
+                            "code": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "code"
+                          ]
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {},
+                              {}
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {},
+                        "issues": {}
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "removed": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "removed"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 10
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/valibot-item/sync": {
+      "patch": {
+        "summary": "Update Multi Valibot item Sync",
+        "responses": {
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {
+                          "type": "object",
+                          "properties": {
+                            "synced": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "synced"
+                          ]
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {},
+                              {}
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {},
+                        "issues": {}
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "ok"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "synced": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "synced"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/valibot-item/import": {
+      "post": {
+        "summary": "Create Multi Valibot item Import",
+        "responses": {
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "username": {
+                                "type": "string"
+                              },
+                              "age": {
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "username",
+                              "age"
+                            ]
+                          }
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {},
+                              {}
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {},
+                        "issues": {}
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "count"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    },
+                    "age": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "username",
+                    "age"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/valibot-item/search": {
+      "get": {
+        "summary": "Get Multi Valibot item Search",
+        "responses": {
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {
+                          "type": "object",
+                          "properties": {
+                            "q": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "q"
+                          ]
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {},
+                              {}
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {},
+                        "issues": {}
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "found": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "found"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/valibot-item/export": {
+      "post": {
+        "summary": "Create Multi Valibot item Export",
+        "responses": {
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {
+                          "type": "object",
+                          "properties": {
+                            "format": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "format"
+                          ]
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {},
+                              {}
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {},
+                        "issues": {}
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "file": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "file"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "format": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "format"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/valibot-item/status/{code}": {
+      "get": {
+        "summary": "Get Multi Valibot item Status By Code",
+        "responses": {
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {
+                          "type": "object",
+                          "properties": {
+                            "code": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "code"
+                          ]
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {},
+                              {}
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {},
+                        "issues": {}
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 10
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/typebox-item/json": {
+      "post": {
+        "summary": "Create Multi Typebox item Json",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "res"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "sku",
+                  "price"
+                ],
+                "properties": {
+                  "sku": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "minimum": 0,
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/typebox-item/query": {
+      "get": {
+        "summary": "Get Multi Typebox item Query",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "active",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/typebox-item/ref/{ref}": {
+      "get": {
+        "summary": "Get Multi Typebox item Ref By Ref",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ref": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "ref"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ref",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minLength": 4,
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/typebox-item/edit": {
+      "put": {
+        "summary": "Update Multi Typebox item Edit",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "res"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "sku",
+                  "price"
+                ],
+                "properties": {
+                  "sku": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "minimum": 0,
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/typebox-item/drop/{ref}": {
+      "delete": {
+        "summary": "Delete Multi Typebox item Drop By Ref",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "res"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ref",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minLength": 4,
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/typebox-item/flag": {
+      "patch": {
+        "summary": "Update Multi Typebox item Flag",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "res"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "flag": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "flag"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/typebox-item/batch": {
+      "post": {
+        "summary": "Create Multi Typebox item Batch",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "res": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "res"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "price": {
+                      "type": "number"
+                    },
+                    "sku": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "price",
+                    "sku"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/typebox-item/find": {
+      "get": {
+        "summary": "Get Multi Typebox item Find",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "hits": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "hits"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/typebox-item/generate": {
+      "post": {
+        "summary": "Create Multi Typebox item Generate",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "generated": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "generated"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "template": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "template"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/multi/typebox-item/info/{ref}": {
+      "get": {
+        "summary": "Get Multi Typebox item Info By Ref",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "info": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "info"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ref",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minLength": 4,
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/ts-ast/simple": {
+      "get": {
+        "summary": "Get Edge Ts ast Simple",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "boolean",
+                            "enum": [
+                              false
+                            ]
+                          },
+                          {
+                            "type": "boolean",
+                            "enum": [
+                              true
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "additionalProperties": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "boolean",
+                                  "enum": [
+                                    false
+                                  ]
+                                },
+                                {
+                                  "type": "boolean",
+                                  "enum": [
+                                    true
+                                  ]
+                                },
+                                {},
+                                {},
+                                {},
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      },
+                                      {
+                                        "type": "boolean",
+                                        "enum": [
+                                          false
+                                        ]
+                                      },
+                                      {
+                                        "type": "boolean",
+                                        "enum": [
+                                          true
+                                        ]
+                                      },
+                                      {},
+                                      {}
+                                    ],
+                                    "nullable": true
+                                  }
+                                },
+                                {
+                                  "type": "object"
+                                }
+                              ],
+                              "nullable": true
+                            }
+                          },
+                          {}
+                        ],
+                        "nullable": true
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/ts-ast/echo": {
+      "post": {
+        "summary": "Create Edge Ts ast Echo",
+        "responses": {
+          "201": {
+            "description": "Status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "received": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "metadata": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "boolean",
+                                "enum": [
+                                  false
+                                ]
+                              },
+                              {
+                                "type": "boolean",
+                                "enum": [
+                                  true
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "additionalProperties": {
+                                  "oneOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "boolean",
+                                      "enum": [
+                                        false
+                                      ]
+                                    },
+                                    {
+                                      "type": "boolean",
+                                      "enum": [
+                                        true
+                                      ]
+                                    },
+                                    {},
+                                    {},
+                                    {},
+                                    {
+                                      "type": "array",
+                                      "items": {
+                                        "oneOf": [
+                                          {
+                                            "type": "string"
+                                          },
+                                          {
+                                            "type": "number"
+                                          },
+                                          {
+                                            "type": "boolean",
+                                            "enum": [
+                                              false
+                                            ]
+                                          },
+                                          {
+                                            "type": "boolean",
+                                            "enum": [
+                                              true
+                                            ]
+                                          },
+                                          {},
+                                          {}
+                                        ],
+                                        "nullable": true
+                                      }
+                                    },
+                                    {
+                                      "type": "object"
+                                    }
+                                  ],
+                                  "nullable": true
+                                }
+                              },
+                              {}
+                            ],
+                            "nullable": true
+                          }
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "received"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/ts-ast/modify/{id}": {
+      "put": {
+        "summary": "Update Edge Ts ast Modify By Id",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedId": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "modifiedId",
+                    "status"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/ts-ast/delete/{id}": {
+      "delete": {
+        "summary": "Delete Edge Ts ast Delete By Id",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deleted": {
+                      "type": "boolean"
+                    },
+                    "timestamp": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "deleted",
+                    "timestamp"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/ts-ast/optional/{opt?}": {
+      "get": {
+        "summary": "Get Edge Ts ast Optional By Opt",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "opt": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "opt"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "opt",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/responses/union-status": {
+      "get": {
+        "summary": "Get Edge Responses Union status",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "code"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/responses/multi-status": {
+      "post": {
+        "summary": "Create Edge Responses Multi status",
+        "responses": {
+          "201": {
+            "description": "Status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "created": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "created"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/responses/server-error": {
+      "get": {
+        "summary": "Get Edge Responses Server error",
+        "responses": {
+          "500": {
+            "description": "Status 500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/responses/no-content-test": {
+      "delete": {
+        "summary": "Delete Edge Responses No content test",
+        "responses": {
+          "204": {
+            "description": "Status 204",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/responses/redirect-test": {
+      "get": {
+        "summary": "Get Edge Responses Redirect test",
+        "responses": {
+          "302": {
+            "description": "Status 302",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/regex/code/{code}": {
+      "get": {
+        "summary": "Get Edge Regex Code By Code",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "validCode": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "validCode"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "[A-Z]{4}"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/regex/year/{year}/month/{month}": {
+      "get": {
+        "summary": "Get Edge Regex Year By Year Month By Month",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "year": {
+                      "type": "string"
+                    },
+                    "month": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "year",
+                    "month"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "[0-9]{4}"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "[0-9]{2}"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/wildcard/files/*": {
+      "get": {
+        "summary": "Get Edge Wildcard Files By Wildcard",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "wildcard": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "wildcard"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/all-handler/check": {
+      "all": {
+        "summary": "All Edge All handler Check",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "method": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "method"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/headers/custom-test": {
+      "get": {
+        "summary": "Get Edge Headers Custom test",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "authed": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "authed"
+                  ]
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "no-cache"
+              },
+              "X-Custom-Token": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "token_123"
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/misc/status": {
+      "get": {
+        "summary": "Get Edge Misc Status",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "healthy": {
+                      "type": "boolean"
+                    },
+                    "uptime": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "healthy",
+                    "uptime"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/misc/ping": {
+      "post": {
+        "summary": "Create Edge Misc Ping",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pong": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "pong"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/misc/reset": {
+      "put": {
+        "summary": "Update Edge Misc Reset",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reset": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "reset"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/misc/cleanup": {
+      "delete": {
+        "summary": "Delete Edge Misc Cleanup",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "cleaned": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "cleaned"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/misc/info": {
+      "get": {
+        "summary": "Get Edge Misc Info",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "version",
+                    "name"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/deep/sub-resource": {
+      "get": {
+        "summary": "Get Edge Deep Sub resource",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nested": {
+                      "type": "boolean"
+                    },
+                    "level": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "nested",
+                    "level"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/deep/sub-action": {
+      "post": {
+        "summary": "Create Edge Deep Sub action",
+        "responses": {
+          "201": {
+            "description": "Status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "action"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/deep/sub-item/{subId}": {
+      "get": {
+        "summary": "Get Edge Deep Sub item By Sub Id",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "subId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "subId"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "subId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      },
+      "delete": {
+        "summary": "Delete Edge Deep Sub item By Sub Id",
+        "responses": {
+          "200": {
+            "description": "Status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "removed": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "removed"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "subId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/deep/sub-item/{subId}/flag": {
+      "patch": {
+        "summary": "Update Edge Deep Sub item By Sub Id Flag",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "flagged": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "flagged"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "subId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
     }
   }
 }

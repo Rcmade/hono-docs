@@ -5,7 +5,8 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "docs": "hono-docs generate --config ./hono-docs.ts"
+    "docs": "hono-docs generate --config ./hono-docs.ts",
+    "test:cache": "tsx test-caching.ts"
   },
   "dependencies": {
     "@hono/node-server": "^1.19.9",

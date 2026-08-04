@@ -1,7 +1,7 @@
 // src/utils/logger.ts
 // Grouped-by-phase terminal output for hono-docs CLI.
 
-import type { HttpMethod, SchemaEngine, ValidatorLibrary, ValidatorTarget } from "../types";
+import type { HttpMethod, RouteSource, SchemaEngine, ValidatorLibrary, ValidatorTarget } from "../types";
 
 const c = {
   reset: "\x1b[0m",
@@ -62,10 +62,12 @@ type RouteEntry = {
   method: string;
   path: string;
   hasDoc?: boolean;
-  sources: { src: ValidatorTarget; library: ValidatorLibrary | "ts type" }[];
+  sources: RouteSource[];
 };
 
 const _buffer: RouteEntry[] = [];
+let _cacheHits = 0;
+let _totalGroups = 0;
 
 export const logger = {
   /** Print the header banner with version, config, and tsconfig paths. */
@@ -85,6 +87,21 @@ export const logger = {
     try {
       process.stdout.write(`\n  🔍  ${col(c.bold + c.white, "Analyzing routes...")}\n\n`);
     } catch { }
+  },
+
+  /** Print a cache-hit line for a group that was loaded from cache. */
+  cached(groupName: string): void {
+    try {
+      _cacheHits++;
+      process.stdout.write(
+        `      ${col(c.bold + c.green, "⚡")}  ${col(c.white, groupName.padEnd(44))}  ${col(c.dim, "→  loaded from cache (skipped)")}\n`,
+      );
+    } catch { }
+  },
+
+  /** Track total group count (called once per group, before or after cache check). */
+  trackGroup(): void {
+    _totalGroups++;
   },
 
   /** Register a discovered route before schema evaluation. */
@@ -120,10 +137,44 @@ export const logger = {
     } catch { }
   },
 
+  /** Get recorded sources for a specific route (for caching). */
+  getRouteSources(method: string, routePath: string): RouteSource[] {
+    try {
+      const m = method.toUpperCase();
+      const existing = _buffer.find((r) => r.method === m && r.path === routePath);
+      return existing ? existing.sources : [];
+    } catch {
+      return [];
+    }
+  },
+
+  /** Restore recorded sources for a cached route. */
+  recordSources(
+    method: string,
+    routePath: string,
+    sources: RouteSource[],
+    hasDoc = false,
+  ): void {
+    try {
+      const m = method.toUpperCase();
+      const existing = _buffer.find((r) => r.method === m && r.path === routePath);
+      if (existing) {
+        existing.sources = sources;
+        existing.hasDoc = Boolean(existing.hasDoc || hasDoc);
+      } else {
+        _buffer.push({ method: m, path: routePath, hasDoc, sources });
+      }
+    } catch { }
+  },
+
   /** Flush buffered routes + print documentation and schema engine dashboards. */
   summary(): void {
     try {
       if (_buffer.length === 0) {
+        // If all groups were served from cache, this is expected — show nothing
+        if (_totalGroups > 0 && _cacheHits === _totalGroups) {
+          return;
+        }
         process.stdout.write(
           `      ${col(c.yellow, "📭  No API endpoints were discovered in the target application.")}\n` +
           `      ${col(c.dim, "    Please verify your appTypePath in your configuration and check that route types are exported.")}\n`,
@@ -232,12 +283,19 @@ export const logger = {
     } catch { }
   },
 
-  /** Print the final success line with elapsed time. */
+  /** Print the final success line with elapsed time and optional cache stats. */
   done(elapsedMs: number): void {
     try {
+      let cacheStr = "";
+      if (_totalGroups > 0 && _cacheHits > 0) {
+        cacheStr = col(c.dim, `  (${_cacheHits}/${_totalGroups} groups from cache)`);
+      }
       process.stdout.write(
-        `\n\n  ${col(c.bold + c.green, "✨  Done")} ${col(c.dim, `in ${elapsedMs}ms`)}\n\n`,
+        `\n\n  ${col(c.bold + c.green, "✨  Done")} ${col(c.dim, `in ${elapsedMs}ms`)}${cacheStr}\n\n`,
       );
+      // Reset counters for next run (e.g. programmatic usage)
+      _cacheHits = 0;
+      _totalGroups = 0;
     } catch { }
   },
 

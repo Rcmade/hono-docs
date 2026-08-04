@@ -4,6 +4,7 @@ import { resolveValidatorSchema } from "../schema-resolver/index";
 import { logger } from "./logger";
 import type { OpenAPIV3 } from "openapi-types";
 import type { Project, Type, TypeChecker, Node } from "ts-morph";
+import type { CacheManager } from "../cache/index";
 
 export interface GenRequestBodyOptions {
   type: Type;
@@ -13,12 +14,13 @@ export interface GenRequestBodyOptions {
   method?: string;
   project?: Project;
   rootPath?: string;
+  cacheManager?: CacheManager;
 }
 
 export async function genRequestBody(
   options: GenRequestBodyOptions
 ): Promise<OpenAPIV3.RequestBodyObject | null> {
-  const { type, typeChecker, contextNode, routePath, method, project, rootPath } = options;
+  const { type, typeChecker, contextNode, routePath, method, project, rootPath, cacheManager } = options;
   const inpProp = type.getProperty("input");
   if (!inpProp) return null;
   const inp = typeChecker.getTypeOfSymbolAtLocation(inpProp, contextNode);
@@ -43,6 +45,7 @@ export async function genRequestBody(
         project,
         typeChecker,
         rootPath,
+        cacheManager,
       );
       if (resolved) {
         jsonSchema = resolved.schema as OpenAPIV3.SchemaObject;
@@ -77,6 +80,7 @@ export async function genRequestBody(
         project,
         typeChecker,
         rootPath,
+        cacheManager,
       );
       if (resolved) {
         formSchema = resolved.schema as OpenAPIV3.SchemaObject;

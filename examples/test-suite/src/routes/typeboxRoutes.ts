@@ -8,7 +8,10 @@ const typeboxSchema = Type.Object({
   age: Type.Number({ minimum: 18, maximum: 99 }),
 });
 
-export const typeboxRoutes = new Hono()
-  .post("/tb-create", tbValidator("json", typeboxSchema), (c) => {
+export const typeboxRoutes = new Hono().post(
+  "/tb-create",
+  tbValidator("json", typeboxSchema),
+  (c) => {
     return c.json({ success: true, data: c.req.valid("json") });
-  });
+  },
+);

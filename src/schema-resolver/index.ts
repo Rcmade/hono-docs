@@ -4,6 +4,7 @@
 
 import type { Project, TypeChecker } from "ts-morph";
 import type { SchemaResolverResult, ValidatorLibrary } from "../types/index";
+import type { CacheManager } from "../cache/index";
 import { locateRouteNode } from "./locateRouteNode";
 import { detectSchemaArgs } from "./detectSchemaArg";
 import { traceDeclaration } from "./traceDeclaration";
@@ -26,6 +27,9 @@ import type { OpenAPIV3 } from "openapi-types";
  *
  * Returns a SchemaResolverResult on success, or null if any step fails
  * (triggering the existing buildSchema fallback in the caller).
+ *
+ * @param cacheManager - Optional cache manager. When provided, schema results
+ *   are cached by file-content hash so repeated runs skip jiti entirely.
  */
 export async function resolveValidatorSchema(
   routePath: string,
@@ -34,6 +38,7 @@ export async function resolveValidatorSchema(
   project: Project,
   typeChecker: TypeChecker,
   rootPath: string,
+  cacheManager?: CacheManager,
 ): Promise<SchemaResolverResult | null> {
   try {
     // Step 1: Locate the route call in AST
@@ -53,6 +58,73 @@ export async function resolveValidatorSchema(
     const traceResult = traceDeclaration(match.node);
     if (!traceResult) return null;
 
+    // ── Schema-level cache check ─────────────────────────────────────────────
+    // Key = hash of file content + export name, so any edit to the schema file
+    // busts the cache entry automatically.
+    if (cacheManager) {
+      let fileHash = "";
+      const sf = project.getSourceFile(traceResult.filePath);
+      if (sf) {
+        const deps = new Set<string>([traceResult.filePath]);
+        const queue = [sf];
+        while (queue.length > 0) {
+          const curr = queue.pop()!;
+          for (const ref of curr.getReferencedSourceFiles()) {
+            const refPath = ref.getFilePath();
+            if (!refPath.includes("node_modules") && !deps.has(refPath)) {
+              deps.add(refPath);
+              queue.push(ref);
+            }
+          }
+        }
+        fileHash = cacheManager.hashGroup(Array.from(deps));
+      } else {
+        fileHash = cacheManager.hashFile(traceResult.filePath);
+      }
+      const schemaKey = `${fileHash}:${traceResult.exportName}:${library}`;
+      const cached = cacheManager.getSchemaCache(schemaKey);
+      if (cached) {
+        return { source: "dynamic", library, schema: cached };
+      }
+
+      // Step 4: Load live schema instance via jiti (cache miss path)
+      const liveSchema = await loadLiveSchema(
+        traceResult.filePath,
+        traceResult.exportName,
+        rootPath,
+      );
+      if (!liveSchema) return null;
+
+      // Step 5: Convert using library-native serializer
+      let schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject | null = null;
+
+      switch (library) {
+        case "zod":
+          schema = (await convertZodSchema(
+            liveSchema,
+            rootPath,
+          )) as OpenAPIV3.SchemaObject | null;
+          break;
+        case "valibot":
+          schema = await convertValibotSchema(liveSchema, rootPath);
+          break;
+        case "typebox":
+          schema = convertTypeBoxSchema(
+            liveSchema,
+          ) as OpenAPIV3.SchemaObject | null;
+          break;
+        default:
+          return null;
+      }
+
+      if (!schema) return null;
+
+      // Store in schema cache for next run
+      cacheManager.setSchemaCache(schemaKey, schema as OpenAPIV3.SchemaObject);
+      return { source: "dynamic", library, schema };
+    }
+
+    // ── No cache manager: original flow ─────────────────────────────────────
     // Step 4: Load live schema instance via jiti
     const liveSchema = await loadLiveSchema(
       traceResult.filePath,
@@ -62,8 +134,7 @@ export async function resolveValidatorSchema(
     if (!liveSchema) return null;
 
     // Step 5: Convert using library-native serializer
-    let schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject | null =
-      null;
+    let schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject | null = null;
 
     switch (library) {
       case "zod":
@@ -91,3 +162,4 @@ export async function resolveValidatorSchema(
     return null;
   }
 }
+

@@ -4,6 +4,7 @@ import { resolveValidatorSchema } from "../schema-resolver/index";
 import { logger } from "./logger";
 import { VALIDATOR_TARGETS } from "./constants";
 import type { Project, Type, TypeChecker, Node } from "ts-morph";
+import type { CacheManager } from "../cache/index";
 
 function isArraySchema(
   schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject,
@@ -24,6 +25,7 @@ export interface GenParamsOptions {
   project?: Project;
   rootPath?: string;
   pathPatterns?: Record<string, string>;
+  cacheManager?: CacheManager;
 }
 
 export async function genParameters(
@@ -38,6 +40,7 @@ export async function genParameters(
     project,
     rootPath,
     pathPatterns,
+    cacheManager,
   } = options;
   const inputProp = type.getProperty("input");
   if (!inputProp) return [];
@@ -68,6 +71,7 @@ export async function genParameters(
         project,
         typeChecker,
         rootPath,
+        cacheManager,
       );
       if (
         resolved &&

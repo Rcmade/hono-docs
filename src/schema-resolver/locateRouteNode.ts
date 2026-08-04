@@ -1,22 +1,12 @@
 // src/schema-resolver/locateRouteNode.ts
-// Step 1: Find the Hono route call expression in the AST that matches
-// a given HTTP method + route path pair.
+// Delegates route discovery to the single-pass RouteASTIndex for O(1) matching.
 
-import { SyntaxKind, type Project, type CallExpression } from "ts-morph";
-
-import { HONO_METHODS } from "../utils/constants";
-
-/**
- * Normalizes an OpenAPI-style path like `/users/{id}` back to Hono style `/users/:id`
- * so we can match it against the AST route strings.
- */
-function normalizeToHonoPath(openApiPath: string): string {
-  return openApiPath.replace(/\{([^}]+)\}/g, ":$1");
-}
+import type { Project, CallExpression } from "ts-morph";
+import { locateRouteEntry } from "./routeIndex";
 
 /**
  * Searches all source files in the ts-morph project for a Hono route call expression
- * matching the given HTTP method and route path.
+ * matching the given HTTP method and route path using high-speed O(1) indexed lookup.
  *
  * Returns the matching CallExpression node or null if not found.
  */
@@ -25,59 +15,6 @@ export function locateRouteNode(
   routePath: string,
   project: Project,
 ): CallExpression | null {
-  const targetPath = normalizeToHonoPath(routePath);
-
-  let fallbackNode: CallExpression | null = null;
-
-  for (const sourceFile of project.getSourceFiles()) {
-    const calls = sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression);
-
-    for (const call of calls) {
-      const expr = call.getExpression();
-
-      // Must be a property access: app.post, router.get, etc.
-      if (!expr.isKind(SyntaxKind.PropertyAccessExpression)) continue;
-
-      const methodName = expr
-        .asKindOrThrow(SyntaxKind.PropertyAccessExpression)
-        .getName();
-      if (!HONO_METHODS.has(methodName)) continue;
-      // Match the specific HTTP method, or "all" which catches every method
-      if (methodName !== method && methodName !== "all") continue;
-
-      const args = call.getArguments();
-      if (args.length === 0) continue;
-
-      // First argument must be a string literal representing the path
-      const firstArg = args[0];
-      if (
-        !firstArg.isKind(SyntaxKind.StringLiteral) &&
-        !firstArg.isKind(SyntaxKind.NoSubstitutionTemplateLiteral)
-      )
-        continue;
-
-      const rawPath = firstArg.getText().replace(/^['"`]|['"`]$/g, "");
-
-      // 1. Exact match or strong suffix match
-      if (
-        rawPath === targetPath ||
-        (rawPath !== "/" && targetPath.endsWith(rawPath))
-      ) {
-        return call;
-      }
-
-      // 2. Fallback match for root mount points
-      if (
-        rawPath === "/" &&
-        !targetPath.includes(":") &&
-        !targetPath.includes("{")
-      ) {
-        if (!fallbackNode) {
-          fallbackNode = call;
-        }
-      }
-    }
-  }
-
-  return fallbackNode;
+  const entry = locateRouteEntry(method, routePath, project);
+  return entry ? entry.call : null;
 }

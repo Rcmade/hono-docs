@@ -8,13 +8,23 @@ import { Api } from "../types";
 import { cleanDefaultResponse, sanitizeApiPrefix } from "../utils/format";
 import { getLibDir } from "../utils/libDir";
 import { logger } from "../utils/logger";
+import { CacheManager } from "../cache/index";
 
-export async function runGenerate(configPath: string) {
+export interface RunGenerateOptions {
+  /** When true, bypass all cache reads and do not write a new cache. */
+  noCache?: boolean;
+}
+
+export async function runGenerate(
+  configPath: string,
+  options: RunGenerateOptions = {},
+) {
   const startTime = Date.now();
   const config = await loadConfig(configPath);
   const rootPath = process.cwd();
+  const { noCache = false } = options;
 
-  // Resolve lib directory once — used for version detection and output paths
+  // Resolve lib directory once — used for version detection, output paths, and cache
   const libDir = getLibDir();
 
   // Resolve published package version from package.json
@@ -27,9 +37,33 @@ export async function runGenerate(configPath: string) {
   logger.banner(pkgVersion, configPath, config.tsConfigPath);
   logger.analyzing();
 
-  const project = new Project({
-    tsConfigFilePath: resolve(rootPath, config.tsConfigPath),
-  });
+  // ── Cache setup ─────────────────────────────────────────────────────────────
+  const cache = new CacheManager(libDir, pkgVersion);
+
+  if (noCache) {
+    // --no-cache: skip all reads and don't persist at the end
+    cache.invalidate();
+  } else {
+    // Compute global hash: any change here wipes all groups
+    const configContent = (() => {
+      try { return fs.readFileSync(resolve(rootPath, configPath), "utf-8"); } catch { return ""; }
+    })();
+    const tsConfigContent = (() => {
+      try { return fs.readFileSync(resolve(rootPath, config.tsConfigPath), "utf-8"); } catch { return ""; }
+    })();
+    const globalHash = cache.hashString(pkgVersion + configContent + tsConfigContent);
+    cache.checkGlobal(globalHash);
+  }
+
+  let projectInstance: Project | null = null;
+  const getProject = () => {
+    if (!projectInstance) {
+      projectInstance = new Project({
+        tsConfigFilePath: resolve(rootPath, config.tsConfigPath),
+      });
+    }
+    return projectInstance;
+  };
 
   const apis = config.apis;
 
@@ -39,9 +73,9 @@ export async function runGenerate(configPath: string) {
   const commonParams = {
     config,
     libDir,
-    project,
     rootPath,
   };
+
   for (const apiGroup of apis) {
     // Normalize "/" and "" to the same thing — both mean "no extra prefix"
     const normalizedPrefix =
@@ -50,21 +84,122 @@ export async function runGenerate(configPath: string) {
 
     const sanitizedName = sanitizeApiPrefix(normalizedPrefix) || "root";
 
-    const snapshotPath = await generateTypes({
-      ...commonParams,
-      apiGroup: normalizedGroup,
-      fileName: sanitizedName,
-      outputRoot: snapshotOutputRoot,
-    });
+    logger.trackGroup();
 
-    await generateOpenApi({
-      snapshotPath,
-      apiGroup: normalizedGroup,
-      ...commonParams,
-      fileName: sanitizedName,
-      outputRoot: openAPiOutputRoot,
-    });
+    // ── Group-level cache check ────────────────────────────────────────────
+    let groupCacheHit = false;
+    let groupHash: string | null = null;
+    let expectedOutput: string | null = null;
+    let groupDepFiles: string[] = [];
+
+    if (!noCache) {
+      try {
+        // Guard: only attempt hash collection if the entry file actually exists.
+        // If it doesn't, generateTypes below will throw the proper error — we must
+        // not swallow it here by catching a ts-morph FileNotFoundError first.
+        const resolvedInput = resolve(rootPath, apiGroup.appTypePath);
+        if (!fs.existsSync(resolvedInput)) {
+          // File doesn't exist — skip hash collection entirely.
+          // generateTypes will throw with a clear error message below.
+          throw new Error("entry file not found, skip hash collection");
+        }
+        const absInput = fs.realpathSync(resolvedInput);
+
+        expectedOutput = path.join(openAPiOutputRoot, `${sanitizedName}.json`);
+
+        // Fast-path: check if we can verify group validity directly via previously recorded dependency files!
+        const existingGroup = cache.getGroupEntry(sanitizedName);
+        if (
+          existingGroup &&
+          existingGroup.dependencyFiles &&
+          existingGroup.dependencyFiles.includes(absInput)
+        ) {
+          const quickHash = cache.hashGroup(existingGroup.dependencyFiles);
+          const cachedPath = cache.getGroupCache(sanitizedName, quickHash);
+          if (cachedPath) {
+            groupHash = quickHash;
+            groupDepFiles = existingGroup.dependencyFiles;
+            logger.cached(sanitizedName);
+            groupCacheHit = true;
+          }
+        }
+
+        // Slow-path: if fast-path missed or first run, resolve full dependency tree via lightweight ts-morph project
+        if (!groupCacheHit) {
+          const depProject = new Project({
+            tsConfigFilePath: resolve(rootPath, config.tsConfigPath),
+          });
+          depProject.addSourceFileAtPath(absInput);
+          depProject.resolveSourceFileDependencies();
+
+          // BFS over source files reachable from this entry point (skipping node_modules)
+          const visited = new Set<string>();
+          const queue = [absInput];
+          while (queue.length > 0) {
+            const fp = queue.pop()!;
+            const realFp = fs.existsSync(fp) ? fs.realpathSync(fp) : fp;
+            if (visited.has(realFp)) continue;
+            visited.add(realFp);
+            const sf = depProject.getSourceFile(realFp) || depProject.getSourceFile(fp);
+            if (!sf) continue;
+            for (const ref of sf.getReferencedSourceFiles()) {
+              const refPath = ref.getFilePath();
+              const realRef = fs.existsSync(refPath) ? fs.realpathSync(refPath) : refPath;
+              if (!realRef.includes("node_modules")) {
+                queue.push(realRef);
+              }
+            }
+          }
+
+          groupDepFiles = Array.from(visited);
+          groupHash = cache.hashGroup(groupDepFiles);
+          const cachedPath = cache.getGroupCache(sanitizedName, groupHash!);
+
+          if (cachedPath) {
+            // Cache hit — log and skip generation entirely
+            logger.cached(sanitizedName);
+            groupCacheHit = true;
+          }
+        }
+      } catch {
+        // Hash collection failed (missing file, ts-morph issue, etc.)
+        // Fall through — generateTypes will throw the real error if the file is missing.
+        groupHash = null;
+        expectedOutput = null;
+        groupDepFiles = [];
+      }
+    }
+
+    if (!groupCacheHit) {
+      // Always generate when: --no-cache, cache miss, or hash collection failed.
+      // Errors from generateTypes / generateOpenApi propagate normally to the CLI error handler.
+      const activeProject = getProject();
+      const snapshotPath = await generateTypes({
+        ...commonParams,
+        project: activeProject,
+        apiGroup: normalizedGroup,
+        fileName: sanitizedName,
+        outputRoot: snapshotOutputRoot,
+      });
+
+      await generateOpenApi({
+        snapshotPath,
+        apiGroup: normalizedGroup,
+        ...commonParams,
+        project: activeProject,
+        fileName: sanitizedName,
+        outputRoot: openAPiOutputRoot,
+        // Only pass cacheManager when we have a valid hash to store
+        cacheManager: !noCache && groupHash ? cache : undefined,
+      });
+
+      // Record the result in cache only when we have a valid hash
+      if (!noCache && groupHash && expectedOutput) {
+        cache.setGroupCache(sanitizedName, groupHash, expectedOutput, groupDepFiles);
+      }
+    }
   }
+
 
   const merged = {
     security: [],
@@ -155,7 +290,13 @@ export async function runGenerate(configPath: string) {
   const specContent = `${JSON.stringify(merged, null, 2)}\n`;
   fs.writeFileSync(outputPath, specContent);
 
+  // Persist cache manifest to disk (no-op if nothing changed or --no-cache)
+  if (!noCache) {
+    cache.flush();
+  }
+
   logger.summary();
   logger.output(config.outputs.openApiJson, Buffer.byteLength(specContent, "utf-8"));
   logger.done(Date.now() - startTime);
 }
+

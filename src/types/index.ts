@@ -153,6 +153,14 @@ export type SchemaEngine = ValidatorLibrary | "ts type" | "no input";
 export type ValidatorTarget = (typeof VALIDATOR_TARGETS)[number];
 
 /**
+ * Enriched source tracking for logged and cached endpoints.
+ */
+export type RouteSource = {
+  src: ValidatorTarget;
+  library: ValidatorLibrary | "ts type";
+};
+
+/**
  * Result returned by the schema resolver subsystem.
  */
 export type SchemaResolverResult = {
