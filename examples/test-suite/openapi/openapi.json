@@ -1521,43 +1521,6 @@
         ],
         "additionalProperties": false
       },
-      "registerSchema": {
-        "type": "object",
-        "properties": {
-          "firstName": {
-            "type": "string",
-            "minLength": 2,
-            "description": "User's first name"
-          },
-          "lastName": {
-            "type": "string",
-            "minLength": 2,
-            "description": "User's last name"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
-            "description": "A valid corporate or personal email"
-          },
-          "password": {
-            "type": "string",
-            "minLength": 12,
-            "description": "A strong password (12+ characters)"
-          },
-          "company": {
-            "description": "Company name, if applicable",
-            "type": "string"
-          }
-        },
-        "required": [
-          "firstName",
-          "lastName",
-          "email",
-          "password"
-        ],
-        "additionalProperties": false
-      },
       "externalValibotSchema": {
         "type": "object",
         "properties": {
@@ -1589,6 +1552,37 @@
           "age",
           "country"
         ]
+      },
+      "registerSchema": {
+        "type": "object",
+        "properties": {
+          "lastName": {
+            "type": "string",
+            "minLength": 2,
+            "description": "User's last name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
+            "description": "A valid corporate or personal email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 12,
+            "description": "A strong password (12+ characters)"
+          },
+          "company": {
+            "description": "Company name, if applicable",
+            "type": "string"
+          }
+        },
+        "required": [
+          "lastName",
+          "email",
+          "password"
+        ],
+        "additionalProperties": false
       },
       "exhaustiveFormSchema": {
         "type": "object",

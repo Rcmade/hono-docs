@@ -9,7 +9,7 @@ const loginSchema = z.object({
 });
 
 const registerSchema = z.object({
-  firstName: z.string().min(2).describe("User's first name"),
+  // firstName: z.string().min(2).describe("User's first name"),
   lastName: z.string().min(2).describe("User's last name"),
   email: z.string().email().describe("A valid corporate or personal email"),
   password: z.string().min(12).describe("A strong password (12+ characters)"),

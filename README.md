@@ -15,22 +15,24 @@
 
 ## Features
 
-| Feature                               | Description                                                                                                                                                                                                                      |
-| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🔀 **Nested Routing**                 | Fully supports complex apps composed with `.route()` and `.basePath()`. Point to your single root `AppType` and every sub-route is auto-discovered.                                                                              |
-| ⚡ **Incremental Caching**            | Automatically caches route definitions and validator schemas between builds. Unchanged endpoints and schemas are served from cache without regenerating.                                                                     |
-| 📝 **JSDoc Extraction**               | Write `@summary`, `@description`, `@tag`, and `@ignore` in comments above your routes. The engine automatically maps them to the correct nested path in the spec, even across multiple mount prefixes.                           |
-| ✅ **Multi-Library Schema Inference** | Extracts full validation schemas for request bodies and responses from **Zod (v3 & v4), Valibot, and TypeBox**. Automatically detects the library and uses runtime resolution for highest accuracy. Supports `oneOf` response unions. |
-| 🗂️ **Path Parameters**                | Automatically generates `in: path` parameters from Hono path patterns like `/:id`.                                                                                                                                               |
-| 🔍 **Input Parameters**               | Extracts `query`, `header`, and `cookie` parameters with correct `required` flags from your validators.                                                                                                                          |
-| 📦 **Request Body**                   | Generates `requestBody` with `application/json` and `multipart/form-data` content types automatically.                                                                                                                           |
-| 🔢 **HTTP Status Codes**              | Resolves exact HTTP status codes (e.g. `201`, `404`) from your route return types, not just generic `default`. Supports all methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `OPTIONS`, `HEAD`, `ALL`.                          |
-| 🏷️ **Tag Grouping**                   | Routes are automatically grouped by tags from JSDoc comments for clean, navigable documentation.                                                                                                                                 |
-| 🧹 **Auto-Clean**                     | Automatically omits completely excluded or empty routes from the final spec.                                                                                                                                                     |
-| 🌐 **Cross-Platform**                 | Works on Windows, macOS, and Linux. Uses `jiti` for config loading with full `pathToFileURL` support.                                                                                                                            |
-| 🚀 **Zero Runtime Overhead**          | All analysis is done at build time. Nothing is injected into your production bundle.                                                                                                                                             |
-| ⚙️ **TypeScript & JS Configs**        | Config files can be `.ts` or `.js` with full `defineConfig` type inference.                                                                                                                                                      |
-| 🔗 **Monorepo Ready**                 | Works seamlessly in `pnpm`/`npm`/`yarn` workspaces and monorepo setups.                                                                                                                                                          |
+| Feature                               | Description                                                                                                                                                                                                                               |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🔀 **Nested Routing**                 | Fully supports complex apps composed with `.route()` and `.basePath()`. Point to your single root `AppType` and every sub-route is auto-discovered.                                                                                       |
+| ⚡ **Incremental Caching**            | Automatically caches route definitions and validator schemas between builds. Unchanged endpoints and schemas are served from cache without regenerating.                                                                                  |
+| 👁️ **Watch Mode**                     | Run `--watch` (or `-w`) to automatically rebuild docs on every file save. Uses a persistent ts-morph project and debounced AST hot-reloading for near-instant incremental updates.                                                        |
+| 🔁 **Schema Deduplication**           | Repeated inline schemas are automatically extracted into `components/schemas` and replaced with `$ref` pointers. Named schemas (via `x-schema-name`) are always promoted; anonymous schemas are promoted when they appear more than once. |
+| 📝 **JSDoc Extraction**               | Write `@summary`, `@description`, `@tag`, and `@ignore` in comments above your routes. The engine automatically maps them to the correct nested path in the spec, even across multiple mount prefixes.                                    |
+| ✅ **Multi-Library Schema Inference** | Extracts full validation schemas for request bodies and responses from **Zod (v3 & v4), Valibot, and TypeBox**. Automatically detects the library and uses runtime resolution for highest accuracy. Supports `oneOf` response unions.     |
+| 🗂️ **Path Parameters**                | Automatically generates `in: path` parameters from Hono path patterns like `/:id`.                                                                                                                                                        |
+| 🔍 **Input Parameters**               | Extracts `query`, `header`, and `cookie` parameters with correct `required` flags from your validators.                                                                                                                                   |
+| 📦 **Request Body**                   | Generates `requestBody` with `application/json` and `multipart/form-data` content types automatically.                                                                                                                                    |
+| 🔢 **HTTP Status Codes**              | Resolves exact HTTP status codes (e.g. `201`, `404`) from your route return types, not just generic `default`. Supports all methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `OPTIONS`, `HEAD`, `ALL`.                                   |
+| 🏷️ **Tag Grouping**                   | Routes are automatically grouped by tags from JSDoc comments for clean, navigable documentation.                                                                                                                                          |
+| 🧹 **Auto-Clean**                     | Automatically omits completely excluded or empty routes from the final spec.                                                                                                                                                              |
+| 🌐 **Cross-Platform**                 | Works on Windows, macOS, and Linux. Uses `jiti` for config loading with full `pathToFileURL` support.                                                                                                                                     |
+| 🚀 **Zero Runtime Overhead**          | All analysis is done at build time. Nothing is injected into your production bundle.                                                                                                                                                      |
+| ⚙️ **TypeScript & JS Configs**        | Config files can be `.ts` or `.js` with full `defineConfig` type inference.                                                                                                                                                               |
+| 🔗 **Monorepo Ready**                 | Works seamlessly in `pnpm`/`npm`/`yarn` workspaces and monorepo setups.                                                                                                                                                                   |
 
 ---
 
@@ -47,6 +49,8 @@
   - [5. Run the Generator](#5-run-the-generator)
 - [Nested Routing (Grouped AppType)](#nested-routing-grouped-apptype)
 - [Incremental Caching](#incremental-caching)
+- [Watch Mode](#watch-mode)
+- [Schema Deduplication](#schema-deduplication)
 - [Serving the OpenAPI Docs](#serving-the-openapi-docs)
 - [Configuration Reference](#configuration-reference)
 - [CLI Usage](#cli-usage)
@@ -204,7 +208,7 @@ npm run docs
 ```
 
 ```text
-  ◆  hono-docs v1.2.3  ·  ./hono-docs.ts  ·  ./tsconfig.json
+  ◆  hono-docs v1.3.0  ·  ./hono-docs.ts  ·  ./tsconfig.json
 
   🔍  Analyzing routes...
       GET     /api                                          →  no input
@@ -283,27 +287,59 @@ const app = app1.route("/complex", complexRoutes).route("/docs", docs);
 
 ## Incremental Caching
 
-`hono-docs` caches generated OpenAPI schemas between builds by checking file dependency hashes. On subsequent executions, routes and schemas that have not been modified are loaded directly from cache rather than being regenerated. No extra config is required — caching is on by default.
+`hono-docs` automatically caches results between builds — unchanged routes and schemas are skipped on subsequent runs with no extra config required.
 
-### Bypassing the Cache (`--no-cache`)
-
-To disable caching and force a clean build (for example, in CI/CD pipelines), pass the `--no-cache` flag:
+To disable caching and force a full rebuild (e.g. in CI/CD), pass `--no-cache`:
 
 ```bash
-# Via CLI
 npx @rcmade/hono-docs generate --config ./hono-docs.ts --no-cache
 
 # Or via npm script
 npm run docs -- --no-cache
 ```
 
-### How Caching Works
+---
 
-- **Unchanged builds:** When no source files in an API group have been modified, the generator skips analysis and reuses the cached group output.
-- **Partial updates:** When a route handler or schema file changes, only affected endpoints are reanalyzed; unchanged routes stay cached.
-- **Automatic invalidation:** Edits to your `hono-docs` config, `tsconfig`, or a package version bump clear the cache automatically.
+
+## Watch Mode
+
+`hono-docs` includes a built-in file watcher for development workflows. Pass `--watch` (or `-w`) to the `generate` command and docs will automatically rebuild every time you save a source file.
+
+```bash
+# Via CLI
+npx @rcmade/hono-docs generate --config ./hono-docs.ts --watch
+
+# Combine with --no-cache for a forced rebuild on every change
+npx @rcmade/hono-docs generate --config ./hono-docs.ts --watch --no-cache
+```
+
+Or add a dedicated script to your `package.json`:
+
+```jsonc
+{
+  "scripts": {
+    "docs": "npx @rcmade/hono-docs generate --config ./hono-docs.ts",
+    "docs:watch": "npx @rcmade/hono-docs generate --config ./hono-docs.ts --watch",
+  },
+}
+```
+
+Watch mode rebuilds your docs instantly on every file save — no manual re-runs needed. Rapid saves are batched automatically, so only one build fires per logical change. Press `Ctrl+C` to stop.
 
 ---
+
+## Schema Deduplication
+
+`hono-docs` automatically cleans up the generated spec so you get a leaner, more readable OpenAPI document with no extra config:
+
+- Repeated schemas are extracted into `components/schemas` and replaced with `$ref` pointers — no more copy-pasted inline shapes across every endpoint.
+- Named schemas (from Zod, Valibot, TypeBox, or source-level type names) are always promoted with their original name.
+- `$defs` / `definitions` blocks from validator libraries are hoisted to `components/schemas` and rewritten as standard `$ref` links.
+
+Deduplication runs automatically after generation — no configuration is required.
+
+---
+
 
 ## Serving the OpenAPI Docs
 
@@ -386,6 +422,7 @@ Usage: hono-docs generate --config <path> [options]
 Options:
   -c, --config     Path to your hono-docs config file (.ts or .js)   [required]
       --no-cache   Bypass the incremental cache and force full regeneration
+  -w, --watch      Watch for file changes and seamlessly rebuild
   -h, --help       Show help
 ```
 
@@ -394,13 +431,19 @@ Options:
 ## Programmatic Usage
 
 ```ts
-import { runGenerate } from "@rcmade/hono-docs";
+import { runGenerate, runWatch } from "@rcmade/hono-docs";
 
 // Standard run (uses incremental caching automatically)
 await runGenerate("./hono-docs.ts");
 
 // Force clean regeneration (bypass cache)
 await runGenerate("./hono-docs.ts", { noCache: true });
+
+// Start watch mode (blocks until process is killed)
+await runWatch("./hono-docs.ts");
+
+// Watch mode with cache disabled
+await runWatch("./hono-docs.ts", { noCache: true });
 ```
 
 ---

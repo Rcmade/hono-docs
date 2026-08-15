@@ -7,6 +7,7 @@ import { runGenerate, RunGenerateOptions } from "./runGenerate";
 import { logger } from "../utils/logger";
 import { loadConfig } from "../config/loadConfig";
 import { invalidateProjectIndex } from "../schema-resolver/routeIndex";
+import { PROJECT_CACHE_DIR_NAME } from "../utils/constants";
 
 /**
  * Attaches a robust Chokidar filesystem watcher that fully respects .gitignore
@@ -15,6 +16,7 @@ import { invalidateProjectIndex } from "../schema-resolver/routeIndex";
 function watchDirectory(
   dir: string,
   outDir: string,
+  internalCacheDir: string,
   onChange: (filepath: string) => void,
 ) {
   const ig = ignore();
@@ -31,7 +33,11 @@ function watchDirectory(
     ignored: (filePath: string) => {
       if (filePath.includes("node_modules") || filePath.includes(".git"))
         return true;
+      // Exclude final openapi output dir (e.g. openapi/)
       if (filePath.startsWith(outDir)) return true;
+      // Exclude internal .hono-docs/ cache dir (contains generated .d.ts snapshots
+      // and intermediate openapi JSONs — watching these causes an infinite rebuild loop)
+      if (filePath.startsWith(internalCacheDir)) return true;
       const relPath = path.relative(dir, filePath);
       if (relPath && ig.ignores(relPath)) return true;
       return false;
@@ -45,6 +51,7 @@ function watchDirectory(
 
   return () => watcher.close();
 }
+
 
 export async function runWatch(
   configPath: string,
@@ -100,6 +107,11 @@ export async function runWatch(
     path.dirname(config.outputs?.openApiJson || ""),
   );
 
+  // Resolve the internal .hono-docs/ cache dir — must be excluded from the watcher
+  // to prevent an infinite rebuild loop caused by generated .d.ts snapshots and
+  // intermediate openapi JSON files being picked up as user-authored source changes.
+  const internalCacheDir = path.resolve(rootPath, PROJECT_CACHE_DIR_NAME);
+
   const handleFileChange = (filepath: string) => {
     // Note: Chokidar already filtered node_modules, .git, .gitignore files, and outDir!
 
@@ -125,5 +137,5 @@ export async function runWatch(
     debounceTimeout = setTimeout(build, 300);
   };
 
-  watchDirectory(rootPath, outDir, handleFileChange);
+  watchDirectory(rootPath, outDir, internalCacheDir, handleFileChange);
 }
