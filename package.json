@@ -48,6 +48,7 @@
     "dist"
   ],
   "dependencies": {
+    "@apidevtools/swagger-parser": "^12.1.0",
     "@valibot/to-json-schema": "^1.7.1",
     "chokidar": "^5.0.0",
     "esbuild-register": "^3.6.0",

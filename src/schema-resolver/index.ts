@@ -116,7 +116,7 @@ export async function resolveValidatorSchema(
         )) as OpenAPIV3.SchemaObject | null;
         break;
       case "valibot":
-        schema = await convertValibotSchema(liveSchema, rootPath);
+        schema = await convertValibotSchema(liveSchema, rootPath, adapter.zodTarget);
         break;
       case "typebox":
         schema = convertTypeBoxSchema(

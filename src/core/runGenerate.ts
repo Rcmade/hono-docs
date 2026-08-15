@@ -267,7 +267,7 @@ export async function runGenerate(
           path.posix
             .join(normalizedPrefix, customApi.api)
             .replace(/\/+$/, "")
-            .replace(/:([^/]+)/g, "{$1}") || "/";
+            .replace(/:([a-zA-Z0-9_]+)(?:{([^{}]*(?:{[^{}]*}[^{}]*)*)})?/g, "{$1}") || "/";
         customApiMap.set(
           `${customApi.method.toLowerCase()} ${fullPath}`,
           customApi,
@@ -327,6 +327,20 @@ export async function runGenerate(
   const deduplicatedSpec = deduplicateComponents(
     finalSpec as unknown as import("openapi-types").OpenAPIV3.Document,
   );
+
+  
+  if (config.validateOutput !== false) {
+    try {
+      const SwaggerParser = await import("@apidevtools/swagger-parser");
+      const clonedSpec = JSON.parse(JSON.stringify(deduplicatedSpec));
+      
+      await SwaggerParser.default.validate(clonedSpec);
+    } catch (err) {
+      logger.warn(
+        `OpenAPI Spec Validation Warning:\n${(err as Error).message}`,
+      );
+    }
+  }
 
   let jsonSize: number | undefined;
   let validationFailed = false;

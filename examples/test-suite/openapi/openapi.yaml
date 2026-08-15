@@ -188,6 +188,9 @@ components:
           type: boolean
       required:
         - restored
+    GetApiExhaustiveAstRecordAnyResponse200:
+      type: object
+      additionalProperties: {}
     PostApiZodAllFeaturesResponsedefaultDataTupleOfTwoItem:
       oneOf:
         - type: string
@@ -336,9 +339,6 @@ components:
         - currency
         - inventoryCount
         - categories
-    GetApiExhaustiveAstRecordAnyResponse200:
-      type: object
-      additionalProperties: {}
     PostApiZodAllFeaturesBodyStringRecord:
       type: object
       additionalProperties:
@@ -1013,6 +1013,27 @@ components:
         - email
         - password
       additionalProperties: false
+    exhaustiveFormSchema:
+      type: object
+      properties:
+        profilePicture: {}
+        description:
+          type: string
+          maxLength: 500
+        tags:
+          type: array
+          items:
+            type: string
+        file:
+          type: array
+          items:
+            type: string
+            format: binary
+      required:
+        - description
+        - tags
+        - file
+      additionalProperties: false
     insertUserZod:
       type: object
       properties:
@@ -1121,164 +1142,6 @@ components:
         - email
         - password
       additionalProperties: false
-    insertUserValibot:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        email:
-          type: string
-          format: email
-        age:
-          type: number
-          minimum: 18
-          maximum: 120
-        isActive:
-          type: boolean
-        role:
-          enum:
-            - admin
-            - editor
-            - viewer
-          type: string
-        metadata:
-          anyOf:
-            - anyOf:
-                - anyOf:
-                    - type: string
-                    - type: number
-                    - type: boolean
-                    - type: "null"
-                - type: array
-                  items: {}
-                - type: object
-                  propertyNames:
-                    type: string
-                  additionalProperties: {}
-            - type: "null"
-        createdAt:
-          type: string
-        lastLoginAt:
-          anyOf:
-            - type: string
-            - type: "null"
-      required:
-        - id
-        - name
-        - email
-    exhaustiveFormSchema:
-      type: object
-      properties:
-        profilePicture: {}
-        description:
-          type: string
-          maxLength: 500
-        tags:
-          type: array
-          items:
-            type: string
-        file:
-          type: array
-          items:
-            type: string
-            format: binary
-            contentEncoding: binary
-      required:
-        - description
-        - tags
-        - file
-      additionalProperties: false
-    myArktypeSchema:
-      type: object
-      properties:
-        id:
-          type: string
-        metadata:
-          type: object
-          properties:
-            lastLogin:
-              type: string
-            settings:
-              type: object
-              properties:
-                notifications:
-                  type: boolean
-                theme:
-                  enum:
-                    - dark
-                    - light
-                    - system
-              required:
-                - notifications
-                - theme
-            customData: {}
-          required:
-            - lastLogin
-            - settings
-        nestedTuple:
-          type: array
-          minItems: 3
-          prefixItems:
-            - type: string
-            - type: number
-            - type: boolean
-          items: false
-        scores:
-          type: array
-          items:
-            type: number
-        status:
-          enum:
-            - active
-            - inactive
-            - pending
-        tags:
-          type: array
-          items:
-            type: string
-        unionTest:
-          anyOf:
-            - type: number
-            - type: string
-            - type: boolean
-        userProfile:
-          type: object
-          properties:
-            age:
-              type: number
-              exclusiveMinimum: 0
-            isActive:
-              type: boolean
-            role:
-              enum:
-                - admin
-                - guest
-                - user
-            username:
-              type: string
-              minLength: 3
-            email:
-              type: string
-              pattern: ^[\w%+.-]+@[\d.A-Za-z-]+\.[A-Za-z]{2,}$
-              format: email
-          required:
-            - age
-            - isActive
-            - role
-            - username
-        avatarUrl:
-          type: string
-      required:
-        - id
-        - metadata
-        - nestedTuple
-        - scores
-        - status
-        - tags
-        - unionTest
-        - userProfile
     typeboxSchema:
       type: object
       required:
@@ -1347,6 +1210,139 @@ components:
         - quantity
         - shippingAddress
       additionalProperties: false
+    insertUserValibot:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        age:
+          type: number
+          minimum: 18
+          maximum: 120
+        isActive:
+          type: boolean
+        role:
+          enum:
+            - admin
+            - editor
+            - viewer
+          type: string
+        metadata:
+          anyOf:
+            - anyOf:
+                - type: string
+                - type: number
+                - type: boolean
+                - enum:
+                    - null
+            - type: array
+              items: {}
+            - $ref: "#/components/schemas/GetApiExhaustiveAstRecordAnyResponse200"
+          nullable: true
+        createdAt:
+          type: string
+        lastLoginAt:
+          type: string
+          nullable: true
+      required:
+        - id
+        - name
+        - email
+    myArktypeSchema:
+      type: object
+      properties:
+        id:
+          type: string
+        metadata:
+          type: object
+          properties:
+            lastLogin:
+              type: string
+            settings:
+              type: object
+              properties:
+                notifications:
+                  type: boolean
+                theme:
+                  enum:
+                    - dark
+                    - light
+                    - system
+              required:
+                - notifications
+                - theme
+            customData: {}
+          required:
+            - lastLogin
+            - settings
+        nestedTuple:
+          type: array
+          minItems: 3
+          prefixItems:
+            - type: string
+            - type: number
+            - type: boolean
+          items: false
+        scores:
+          type: array
+          items:
+            type: number
+        status:
+          enum:
+            - active
+            - inactive
+            - pending
+        tags:
+          type: array
+          items:
+            type: string
+        unionTest:
+          anyOf:
+            - type: number
+            - type: string
+            - type: boolean
+        userProfile:
+          type: object
+          properties:
+            age:
+              type: number
+              minimum: 0
+              exclusiveMinimum: true
+            isActive:
+              type: boolean
+            role:
+              enum:
+                - admin
+                - guest
+                - user
+            username:
+              type: string
+              minLength: 3
+            email:
+              type: string
+              pattern: ^[\w%+.-]+@[\d.A-Za-z-]+\.[A-Za-z]{2,}$
+              format: email
+          required:
+            - age
+            - isActive
+            - role
+            - username
+        avatarUrl:
+          type: string
+      required:
+        - id
+        - metadata
+        - nestedTuple
+        - scores
+        - status
+        - tags
+        - unionTest
+        - userProfile
 paths:
   /api:
     get:
@@ -1761,9 +1757,9 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/PostApiTestsUnionTestBody"
-  /api/complex/org/{orgId}/projects/{projectId}/{subTaskId?}:
+  /api/complex/org/{orgId}/projects/{projectId}/{subTaskId}?:
     get:
-      summary: Complex Path Parameters
+      summary: Get Complex Org By Org Id Projects By Project Id {sub Task Id}?
       responses:
         default:
           description: Generic status from T["status"]
@@ -1789,10 +1785,6 @@ paths:
                 required:
                   - success
                   - params
-      description: Route with multiple path parameters and an optional one.
-      tags:
-        - Parameter Testing
-        - E-Commerce Platform
       parameters:
         - name: orgId
           in: path
@@ -1806,9 +1798,11 @@ paths:
             type: string
         - name: subTaskId
           in: path
-          required: false
+          required: true
           schema:
             type: string
+      tags:
+        - E-Commerce Platform
   /api/complex/archive/{year}/{month}:
     get:
       summary: Get Complex Archive By Year By Month
@@ -1903,28 +1897,7 @@ paths:
               required:
                 - fileTitle
                 - fileSize
-  /api/complex/any-method:
-    all:
-      summary: All Methods Route
-      responses:
-        default:
-          description: Generic status from T["status"]
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  method:
-                    type: string
-                  message:
-                    type: string
-                required:
-                  - method
-                  - message
-      description: Route responding to any HTTP method.
-      tags:
-        - Method Testing
-        - E-Commerce Platform
+  /api/complex/any-method: {}
   /api/complex/union-responses:
     get:
       summary: Union Status Code Responses
@@ -4830,9 +4803,9 @@ paths:
             type: string
       tags:
         - E-Commerce Platform
-  /api/edge/ts-ast/optional/{opt?}:
+  /api/edge/ts-ast/optional/{opt}?:
     get:
-      summary: Get Edge Ts ast Optional By Opt
+      summary: Get Edge Ts ast Optional {opt}?
       responses:
         default:
           description: Generic status from T["status"]
@@ -4997,23 +4970,7 @@ paths:
                   - wildcard
       tags:
         - E-Commerce Platform
-  /api/edge/all-handler/check:
-    all:
-      summary: All Edge All handler Check
-      responses:
-        default:
-          description: Generic status from T["status"]
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  method:
-                    type: string
-                required:
-                  - method
-      tags:
-        - E-Commerce Platform
+  /api/edge/all-handler/check: {}
   /api/edge/headers/custom-test:
     get:
       summary: Get Edge Headers Custom test

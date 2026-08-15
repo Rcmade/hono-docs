@@ -126,7 +126,7 @@ GenerateParams & {
     for (const routeProp of t.getProperties()) {
       const raw = routeProp.getName().replace(/"/g, "").replace(/'/g, "");
       const pathPatterns: Record<string, string> = {};
-      const regexExtractor = /:([^\/{}]+)(?:{(.+?)})?(?=\/|$)/g;
+      const regexExtractor = /:([a-zA-Z0-9_]+)(?:{([^{}]*(?:{[^{}]*}[^{}]*)*)})?/g;
       let match;
       while ((match = regexExtractor.exec(raw)) !== null) {
         if (match[2]) {
@@ -134,7 +134,7 @@ GenerateParams & {
         }
       }
 
-      const route = raw.replace(/:([^\/{}]+)(?:{(.+?)})?(?=\/|$)/g, "{$1}");
+      const route = raw.replace(/:([a-zA-Z0-9_]+)(?:{([^{}]*(?:{[^{}]*}[^{}]*)*)})?/g, "{$1}");
       if (!paths[route]) paths[route] = {};
 
       // Get the type of the route methods object (e.g. { $get: ... })

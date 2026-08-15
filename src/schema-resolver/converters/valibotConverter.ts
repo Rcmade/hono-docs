@@ -3,6 +3,11 @@
 // Uses the official @valibot/to-json-schema package.
 
 import type { OpenAPIV3 } from "openapi-types";
+import {
+  ZOD_TARGETS,
+  VALIBOT_TARGETS,
+  ZOD_TO_VALIBOT_TARGET_MAP,
+} from "../../utils/constants";
 
 /**
  * Converts a live Valibot schema instance to an OpenAPI 3.0-compatible JSON Schema.
@@ -15,6 +20,7 @@ import type { OpenAPIV3 } from "openapi-types";
 export async function convertValibotSchema(
   schema: object,
   cwd: string,
+  targetFormat: (typeof ZOD_TARGETS)[keyof typeof ZOD_TARGETS],
 ): Promise<OpenAPIV3.SchemaObject | null> {
   try {
     const valibotSchema = schema as Record<string, unknown>;
@@ -41,9 +47,14 @@ export async function convertValibotSchema(
 
     if (typeof toJsonSchema !== "function") return null;
 
+    // Map our ZOD_TARGETS to Valibot's supported targets
+    const valibotTarget =
+      ZOD_TO_VALIBOT_TARGET_MAP[targetFormat] ?? VALIBOT_TARGETS.openapi30;
+
     const result = toJsonSchema(valibotSchema, {
       // Use input type for transforms
       typeMode: "input",
+      target: valibotTarget,
     });
 
     if (result && typeof result === "object") {

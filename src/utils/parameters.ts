@@ -123,7 +123,7 @@ export async function genParameters(
         params.push({
           name: key,
           in: src === "param" ? "path" : src,
-          required: mergedRequired.includes(key),
+          required: src === "param" ? true : mergedRequired.includes(key),
           schema: schemaObj,
           ...(isArray ? { style: "form", explode: true } : {}),
         });
@@ -155,7 +155,7 @@ export async function genParameters(
         params.push({
           name,
           in: src === "param" ? "path" : src,
-          required: !f.isOptional(),
+          required: src === "param" ? true : !f.isOptional(),
           schema,
           ...(isArray ? { style: "form", explode: true } : {}),
         });

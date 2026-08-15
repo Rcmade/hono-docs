@@ -348,6 +348,10 @@
           "restored"
         ]
       },
+      "GetApiExhaustiveAstRecordAnyResponse200": {
+        "type": "object",
+        "additionalProperties": {}
+      },
       "PostApiZodAllFeaturesResponsedefaultDataTupleOfTwoItem": {
         "oneOf": [
           {
@@ -592,10 +596,6 @@
           "inventoryCount",
           "categories"
         ]
-      },
-      "GetApiExhaustiveAstRecordAnyResponse200": {
-        "type": "object",
-        "additionalProperties": {}
       },
       "PostApiZodAllFeaturesBodyStringRecord": {
         "type": "object",
@@ -1606,6 +1606,35 @@
         ],
         "additionalProperties": false
       },
+      "exhaustiveFormSchema": {
+        "type": "object",
+        "properties": {
+          "profilePicture": {},
+          "description": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "file": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        },
+        "required": [
+          "description",
+          "tags",
+          "file"
+        ],
+        "additionalProperties": false
+      },
       "insertUserZod": {
         "type": "object",
         "properties": {
@@ -1765,6 +1794,97 @@
         ],
         "additionalProperties": false
       },
+      "typeboxSchema": {
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "age"
+        ],
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "email": {
+            "format": "email",
+            "type": "string"
+          },
+          "age": {
+            "minimum": 18,
+            "maximum": 99,
+            "type": "number"
+          }
+        }
+      },
+      "zodFormSchema": {
+        "type": "object",
+        "properties": {
+          "fileUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "fileUrl",
+          "notes"
+        ],
+        "additionalProperties": false
+      },
+      "createOrderSchema": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+            "description": "ID of the product to order"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991,
+            "description": "Number of items"
+          },
+          "shippingAddress": {
+            "type": "object",
+            "properties": {
+              "line1": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "countryCode": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 2
+              },
+              "postalCode": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "line1",
+              "city",
+              "countryCode",
+              "postalCode"
+            ],
+            "additionalProperties": false,
+            "description": "Destination address"
+          }
+        },
+        "required": [
+          "productId",
+          "quantity",
+          "shippingAddress"
+        ],
+        "additionalProperties": false
+      },
       "insertUserValibot": {
         "type": "object",
         "properties": {
@@ -1799,51 +1919,37 @@
               {
                 "anyOf": [
                   {
-                    "anyOf": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "number"
-                      },
-                      {
-                        "type": "boolean"
-                      },
-                      {
-                        "type": "null"
-                      }
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "enum": [
+                      null
                     ]
-                  },
-                  {
-                    "type": "array",
-                    "items": {}
-                  },
-                  {
-                    "type": "object",
-                    "propertyNames": {
-                      "type": "string"
-                    },
-                    "additionalProperties": {}
                   }
                 ]
               },
               {
-                "type": "null"
+                "type": "array",
+                "items": {}
+              },
+              {
+                "$ref": "#/components/schemas/GetApiExhaustiveAstRecordAnyResponse200"
               }
-            ]
+            ],
+            "nullable": true
           },
           "createdAt": {
             "type": "string"
           },
           "lastLoginAt": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ]
+            "type": "string",
+            "nullable": true
           }
         },
         "required": [
@@ -1851,36 +1957,6 @@
           "name",
           "email"
         ]
-      },
-      "exhaustiveFormSchema": {
-        "type": "object",
-        "properties": {
-          "profilePicture": {},
-          "description": {
-            "type": "string",
-            "maxLength": 500
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "file": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "binary",
-              "contentEncoding": "binary"
-            }
-          }
-        },
-        "required": [
-          "description",
-          "tags",
-          "file"
-        ],
-        "additionalProperties": false
       },
       "myArktypeSchema": {
         "type": "object",
@@ -1973,7 +2049,8 @@
             "properties": {
               "age": {
                 "type": "number",
-                "exclusiveMinimum": 0
+                "minimum": 0,
+                "exclusiveMinimum": true
               },
               "isActive": {
                 "type": "boolean"
@@ -2016,97 +2093,6 @@
           "unionTest",
           "userProfile"
         ]
-      },
-      "typeboxSchema": {
-        "type": "object",
-        "required": [
-          "id",
-          "email",
-          "age"
-        ],
-        "properties": {
-          "id": {
-            "format": "uuid",
-            "type": "string"
-          },
-          "email": {
-            "format": "email",
-            "type": "string"
-          },
-          "age": {
-            "minimum": 18,
-            "maximum": 99,
-            "type": "number"
-          }
-        }
-      },
-      "zodFormSchema": {
-        "type": "object",
-        "properties": {
-          "fileUrl": {
-            "type": "string",
-            "format": "uri"
-          },
-          "notes": {
-            "type": "string",
-            "maxLength": 500
-          }
-        },
-        "required": [
-          "fileUrl",
-          "notes"
-        ],
-        "additionalProperties": false
-      },
-      "createOrderSchema": {
-        "type": "object",
-        "properties": {
-          "productId": {
-            "type": "string",
-            "format": "uuid",
-            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
-            "description": "ID of the product to order"
-          },
-          "quantity": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 9007199254740991,
-            "description": "Number of items"
-          },
-          "shippingAddress": {
-            "type": "object",
-            "properties": {
-              "line1": {
-                "type": "string"
-              },
-              "city": {
-                "type": "string"
-              },
-              "countryCode": {
-                "type": "string",
-                "minLength": 2,
-                "maxLength": 2
-              },
-              "postalCode": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "line1",
-              "city",
-              "countryCode",
-              "postalCode"
-            ],
-            "additionalProperties": false,
-            "description": "Destination address"
-          }
-        },
-        "required": [
-          "productId",
-          "quantity",
-          "shippingAddress"
-        ],
-        "additionalProperties": false
       }
     }
   },
@@ -2749,9 +2735,9 @@
         }
       }
     },
-    "/api/complex/org/{orgId}/projects/{projectId}/{subTaskId?}": {
+    "/api/complex/org/{orgId}/projects/{projectId}/{subTaskId}?": {
       "get": {
-        "summary": "Complex Path Parameters",
+        "summary": "Get Complex Org By Org Id Projects By Project Id {sub Task Id}?",
         "responses": {
           "default": {
             "description": "Generic status from T[\"status\"]",
@@ -2791,11 +2777,6 @@
             }
           }
         },
-        "description": "Route with multiple path parameters and an optional one.",
-        "tags": [
-          "Parameter Testing",
-          "E-Commerce Platform"
-        ],
         "parameters": [
           {
             "name": "orgId",
@@ -2816,11 +2797,14 @@
           {
             "name": "subTaskId",
             "in": "path",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "string"
             }
           }
+        ],
+        "tags": [
+          "E-Commerce Platform"
         ]
       }
     },
@@ -2970,40 +2954,7 @@
         }
       }
     },
-    "/api/complex/any-method": {
-      "all": {
-        "summary": "All Methods Route",
-        "responses": {
-          "default": {
-            "description": "Generic status from T[\"status\"]",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "method": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "method",
-                    "message"
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "description": "Route responding to any HTTP method.",
-        "tags": [
-          "Method Testing",
-          "E-Commerce Platform"
-        ]
-      }
-    },
+    "/api/complex/any-method": {},
     "/api/complex/union-responses": {
       "get": {
         "summary": "Union Status Code Responses",
@@ -7608,9 +7559,9 @@
         ]
       }
     },
-    "/api/edge/ts-ast/optional/{opt?}": {
+    "/api/edge/ts-ast/optional/{opt}?": {
       "get": {
-        "summary": "Get Edge Ts ast Optional By Opt",
+        "summary": "Get Edge Ts ast Optional {opt}?",
         "responses": {
           "default": {
             "description": "Generic status from T[\"status\"]",
@@ -7881,34 +7832,7 @@
         ]
       }
     },
-    "/api/edge/all-handler/check": {
-      "all": {
-        "summary": "All Edge All handler Check",
-        "responses": {
-          "default": {
-            "description": "Generic status from T[\"status\"]",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "method": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "method"
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "E-Commerce Platform"
-        ]
-      }
-    },
+    "/api/edge/all-handler/check": {},
     "/api/edge/headers/custom-test": {
       "get": {
         "summary": "Get Edge Headers Custom test",

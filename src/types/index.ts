@@ -128,6 +128,13 @@ export type HonoDocsConfig = {
   apis: ApiGroup[];
 
   /**
+   * Whether to run the generated OpenAPI spec through a structural validator before output.
+   * Prints warnings for any spec violations (e.g. invalid status codes, broken refs).
+   * @default true
+   */
+  validateOutput?: boolean;
+
+  /**
    * Optional raw string content to inject at the top of each generated `.d.ts` snapshot.
    */
   preDefineTypeContent?: string;
