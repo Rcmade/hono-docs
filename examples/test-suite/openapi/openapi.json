@@ -410,25 +410,6 @@
           }
         ]
       },
-      "PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadata": {
-        "type": "object",
-        "properties": {
-          "preferences": {
-            "$ref": "#/components/schemas/PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadataPreferences"
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "preferences",
-          "tags"
-        ],
-        "nullable": true
-      },
       "PostApiExhaustiveFormResponse413": {
         "type": "object",
         "properties": {
@@ -490,8 +471,8 @@
           "theme": {
             "type": "string",
             "enum": [
-              "light",
-              "dark"
+              "dark",
+              "light"
             ]
           },
           "notifications": {
@@ -501,6 +482,36 @@
         "required": [
           "theme",
           "notifications"
+        ]
+      },
+      "PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadata": {
+        "type": "object",
+        "properties": {
+          "preferences": {
+            "$ref": "#/components/schemas/PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadataPreferences"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "preferences",
+          "tags"
+        ],
+        "nullable": true
+      },
+      "PostApiEdgeResponsesMultiStatusResponse400": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "error"
         ]
       },
       "PostApiMultiValibotItemExportBody": {
@@ -513,6 +524,21 @@
         "required": [
           "format"
         ]
+      },
+      "legacySchema": {
+        "type": "object",
+        "properties": {
+          "oldApiKey": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "oldApiKey"
+        ],
+        "additionalProperties": false
       },
       "GetApiStressItemIdResponsedefault": {
         "type": "object",
@@ -576,42 +602,6 @@
         "additionalProperties": {
           "type": "string"
         }
-      },
-      "PostApiNewFrameworksDrizzleValibotResponse400Variant1Output": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "age": {
-            "type": "number"
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "role": {},
-          "metadata": {
-            "$ref": "#/components/schemas/PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadata"
-          },
-          "createdAt": {
-            "type": "string"
-          },
-          "lastLoginAt": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "email"
-        ]
       },
       "PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant1Variant1Output": {
         "type": "object",
@@ -798,6 +788,17 @@
           "nullable": true
         }
       },
+      "PostApiMultiZodItemFormResponsedefault": {
+        "type": "object",
+        "properties": {
+          "uploaded": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "uploaded"
+        ]
+      },
       "PostApiMultiValibotItemJsonResponse400Variant1": {
         "type": "object",
         "properties": {
@@ -830,6 +831,42 @@
           "success",
           "output",
           "issues"
+        ]
+      },
+      "PostApiNewFrameworksDrizzleValibotResponse400Variant1Output": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "age": {
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "role": {},
+          "metadata": {
+            "$ref": "#/components/schemas/PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadata"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "lastLoginAt": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email"
         ]
       },
       "typeboxJsonSchema": {
@@ -896,17 +933,6 @@
         "required": [
           "title",
           "count"
-        ]
-      },
-      "PostApiEdgeResponsesMultiStatusResponse400": {
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "error"
         ]
       },
       "PostApiTestsUnionTestBody": {
@@ -6150,15 +6176,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "uploaded": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "uploaded"
-                  ]
+                  "$ref": "#/components/schemas/PostApiMultiZodItemFormResponsedefault"
                 }
               }
             }
@@ -8081,6 +8099,221 @@
         ]
       }
     },
+    "/api/edge/legacy/migrate": {
+      "post": {
+        "summary": "Legacy Migration Endpoint",
+        "responses": {
+          "200": {
+            "description": "Successfully triggered legacy account migration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "migrated": {
+                      "type": "boolean"
+                    },
+                    "newAccountId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "migrated",
+                    "newAccountId"
+                  ]
+                },
+                "example": {
+                  "migrated": true,
+                  "newAccountId": "acc_999"
+                }
+              }
+            }
+          }
+        },
+        "description": "Migrates a legacy account to the new system.",
+        "deprecated": true,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/legacySchema"
+              },
+              "example": {
+                "oldApiKey": "legacy_key_12345",
+                "reason": "System Upgrade"
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/legacy/bare-deprecated": {
+      "get": {
+        "summary": "Bare Deprecated Endpoint",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deprecated": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "deprecated"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true,
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/legacy/multi-example": {
+      "post": {
+        "summary": "Multi-Example Request & Responses",
+        "responses": {
+          "201": {
+            "description": "Account successfully provisioned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "created": {
+                      "type": "boolean"
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "created",
+                    "id"
+                  ]
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "created": true,
+                      "id": "acc_101"
+                    }
+                  },
+                  "example2": {
+                    "value": {
+                      "created": true,
+                      "id": "acc_102"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostApiEdgeResponsesMultiStatusResponse400"
+                },
+                "example": {
+                  "error": "Invalid API key format"
+                }
+              }
+            }
+          }
+        },
+        "description": "Demonstrates multiple named examples for request body and status codes.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/legacySchema"
+              },
+              "examples": {
+                "example1": {
+                  "value": {
+                    "oldApiKey": "key_alpha",
+                    "reason": "Batch Alpha"
+                  }
+                },
+                "example2": {
+                  "value": {
+                    "oldApiKey": "key_beta",
+                    "reason": "Batch Beta"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/legacy/form-upload": {
+      "post": {
+        "summary": "Form Upload with Examples",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostApiMultiZodItemFormResponsedefault"
+                }
+              }
+            },
+            "headers": {
+              "X-Upload-ID": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "upl_777"
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fileTitle": {
+                    "type": "string"
+                  },
+                  "fileTag": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileTitle"
+                ]
+              },
+              "example": "plain text raw example"
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
     "/api/edge/deep/sub-resource": {
       "get": {
         "summary": "Get Edge Deep Sub resource",
@@ -8441,8 +8674,8 @@
                             "role": {
                               "type": "string",
                               "enum": [
-                                "user",
                                 "admin",
+                                "user",
                                 "guest"
                               ]
                             },
@@ -8478,8 +8711,8 @@
                                 "theme": {
                                   "type": "string",
                                   "enum": [
-                                    "light",
                                     "dark",
+                                    "light",
                                     "system"
                                   ]
                                 },
@@ -8510,8 +8743,8 @@
                         "status": {
                           "type": "string",
                           "enum": [
-                            "active",
                             "pending",
+                            "active",
                             "inactive"
                           ]
                         },

@@ -8,6 +8,9 @@ export type ParsedJSDoc = {
   description?: string;
   tags?: string[];
   exclude?: boolean;
+  deprecated?: boolean | string;
+  examples?: Array<{ statusCode?: string; value: unknown }>;
+  responseDescriptions?: Record<string, string>;
   responseHeaders?: Record<
     string,
     { name: string; schema: OpenAPIV3.HeaderObject }[]
@@ -112,6 +115,46 @@ export function extractJSDocs(project: Project): Map<string, ParsedJSDoc[]> {
                       ["ignore", "exclude", "hide"].includes(tagName)
                     ) {
                       parsed.exclude = true;
+                    } else if (tagName.toLowerCase() === "deprecated") {
+                      parsed.deprecated = tagComment || true;
+                    } else if (
+                      tagName.toLowerCase() === "example" &&
+                      tagComment
+                    ) {
+                      if (!parsed.examples) parsed.examples = [];
+
+                      let statusCode: string | undefined;
+                      let rawContent = tagComment;
+
+                      const statusMatch = rawContent.match(
+                        /^(?:\[?(\d{3}|default)\]?)\s+([\s\S]*)$/,
+                      );
+                      if (statusMatch) {
+                        statusCode = statusMatch[1];
+                        rawContent = statusMatch[2].trim();
+                      }
+
+                      let value: unknown = rawContent;
+                      try {
+                        value = JSON.parse(rawContent);
+                      } catch {
+                        // Fall back to raw string if not JSON
+                      }
+
+                      parsed.examples.push({ statusCode, value });
+                    } else if (
+                      (tagName.toLowerCase() === "responsedescription" ||
+                        tagName.toLowerCase() === "response_description") &&
+                      tagComment
+                    ) {
+                      const match = tagComment.match(/^(\d{3}|default)\s+(.*)$/);
+                      if (match) {
+                        const statusCode = match[1];
+                        const desc = match[2].trim();
+                        if (!parsed.responseDescriptions)
+                          parsed.responseDescriptions = {};
+                        parsed.responseDescriptions[statusCode] = desc;
+                      }
                     } else if (
                       tagName.toLowerCase() === "responseheader" &&
                       tagComment

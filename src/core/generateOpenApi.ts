@@ -35,14 +35,14 @@ export async function generateOpenApi({
   outputRoot,
   cacheManager,
 }: // {
-  //   config: HonoDocsConfig;
-  //   snapshotPath: AppTypeSnapshotPath;
-  // }
-  GenerateParams & {
-    snapshotPath: AppTypeSnapshotPath;
-    apiGroup: ApiGroup;
-    cacheManager?: CacheManager;
-  }): Promise<OpenApiPath> {
+//   config: HonoDocsConfig;
+//   snapshotPath: AppTypeSnapshotPath;
+// }
+GenerateParams & {
+  snapshotPath: AppTypeSnapshotPath;
+  apiGroup: ApiGroup;
+  cacheManager?: CacheManager;
+}): Promise<OpenApiPath> {
   const sf = project.addSourceFileAtPath(
     path.resolve(rootPath, snapshotPath.appTypePath),
   );
@@ -70,8 +70,13 @@ export async function generateOpenApi({
   const paths: Record<string, OpenAPIV3.PathItemObject> = {};
 
   // Memoized dependency tracer to ensure instantaneous per-route caching without repeated AST traversals
-  const fileDependenciesCache = new Map<string, { hash: string; files: string[] }>();
-  const getRouteDepInfo = (filePath: string): { hash: string; files: string[] } => {
+  const fileDependenciesCache = new Map<
+    string,
+    { hash: string; files: string[] }
+  >();
+  const getRouteDepInfo = (
+    filePath: string,
+  ): { hash: string; files: string[] } => {
     if (!cacheManager) return { hash: "", files: [] };
     const cached = fileDependenciesCache.get(filePath);
     if (cached) return cached;
@@ -87,7 +92,9 @@ export async function generateOpenApi({
       if (!currSf) continue;
       for (const ref of currSf.getReferencedSourceFiles()) {
         const refPath = ref.getFilePath();
-        const realRef = fs.existsSync(refPath) ? fs.realpathSync(refPath) : refPath;
+        const realRef = fs.existsSync(refPath)
+          ? fs.realpathSync(refPath)
+          : refPath;
         if (!realRef.includes("node_modules")) {
           queue.push(realRef);
         }
@@ -202,7 +209,13 @@ export async function generateOpenApi({
         const hasDoc = !!(
           jsDoc?.summary ||
           jsDoc?.description ||
-          (jsDoc?.tags && jsDoc?.tags?.length > 0)
+          (jsDoc?.tags && jsDoc?.tags?.length > 0) ||
+          jsDoc?.deprecated ||
+          (jsDoc?.examples && jsDoc?.examples?.length > 0) ||
+          (jsDoc?.responseDescriptions &&
+            Object.keys(jsDoc.responseDescriptions).length > 0) ||
+          (jsDoc?.responseHeaders &&
+            Object.keys(jsDoc.responseHeaders).length > 0)
         );
         logger.registerRoute(http, raw, hasDoc);
 
@@ -217,6 +230,10 @@ export async function generateOpenApi({
 
         if (jsDoc?.tags && jsDoc.tags.length > 0) {
           op.tags = jsDoc.tags;
+        }
+
+        if (jsDoc?.deprecated) {
+          op.deprecated = true;
         }
 
         // parameters - try runtime schema resolution first, fall back to type-based
@@ -244,7 +261,25 @@ export async function generateOpenApi({
           rootPath,
           cacheManager,
         });
-        if (rb) op.requestBody = rb;
+        if (rb) {
+          // Apply requestBody examples from JSDoc
+          const bodyExamples =
+            jsDoc?.examples?.filter((ex) => !ex.statusCode) || [];
+          if (bodyExamples.length > 0 && rb.content) {
+            for (const mediaType of Object.keys(rb.content)) {
+              if (bodyExamples.length === 1) {
+                rb.content[mediaType].example = bodyExamples[0].value;
+              } else {
+                const examplesMap: Record<string, OpenAPIV3.ExampleObject> = {};
+                bodyExamples.forEach((ex, idx) => {
+                  examplesMap[`example${idx + 1}`] = { value: ex.value };
+                });
+                rb.content[mediaType].examples = examplesMap;
+              }
+            }
+          }
+          op.requestBody = rb;
+        }
 
         // responses
         op.responses = {};
@@ -275,17 +310,55 @@ export async function generateOpenApi({
           });
           const schema = schemas.length > 1 ? { oneOf: schemas } : schemas[0];
 
-          const responseObj: OpenAPIV3.ResponseObject = {
-            description:
-              code === "default"
-                ? `Generic status from ${vs[0]
+          const customDesc =
+            jsDoc?.responseDescriptions?.[code] ??
+            (code !== "default"
+              ? jsDoc?.responseDescriptions?.[code.toLowerCase()]
+              : undefined);
+
+          const defaultDesc =
+            code === "default"
+              ? `Generic status from ${vs[0]
                   .getProperty("status")!
                   .getValueDeclarationOrThrow()
                   .getType()
                   .getText()}`
-                : `Status ${code}`,
+              : `Status ${code}`;
+
+          const responseObj: OpenAPIV3.ResponseObject = {
+            description: customDesc || defaultDesc,
             content: { "application/json": { schema } },
           };
+
+          // Apply response examples from JSDoc
+          const respExamples =
+            jsDoc?.examples?.filter((ex) => {
+              if (ex.statusCode) {
+                return ex.statusCode === code;
+              }
+              if (
+                !rb &&
+                (code === "200" ||
+                  (code === "default" && Object.keys(byStatus).length === 1))
+              ) {
+                return true;
+              }
+              return false;
+            }) || [];
+
+          if (respExamples.length > 0 && responseObj.content) {
+            for (const mediaType of Object.keys(responseObj.content)) {
+              if (respExamples.length === 1) {
+                responseObj.content[mediaType].example = respExamples[0].value;
+              } else {
+                const examplesMap: Record<string, OpenAPIV3.ExampleObject> = {};
+                respExamples.forEach((ex, idx) => {
+                  examplesMap[`example${idx + 1}`] = { value: ex.value };
+                });
+                responseObj.content[mediaType].examples = examplesMap;
+              }
+            }
+          }
 
           const routeNode = routeEntry?.call ?? null;
           const astHeaders = routeNode ? extractASTHeaders(routeNode) : [];
