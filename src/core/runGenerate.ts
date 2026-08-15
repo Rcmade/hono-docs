@@ -11,6 +11,7 @@ import { getLibDir } from "../utils/libDir";
 import { logger } from "../utils/logger";
 import { CacheManager } from "../cache/index";
 import { deduplicateComponents } from "../utils/deduplicateSchemas";
+import { getAdapter } from "../openapi/adapters/index";
 
 export interface RunGenerateOptions {
   /** When true, bypass all cache reads and do not write a new cache. */
@@ -292,7 +293,13 @@ export async function runGenerate(
   const outputPath = path.join(rootPath, config.outputs.openApiJson);
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
-  const deduplicatedSpec = deduplicateComponents(merged as unknown as import("openapi-types").OpenAPIV3.Document);
+  // Apply version-specific document root fields (e.g. $schema for 3.1)
+  const adapter = getAdapter(config.openApiVersion);
+  const finalSpec = adapter.makeDocumentRoot(
+    merged as unknown as Record<string, unknown>
+  );
+
+  const deduplicatedSpec = deduplicateComponents(finalSpec as unknown as import("openapi-types").OpenAPIV3.Document);
   const specContent = `${JSON.stringify(deduplicatedSpec, null, 2)}\n`;
   fs.writeFileSync(outputPath, specContent);
 

@@ -25,6 +25,7 @@ import { logger } from "../utils/logger";
 import type { CacheManager } from "../cache/index";
 
 import type { OpenAPIV3 } from "openapi-types";
+import { getAdapter } from "../openapi/adapters/index";
 
 export async function generateOpenApi({
   config,
@@ -68,6 +69,9 @@ GenerateParams & {
   const routesNode = typeArgs[1];
 
   const paths: Record<string, OpenAPIV3.PathItemObject> = {};
+
+  // Resolve the version adapter once — used by all schema builders
+  const adapter = getAdapter(config.openApiVersion);
 
   // Memoized dependency tracer to ensure instantaneous per-route caching without repeated AST traversals
   const fileDependenciesCache = new Map<
@@ -247,6 +251,7 @@ GenerateParams & {
           rootPath,
           pathPatterns,
           cacheManager,
+          adapter,
         });
         if (params.length) op.parameters = params;
 
@@ -260,6 +265,7 @@ GenerateParams & {
           project,
           rootPath,
           cacheManager,
+          adapter,
         });
         if (rb) {
           // Apply requestBody examples from JSDoc
@@ -306,7 +312,12 @@ GenerateParams & {
               outProp,
               aliasDecl,
             );
-            return buildSchema(outType, typeChecker, aliasDecl);
+            return buildSchema({
+              type: outType,
+              typeChecker,
+              contextNode: aliasDecl,
+              adapter,
+            });
           });
           const schema = schemas.length > 1 ? { oneOf: schemas } : schemas[0];
 

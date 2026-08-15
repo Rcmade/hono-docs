@@ -5,6 +5,8 @@ import { logger } from "./logger";
 import { VALIDATOR_TARGETS } from "./constants";
 import type { Project, Type, TypeChecker, Node } from "ts-morph";
 import type { CacheManager } from "../cache/index";
+import type { OpenAPIVersionAdapter } from "../openapi/adapter";
+import { v30Adapter } from "../openapi/adapters/v3-0";
 
 function isArraySchema(
   schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject,
@@ -26,6 +28,8 @@ export interface GenParamsOptions {
   rootPath?: string;
   pathPatterns?: Record<string, string>;
   cacheManager?: CacheManager;
+  /** Version adapter for nullable and schema transforms. Defaults to 3.0. */
+  adapter?: OpenAPIVersionAdapter;
 }
 
 export async function genParameters(
@@ -41,6 +45,7 @@ export async function genParameters(
     rootPath,
     pathPatterns,
     cacheManager,
+    adapter = v30Adapter,
   } = options;
   const inputProp = type.getProperty("input");
   if (!inputProp) return [];
@@ -72,6 +77,7 @@ export async function genParameters(
         typeChecker,
         rootPath,
         cacheManager,
+        adapter,
       );
       if (
         resolved &&
@@ -132,11 +138,12 @@ export async function genParameters(
       for (const f of props) {
         const ft = typeChecker.getTypeOfSymbolAtLocation(f, contextNode);
         const name = f.getName();
-        const schema = buildSchema(
-          ft,
+        const schema = buildSchema({
+          type: ft,
           typeChecker,
           contextNode,
-        ) as OpenAPIV3.SchemaObject;
+          adapter,
+        }) as OpenAPIV3.SchemaObject;
 
         if (src === "param" && pathPatterns?.[name]) {
           schema.pattern = pathPatterns[name];

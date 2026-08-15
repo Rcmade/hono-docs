@@ -5,6 +5,8 @@ import { logger } from "./logger";
 import type { OpenAPIV3 } from "openapi-types";
 import type { Project, Type, TypeChecker, Node } from "ts-morph";
 import type { CacheManager } from "../cache/index";
+import type { OpenAPIVersionAdapter } from "../openapi/adapter";
+import { v30Adapter } from "../openapi/adapters/v3-0";
 
 export interface GenRequestBodyOptions {
   type: Type;
@@ -15,12 +17,24 @@ export interface GenRequestBodyOptions {
   project?: Project;
   rootPath?: string;
   cacheManager?: CacheManager;
+  /** Version adapter for nullable and schema transforms. Defaults to 3.0. */
+  adapter?: OpenAPIVersionAdapter;
 }
 
 export async function genRequestBody(
-  options: GenRequestBodyOptions
+  options: GenRequestBodyOptions,
 ): Promise<OpenAPIV3.RequestBodyObject | null> {
-  const { type, typeChecker, contextNode, routePath, method, project, rootPath, cacheManager } = options;
+  const {
+    type,
+    typeChecker,
+    contextNode,
+    routePath,
+    method,
+    project,
+    rootPath,
+    cacheManager,
+    adapter = v30Adapter,
+  } = options;
   const inpProp = type.getProperty("input");
   if (!inpProp) return null;
   const inp = typeChecker.getTypeOfSymbolAtLocation(inpProp, contextNode);
@@ -46,6 +60,7 @@ export async function genRequestBody(
         typeChecker,
         rootPath,
         cacheManager,
+        adapter,
       );
       if (resolved) {
         jsonSchema = resolved.schema as OpenAPIV3.SchemaObject;
@@ -55,7 +70,12 @@ export async function genRequestBody(
 
     // Fall back to type-based schema if resolution failed or no validator found
     if (!jsonSchema) {
-      jsonSchema = buildSchema(jType, typeChecker, contextNode);
+      jsonSchema = buildSchema({
+        type: jType,
+        typeChecker,
+        contextNode,
+        adapter,
+      });
       if (routePath && method) {
         logger.record(method, routePath, "json", "ts type");
       }
@@ -81,6 +101,7 @@ export async function genRequestBody(
         typeChecker,
         rootPath,
         cacheManager,
+        adapter,
       );
       if (resolved) {
         formSchema = resolved.schema as OpenAPIV3.SchemaObject;
@@ -89,7 +110,12 @@ export async function genRequestBody(
     }
 
     if (!formSchema) {
-      formSchema = buildSchema(fType, typeChecker, contextNode);
+      formSchema = buildSchema({
+        type: fType,
+        typeChecker,
+        contextNode,
+        adapter,
+      });
       if (routePath && method) {
         logger.record(method, routePath, "form", "ts type");
       }

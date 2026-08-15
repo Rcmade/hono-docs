@@ -5,18 +5,27 @@
 import type { OpenAPIV3 } from "openapi-types";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
+import { ZOD_TARGETS } from "../../utils/constants";
+
 /**
- * Converts a live Zod schema to an OpenAPI 3.0-compatible JSON Schema.
+ * Converts a live Zod schema to an OpenAPI-compatible JSON Schema.
  *
  * Since we already have the live Zod schema instance (loaded from the user's
  * project), we can get the `zod` module from the same resolution context.
  *
  * Preserves all constraints: minLength, maxLength, minimum, maximum, pattern,
  * format (email, uuid, uri, date-time), enum values, required fields, etc.
+ *
+ * @param schema - The live Zod schema object.
+ * @param cwd - Working directory (user's project root) for jiti module resolution.
+ * @param zodTarget - The target format string passed to Zod v4's toJSONSchema.
+ *   - "openapi-3.0" (default): emits `nullable: true` for nullable fields.
+ *   - "openapi-3.1": emits `type: [T, "null"]` for nullable fields.
  */
 export async function convertZodSchema(
   schema: object,
   cwd: string,
+  zodTarget: (typeof ZOD_TARGETS)[keyof typeof ZOD_TARGETS] = ZOD_TARGETS.v3_0,
 ): Promise<OpenAPIV3.SchemaObject | null> {
   try {
     const zodSchema = schema as Record<string, unknown>;
@@ -48,7 +57,7 @@ export async function convertZodSchema(
 
     if (typeof toJSONSchema === "function") {
       const result = toJSONSchema(zodSchema, {
-        target: "openapi-3.0",
+        target: zodTarget,
         // Map unrepresentable types (bigint, custom) to {}
         unrepresentable: "any",
         errorMessages: true,
@@ -71,7 +80,17 @@ export async function convertZodSchema(
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const converter: any = zodToJsonSchema;
-      const res = converter(zodSchema, { target: "openApi3", errorMessages: true });
+
+      let fallbackTarget = "openApi3";
+      if (zodTarget === ZOD_TARGETS.v3_1)
+        fallbackTarget = ZOD_TARGETS.jsonSchema7;
+      else if (zodTarget === ZOD_TARGETS.jsonSchema7)
+        fallbackTarget = ZOD_TARGETS.jsonSchema7;
+
+      const res = converter(zodSchema, {
+        target: fallbackTarget,
+        errorMessages: true,
+      });
       if (res && typeof res === "object") {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { $schema: _schema, ...clean } = res as Record<string, unknown>;

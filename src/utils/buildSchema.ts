@@ -1,13 +1,25 @@
 import type { OpenAPIV3 } from "openapi-types";
 import { attachSchemaName } from "./schemaHelper";
+import type { OpenAPIVersionAdapter } from "../openapi/adapter";
+import { v30Adapter } from "../openapi/adapters/v3-0";
 
-export function buildSchema(
-  type: import("ts-morph").Type,
-  typeChecker: import("ts-morph").TypeChecker,
-  contextNode: import("ts-morph").Node,
+export interface BuildSchemaOptions {
+  type: import("ts-morph").Type;
+  typeChecker: import("ts-morph").TypeChecker;
+  contextNode: import("ts-morph").Node;
+  seen?: WeakSet<import("ts-morph").Type>;
+  depth?: number;
+  adapter?: OpenAPIVersionAdapter;
+}
+
+export function buildSchema({
+  type,
+  typeChecker,
+  contextNode,
   seen = new WeakSet(),
   depth = 0,
-): OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject {
+  adapter = v30Adapter,
+}: BuildSchemaOptions): OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject {
   // Prevent infinite recursion on circular/recursive types
   if (depth > 40) return {};
 
@@ -57,20 +69,20 @@ export function buildSchema(
         m.getText() === "true" ||
         m.getText() === "false" ||
         (m.isNull && m.isNull()) ||
-        (m.isUndefined && m.isUndefined())
+        (m.isUndefined && m.isUndefined()),
     );
     if (hasTrue && hasFalse && onlyBools) {
-      const schema: OpenAPIV3.SchemaObject = {
-        type: "boolean",
-      };
+      const schema: OpenAPIV3.SchemaObject = { type: "boolean" };
       if (members.some((m) => m.isNull && m.isNull())) {
-        schema.nullable = true;
+        return adapter.makeNullable(schema) as OpenAPIV3.SchemaObject;
       }
       return schema;
     }
 
     // 2. Simplify string enum unions
-    const lits = members.filter((u) => u.isStringLiteral && u.isStringLiteral());
+    const lits = members.filter(
+      (u) => u.isStringLiteral && u.isStringLiteral(),
+    );
     const onlyNull = members.every(
       (u) =>
         (u.isStringLiteral && u.isStringLiteral()) ||
@@ -82,39 +94,63 @@ export function buildSchema(
         type: "string",
         enum: lits.map((u) => String(u.getLiteralValue())),
       };
-      if (members.some((u) => u.isNull && u.isNull()))
-        schema.nullable = true;
+      if (members.some((u) => u.isNull && u.isNull())) {
+        return adapter.makeNullable(schema) as OpenAPIV3.SchemaObject;
+      }
       return schema;
     }
 
     // 3. General unions: filter out null / undefined and wrap with oneOf
     const hasNull = members.some((u) => u.isNull && u.isNull());
     const nonNull = members.filter(
-      (u) => !(u.isNull && u.isNull()) && !(u.isUndefined && u.isUndefined())
+      (u) => !(u.isNull && u.isNull()) && !(u.isUndefined && u.isUndefined()),
     );
 
     let resultSchema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject;
     if (nonNull.length === 1) {
-      resultSchema = buildSchema(nonNull[0], typeChecker, contextNode, seen, depth + 1);
+      resultSchema = buildSchema({
+        type: nonNull[0],
+        typeChecker,
+        contextNode,
+        seen,
+        depth: depth + 1,
+        adapter,
+      });
     } else {
       resultSchema = {
         oneOf: nonNull.map((u) =>
-          buildSchema(u, typeChecker, contextNode, seen, depth + 1),
+          buildSchema({
+            type: u,
+            typeChecker,
+            contextNode,
+            seen,
+            depth: depth + 1,
+            adapter,
+          }),
         ),
       };
     }
 
     if (hasNull && typeof resultSchema === "object") {
-      (resultSchema as OpenAPIV3.SchemaObject).nullable = true;
+      return adapter.makeNullable(
+        resultSchema as OpenAPIV3.SchemaObject,
+      ) as OpenAPIV3.SchemaObject;
     }
     return resultSchema;
   }
 
   if (type.isIntersection()) {
     return {
-      allOf: type
-        .getIntersectionTypes()
-        .map((t) => buildSchema(t, typeChecker, contextNode, seen, depth + 1)),
+      allOf: type.getIntersectionTypes().map((t) =>
+        buildSchema({
+          type: t,
+          typeChecker,
+          contextNode,
+          seen,
+          depth: depth + 1,
+          adapter,
+        }),
+      ),
     };
   }
 
@@ -124,13 +160,14 @@ export function buildSchema(
   if (type.isArray()) {
     return {
       type: "array",
-      items: buildSchema(
-        type.getArrayElementTypeOrThrow(),
+      items: buildSchema({
+        type: type.getArrayElementTypeOrThrow(),
         typeChecker,
         contextNode,
         seen,
-        depth + 1,
-      ),
+        depth: depth + 1,
+        adapter,
+      }),
     };
   }
 
@@ -138,11 +175,16 @@ export function buildSchema(
     return {
       type: "array",
       items: {
-        oneOf: type
-          .getTupleElements()
-          .map((el) =>
-            buildSchema(el, typeChecker, contextNode, seen, depth + 1),
-          ),
+        oneOf: type.getTupleElements().map((el) =>
+          buildSchema({
+            type: el,
+            typeChecker,
+            contextNode,
+            seen,
+            depth: depth + 1,
+            adapter,
+          }),
+        ),
       },
       minItems: type.getTupleElements().length,
       maxItems: type.getTupleElements().length,
@@ -166,45 +208,48 @@ export function buildSchema(
 
     for (const p of filteredProps) {
       const pType = typeChecker.getTypeOfSymbolAtLocation(p, contextNode);
-      propsMap[p.getName()] = buildSchema(
-        pType,
+      propsMap[p.getName()] = buildSchema({
+        type: pType,
         typeChecker,
         contextNode,
         seen,
-        depth + 1,
-      );
+        depth: depth + 1,
+        adapter,
+      });
       if (!p.isOptional()) req.push(p.getName());
     }
 
     const res: OpenAPIV3.SchemaObject = {
       type: "object",
     };
-    
+
     if (Object.keys(propsMap).length > 0) {
       res.properties = propsMap;
     }
-    
+
     if (req.length) res.required = req;
 
     const stringIndexType = type.getStringIndexType();
     const numberIndexType = type.getNumberIndexType();
 
     if (stringIndexType) {
-      res.additionalProperties = buildSchema(
-        stringIndexType,
+      res.additionalProperties = buildSchema({
+        type: stringIndexType,
         typeChecker,
         contextNode,
         seen,
-        depth + 1
-      ) as OpenAPIV3.SchemaObject;
+        depth: depth + 1,
+        adapter,
+      }) as OpenAPIV3.SchemaObject;
     } else if (numberIndexType) {
-      res.additionalProperties = buildSchema(
-        numberIndexType,
+      res.additionalProperties = buildSchema({
+        type: numberIndexType,
         typeChecker,
         contextNode,
         seen,
-        depth + 1
-      ) as OpenAPIV3.SchemaObject;
+        depth: depth + 1,
+        adapter,
+      }) as OpenAPIV3.SchemaObject;
     }
 
     const objSymbol = type.getAliasSymbol() || type.getSymbol();

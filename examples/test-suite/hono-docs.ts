@@ -3,7 +3,7 @@ import { defineConfig } from "@rcmade/hono-docs";
 export default defineConfig({
   tsConfigPath: "./tsconfig.json",
   openApi: {
-    openapi: "3.0.0",
+    openapi: "3.0.3",
     info: {
       title: "API Test Suite",
       version: "1.0.0",

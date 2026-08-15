@@ -88,6 +88,17 @@ export type HonoDocsConfig = {
   tsConfigPath: string;
 
   /**
+   * The OpenAPI specification version to emit.
+   *
+   * - `"3.0"` — OpenAPI 3.0.3 (default, no breaking change for existing configs)
+   * - `"3.1"` — OpenAPI 3.1.0 (JSON Schema 2020-12 compliant; nullable types
+   *    become `type: [T, "null"]` instead of `nullable: true`)
+   *
+   * @default "3.0"
+   */
+  openApiVersion?: "3.0" | "3.1";
+
+  /**
    * Static parts of the OpenAPI document (title, version, servers, etc.).
    */
   openApi: OpenAPIConfig;

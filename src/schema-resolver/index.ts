@@ -16,6 +16,8 @@ import { convertArktypeSchema } from "./converters/arktypeConverter";
 import { attachSchemaName } from "../utils/schemaHelper";
 
 import type { OpenAPIV3 } from "openapi-types";
+import type { OpenAPIVersionAdapter } from "../openapi/adapter";
+import { v30Adapter } from "../openapi/adapters/v3-0";
 
 /**
  * Attempts to resolve the full OpenAPI schema for a specific validator target
@@ -41,6 +43,7 @@ export async function resolveValidatorSchema(
   typeChecker: TypeChecker,
   rootPath: string,
   cacheManager?: CacheManager,
+  adapter: OpenAPIVersionAdapter = v30Adapter,
 ): Promise<SchemaResolverResult | null> {
   try {
     // Step 1: Locate the route call in AST
@@ -109,6 +112,7 @@ export async function resolveValidatorSchema(
         schema = (await convertZodSchema(
           liveSchema,
           rootPath,
+          adapter.zodTarget,
         )) as OpenAPIV3.SchemaObject | null;
         break;
       case "valibot":

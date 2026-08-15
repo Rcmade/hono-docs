@@ -1,6 +1,6 @@
 {
   "security": [],
-  "openapi": "3.0.0",
+  "openapi": "3.0.3",
   "info": {
     "title": "API Test Suite",
     "version": "1.0.0",
@@ -410,6 +410,25 @@
           }
         ]
       },
+      "PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadata": {
+        "type": "object",
+        "properties": {
+          "preferences": {
+            "$ref": "#/components/schemas/PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadataPreferences"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "preferences",
+          "tags"
+        ],
+        "nullable": true
+      },
       "PostApiExhaustiveFormResponse413": {
         "type": "object",
         "properties": {
@@ -465,44 +484,6 @@
           "type": "number"
         }
       },
-      "PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadataPreferences": {
-        "type": "object",
-        "properties": {
-          "theme": {
-            "type": "string",
-            "enum": [
-              "dark",
-              "light"
-            ]
-          },
-          "notifications": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "theme",
-          "notifications"
-        ]
-      },
-      "PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadata": {
-        "type": "object",
-        "properties": {
-          "preferences": {
-            "$ref": "#/components/schemas/PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadataPreferences"
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "preferences",
-          "tags"
-        ],
-        "nullable": true
-      },
       "PostApiEdgeResponsesMultiStatusResponse400": {
         "type": "object",
         "properties": {
@@ -512,6 +493,25 @@
         },
         "required": [
           "error"
+        ]
+      },
+      "PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadataPreferences": {
+        "type": "object",
+        "properties": {
+          "theme": {
+            "type": "string",
+            "enum": [
+              "light",
+              "dark"
+            ]
+          },
+          "notifications": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "theme",
+          "notifications"
         ]
       },
       "PostApiMultiValibotItemExportBody": {
@@ -602,6 +602,42 @@
         "additionalProperties": {
           "type": "string"
         }
+      },
+      "PostApiNewFrameworksDrizzleValibotResponse400Variant1Output": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "age": {
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "role": {},
+          "metadata": {
+            "$ref": "#/components/schemas/PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadata"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "lastLoginAt": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email"
+        ]
       },
       "PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant1Variant1Output": {
         "type": "object",
@@ -831,42 +867,6 @@
           "success",
           "output",
           "issues"
-        ]
-      },
-      "PostApiNewFrameworksDrizzleValibotResponse400Variant1Output": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "age": {
-            "type": "number"
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "role": {},
-          "metadata": {
-            "$ref": "#/components/schemas/PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadata"
-          },
-          "createdAt": {
-            "type": "string"
-          },
-          "lastLoginAt": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "email"
         ]
       },
       "typeboxJsonSchema": {
@@ -8674,8 +8674,8 @@
                             "role": {
                               "type": "string",
                               "enum": [
-                                "admin",
                                 "user",
+                                "admin",
                                 "guest"
                               ]
                             },
@@ -8711,8 +8711,8 @@
                                 "theme": {
                                   "type": "string",
                                   "enum": [
-                                    "dark",
                                     "light",
+                                    "dark",
                                     "system"
                                   ]
                                 },
@@ -8743,8 +8743,8 @@
                         "status": {
                           "type": "string",
                           "enum": [
-                            "pending",
                             "active",
+                            "pending",
                             "inactive"
                           ]
                         },
