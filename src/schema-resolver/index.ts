@@ -12,6 +12,7 @@ import { loadLiveSchema } from "./loadSchema";
 import { convertZodSchema } from "./converters/zodConverter";
 import { convertValibotSchema } from "./converters/valibotConverter";
 import { convertTypeBoxSchema } from "./converters/typeboxConverter";
+import { attachSchemaName } from "../utils/schemaHelper";
 
 import type { OpenAPIV3 } from "openapi-types";
 
@@ -61,6 +62,7 @@ export async function resolveValidatorSchema(
     // ── Schema-level cache check ─────────────────────────────────────────────
     // Key = hash of file content + export name, so any edit to the schema file
     // busts the cache entry automatically.
+    let schemaKey = "";
     if (cacheManager) {
       let fileHash = "";
       const sf = project.getSourceFile(traceResult.filePath);
@@ -81,51 +83,15 @@ export async function resolveValidatorSchema(
       } else {
         fileHash = cacheManager.hashFile(traceResult.filePath);
       }
-      const schemaKey = `${fileHash}:${traceResult.exportName}:${library}`;
+      schemaKey = `${fileHash}:${traceResult.exportName}:${library}`;
       const cached = cacheManager.getSchemaCache(schemaKey);
       if (cached) {
+        attachSchemaName(cached, traceResult.exportName);
         return { source: "dynamic", library, schema: cached };
       }
-
-      // Step 4: Load live schema instance via jiti (cache miss path)
-      const liveSchema = await loadLiveSchema(
-        traceResult.filePath,
-        traceResult.exportName,
-        rootPath,
-      );
-      if (!liveSchema) return null;
-
-      // Step 5: Convert using library-native serializer
-      let schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject | null = null;
-
-      switch (library) {
-        case "zod":
-          schema = (await convertZodSchema(
-            liveSchema,
-            rootPath,
-          )) as OpenAPIV3.SchemaObject | null;
-          break;
-        case "valibot":
-          schema = await convertValibotSchema(liveSchema, rootPath);
-          break;
-        case "typebox":
-          schema = convertTypeBoxSchema(
-            liveSchema,
-          ) as OpenAPIV3.SchemaObject | null;
-          break;
-        default:
-          return null;
-      }
-
-      if (!schema) return null;
-
-      // Store in schema cache for next run
-      cacheManager.setSchemaCache(schemaKey, schema as OpenAPIV3.SchemaObject);
-      return { source: "dynamic", library, schema };
     }
 
-    // ── No cache manager: original flow ─────────────────────────────────────
-    // Step 4: Load live schema instance via jiti
+    // Step 4: Load live schema instance via jiti (cache miss or no cache)
     const liveSchema = await loadLiveSchema(
       traceResult.filePath,
       traceResult.exportName,
@@ -156,6 +122,12 @@ export async function resolveValidatorSchema(
     }
 
     if (!schema) return null;
+
+    attachSchemaName(schema, traceResult.exportName);
+
+    if (cacheManager && schemaKey) {
+      cacheManager.setSchemaCache(schemaKey, schema as OpenAPIV3.SchemaObject);
+    }
 
     return { source: "dynamic", library, schema };
   } catch {

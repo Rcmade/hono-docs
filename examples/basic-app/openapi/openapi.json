@@ -17,6 +17,156 @@
       "name": "E-Commerce Platform"
     }
   ],
+  "components": {
+    "schemas": {
+      "GetApiProductsResponsedefaultDataItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "inventoryCount": {
+            "type": "number"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "price",
+          "currency",
+          "inventoryCount",
+          "categories"
+        ]
+      },
+      "loginSchema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
+            "description": "User's registered email address"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "description": "User's password"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "additionalProperties": false
+      },
+      "registerSchema": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "minLength": 2,
+            "description": "User's first name"
+          },
+          "lastName": {
+            "type": "string",
+            "minLength": 2,
+            "description": "User's last name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
+            "description": "A valid corporate or personal email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 12,
+            "description": "A strong password (12+ characters)"
+          },
+          "company": {
+            "description": "Company name, if applicable",
+            "type": "string"
+          }
+        },
+        "required": [
+          "firstName",
+          "lastName",
+          "email",
+          "password"
+        ],
+        "additionalProperties": false
+      },
+      "createOrderSchema": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+            "description": "ID of the product to order"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991,
+            "description": "Number of items"
+          },
+          "shippingAddress": {
+            "type": "object",
+            "properties": {
+              "line1": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "countryCode": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 2
+              },
+              "postalCode": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "line1",
+              "city",
+              "countryCode",
+              "postalCode"
+            ],
+            "additionalProperties": false,
+            "description": "Destination address"
+          }
+        },
+        "required": [
+          "productId",
+          "quantity",
+          "shippingAddress"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
   "paths": {
     "/api": {
       "get": {
@@ -95,25 +245,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
-                    "description": "User's registered email address"
-                  },
-                  "password": {
-                    "type": "string",
-                    "minLength": 8,
-                    "description": "User's password"
-                  }
-                },
-                "required": [
-                  "email",
-                  "password"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/loginSchema"
               }
             }
           }
@@ -161,41 +293,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "firstName": {
-                    "type": "string",
-                    "minLength": 2,
-                    "description": "User's first name"
-                  },
-                  "lastName": {
-                    "type": "string",
-                    "minLength": 2,
-                    "description": "User's last name"
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
-                    "description": "A valid corporate or personal email"
-                  },
-                  "password": {
-                    "type": "string",
-                    "minLength": 12,
-                    "description": "A strong password (12+ characters)"
-                  },
-                  "company": {
-                    "description": "Company name, if applicable",
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "firstName",
-                  "lastName",
-                  "email",
-                  "password"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/registerSchema"
               }
             }
           }
@@ -250,42 +348,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "description": {
-                            "type": "string"
-                          },
-                          "price": {
-                            "type": "number"
-                          },
-                          "currency": {
-                            "type": "string"
-                          },
-                          "inventoryCount": {
-                            "type": "number"
-                          },
-                          "categories": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "name",
-                          "description",
-                          "price",
-                          "currency",
-                          "inventoryCount",
-                          "categories"
-                        ]
+                        "$ref": "#/components/schemas/GetApiProductsResponsedefaultDataItem"
                       }
                     },
                     "meta": {
@@ -367,42 +430,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "price": {
-                      "type": "number"
-                    },
-                    "currency": {
-                      "type": "string"
-                    },
-                    "inventoryCount": {
-                      "type": "number"
-                    },
-                    "categories": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "name",
-                    "description",
-                    "price",
-                    "currency",
-                    "inventoryCount",
-                    "categories"
-                  ]
+                  "$ref": "#/components/schemas/GetApiProductsResponsedefaultDataItem"
                 }
               }
             }
@@ -470,54 +498,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "productId": {
-                    "type": "string",
-                    "format": "uuid",
-                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
-                    "description": "ID of the product to order"
-                  },
-                  "quantity": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 9007199254740991,
-                    "description": "Number of items"
-                  },
-                  "shippingAddress": {
-                    "type": "object",
-                    "properties": {
-                      "line1": {
-                        "type": "string"
-                      },
-                      "city": {
-                        "type": "string"
-                      },
-                      "countryCode": {
-                        "type": "string",
-                        "minLength": 2,
-                        "maxLength": 2
-                      },
-                      "postalCode": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "line1",
-                      "city",
-                      "countryCode",
-                      "postalCode"
-                    ],
-                    "additionalProperties": false,
-                    "description": "Destination address"
-                  }
-                },
-                "required": [
-                  "productId",
-                  "quantity",
-                  "shippingAddress"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/createOrderSchema"
               }
             }
           }

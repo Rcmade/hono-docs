@@ -1,4 +1,5 @@
 import type { OpenAPIV3 } from "openapi-types";
+import { attachSchemaName } from "./schemaHelper";
 
 export function buildSchema(
   type: import("ts-morph").Type,
@@ -204,6 +205,24 @@ export function buildSchema(
         seen,
         depth + 1
       ) as OpenAPIV3.SchemaObject;
+    }
+
+    const objSymbol = type.getAliasSymbol() || type.getSymbol();
+    if (objSymbol) {
+      const symName = objSymbol.getName();
+      if (
+        symName &&
+        !symName.startsWith("__") &&
+        symName !== "Object" &&
+        symName !== "Record" &&
+        symName !== "Partial" &&
+        symName !== "Required" &&
+        symName !== "Readonly" &&
+        symName !== "Pick" &&
+        symName !== "Omit"
+      ) {
+        attachSchemaName(res, symName);
+      }
     }
 
     return res;

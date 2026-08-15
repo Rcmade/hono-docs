@@ -9,6 +9,7 @@ import { cleanDefaultResponse, sanitizeApiPrefix } from "../utils/format";
 import { getLibDir } from "../utils/libDir";
 import { logger } from "../utils/logger";
 import { CacheManager } from "../cache/index";
+import { deduplicateComponents } from "../utils/deduplicateSchemas";
 
 export interface RunGenerateOptions {
   /** When true, bypass all cache reads and do not write a new cache. */
@@ -205,6 +206,7 @@ export async function runGenerate(
     security: [],
     ...config.openApi,
     tags: [] as { name: string }[],
+    components: { schemas: {} },
     paths: {} as Record<
       string,
       import("openapi-types").OpenAPIV3.PathItemObject
@@ -287,7 +289,8 @@ export async function runGenerate(
   const outputPath = path.join(rootPath, config.outputs.openApiJson);
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
-  const specContent = `${JSON.stringify(merged, null, 2)}\n`;
+  const deduplicatedSpec = deduplicateComponents(merged as unknown as import("openapi-types").OpenAPIV3.Document);
+  const specContent = `${JSON.stringify(deduplicatedSpec, null, 2)}\n`;
   fs.writeFileSync(outputPath, specContent);
 
   // Persist cache manifest to disk (no-op if nothing changed or --no-cache)

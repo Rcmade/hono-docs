@@ -17,6 +17,1147 @@
       "name": "E-Commerce Platform"
     }
   ],
+  "components": {
+    "schemas": {
+      "GetApiExhaustiveAstRegexIdDetailsCodeResponse200": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok"
+        ]
+      },
+      "PostApiZodAllFeaturesResponsedefaultDataTupleOfTwoItem": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "PostApiValibotVbCreateResponse400Variant1IssuesItem": {
+        "oneOf": [
+          {},
+          {}
+        ]
+      },
+      "PostApiValibotVbCreateResponse400Variant2": {
+        "type": "object",
+        "properties": {
+          "typed": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "success": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "output": {},
+          "issues": {}
+        },
+        "required": [
+          "typed",
+          "success",
+          "output",
+          "issues"
+        ]
+      },
+      "PostApiZodAllFeaturesBodyNumberRecord": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "number"
+        }
+      },
+      "PostApiZodAllFeaturesResponsedefaultDataUnknownValVariant5ValueVariant8Item": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          {},
+          {}
+        ],
+        "nullable": true
+      },
+      "GetApiProductsResponsedefaultDataItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "inventoryCount": {
+            "type": "number"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "price",
+          "currency",
+          "inventoryCount",
+          "categories"
+        ]
+      },
+      "PostApiZodAllFeaturesBodyStringRecord": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "JSONObject": {
+        "type": "object",
+        "additionalProperties": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean",
+              "enum": [
+                false
+              ]
+            },
+            {
+              "type": "boolean",
+              "enum": [
+                true
+              ]
+            },
+            {},
+            {},
+            {},
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownValVariant5ValueVariant8Item"
+              }
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "nullable": true
+        }
+      },
+      "PostApiZodAllFeaturesResponsedefaultDataUnknownValVariant5Value": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          {},
+          {},
+          {},
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownValVariant5ValueVariant8Item"
+            }
+          },
+          {
+            "type": "object"
+          }
+        ],
+        "nullable": true
+      },
+      "PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant1Variant1Output": {
+        "type": "object",
+        "properties": {
+          "orgId": {
+            "type": "string"
+          },
+          "invoiceId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "orgId",
+          "invoiceId"
+        ]
+      },
+      "PostApiExhaustiveFormResponse413": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "code": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "error",
+          "code"
+        ]
+      },
+      "PostApiValibotVbCreateResponse400Variant1Output": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "age": {
+            "type": "number"
+          },
+          "country": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "age",
+          "country"
+        ]
+      },
+      "PostApiTestsUnionTestBody": {
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "user",
+              "admin"
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "isActive",
+          "role"
+        ]
+      },
+      "PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant2Variant1Output": {
+        "type": "object",
+        "properties": {
+          "ipAddress": {
+            "type": "string"
+          }
+        }
+      },
+      "PostApiZodAllFeaturesResponsedefaultDataUnknownVal": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean",
+                  "enum": [
+                    false
+                  ]
+                },
+                {
+                  "type": "boolean",
+                  "enum": [
+                    true
+                  ]
+                },
+                {},
+                {},
+                {},
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownValVariant5ValueVariant8Item"
+                  }
+                },
+                {
+                  "type": "object"
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {}
+        ],
+        "nullable": true
+      },
+      "nodeASchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "nodeB": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "nodeA": {
+                "$ref": "#"
+              }
+            },
+            "required": [
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "externalValibotSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "age": {
+            "type": "number",
+            "minimum": 18,
+            "maximum": 99
+          },
+          "country": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 2
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "age",
+          "country"
+        ]
+      },
+      "exhaustiveJsonSchema": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            }
+          },
+          "settings": {
+            "type": "object",
+            "properties": {
+              "theme": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "dark"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "light"
+                    ]
+                  }
+                ]
+              },
+              "notifications": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "theme",
+              "notifications"
+            ],
+            "additionalProperties": false
+          },
+          "event": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "click"
+                    ]
+                  },
+                  "x": {
+                    "type": "number"
+                  },
+                  "y": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "type",
+                  "x",
+                  "y"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "keypress"
+                    ]
+                  },
+                  "key": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "key"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "required": [
+          "metadata",
+          "settings",
+          "event"
+        ],
+        "additionalProperties": false
+      },
+      "categorySchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "subcategories": {
+            "type": "array",
+            "items": {
+              "$ref": "#"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "subcategories"
+        ],
+        "additionalProperties": false
+      },
+      "allZodFeaturesSchema": {
+        "type": "object",
+        "properties": {
+          "str": {
+            "type": "string"
+          },
+          "num": {
+            "type": "number"
+          },
+          "bool": {
+            "type": "boolean"
+          },
+          "big": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "anyVal": {},
+          "unknownVal": {},
+          "nullVal": {
+            "enum": [
+              "null"
+            ],
+            "nullable": true
+          },
+          "undefVal": {
+            "not": {}
+          },
+          "emailStr": {
+            "type": "string",
+            "format": "email"
+          },
+          "urlStr": {
+            "type": "string",
+            "format": "uri"
+          },
+          "uuidStr": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dateTimeStr": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "minMaxStr": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 10
+          },
+          "regexStr": {
+            "type": "string",
+            "pattern": "^[a-z]+$"
+          },
+          "integer": {
+            "type": "integer"
+          },
+          "positiveNum": {
+            "type": "number",
+            "exclusiveMinimum": true,
+            "minimum": 0
+          },
+          "negativeNum": {
+            "type": "number",
+            "exclusiveMaximum": true,
+            "maximum": 0
+          },
+          "minMaxNum": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "strArray": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "setOfStrings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tupleOfTwo": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "tupleWithRest": {
+            "type": "array",
+            "minItems": 1,
+            "items": [
+              {
+                "type": "string"
+              }
+            ],
+            "additionalItems": {
+              "type": "number"
+            }
+          },
+          "nestedObj": {
+            "type": "object",
+            "properties": {
+              "nestedKey": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "nestedKey"
+            ],
+            "additionalProperties": false
+          },
+          "partialObj": {
+            "type": "object",
+            "properties": {
+              "x": {
+                "type": "string"
+              },
+              "y": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false
+          },
+          "simpleUnion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "discriminatedUnion": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "admin"
+                    ]
+                  },
+                  "adminRole": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "adminRole"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "member"
+                    ]
+                  },
+                  "memberCode": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "type",
+                  "memberCode"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "intersectionObj": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "partA": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "partA"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "partB": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "partB"
+                ]
+              }
+            ]
+          },
+          "stringRecord": {
+            "$ref": "#/components/schemas/PostApiZodAllFeaturesBodyStringRecord"
+          },
+          "numberRecord": {
+            "$ref": "#/components/schemas/PostApiZodAllFeaturesBodyNumberRecord"
+          },
+          "enumColors": {
+            "type": "string",
+            "enum": [
+              "red",
+              "green",
+              "blue"
+            ]
+          },
+          "nativeDirectionEnum": {
+            "type": "string",
+            "enum": [
+              "UP",
+              "DOWN",
+              "LEFT",
+              "RIGHT"
+            ]
+          },
+          "literalValue": {
+            "type": "string",
+            "enum": [
+              "fixed-value"
+            ]
+          },
+          "optionalStr": {
+            "type": "string"
+          },
+          "nullableStr": {
+            "type": "string",
+            "nullable": true
+          },
+          "nullishStr": {
+            "type": "string",
+            "nullable": true
+          },
+          "defaultStr": {
+            "type": "string",
+            "default": "fallback"
+          },
+          "transformedNumber": {
+            "type": "string"
+          },
+          "preprocessedStr": {
+            "type": "string"
+          },
+          "refinedStr": {
+            "type": "string"
+          },
+          "brandedStr": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "str",
+          "num",
+          "bool",
+          "big",
+          "dt",
+          "nullVal",
+          "emailStr",
+          "urlStr",
+          "uuidStr",
+          "dateTimeStr",
+          "minMaxStr",
+          "regexStr",
+          "integer",
+          "positiveNum",
+          "negativeNum",
+          "minMaxNum",
+          "strArray",
+          "setOfStrings",
+          "tupleOfTwo",
+          "tupleWithRest",
+          "nestedObj",
+          "partialObj",
+          "simpleUnion",
+          "discriminatedUnion",
+          "intersectionObj",
+          "stringRecord",
+          "numberRecord",
+          "enumColors",
+          "nativeDirectionEnum",
+          "literalValue",
+          "nullableStr",
+          "transformedNumber",
+          "refinedStr",
+          "brandedStr"
+        ],
+        "additionalProperties": false
+      },
+      "createAccountSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "USER",
+              "GUEST"
+            ]
+          },
+          "domain": {
+            "type": "string"
+          },
+          "preferences": {
+            "type": "object",
+            "properties": {
+              "theme": {
+                "type": "string",
+                "enum": [
+                  "light",
+                  "dark"
+                ],
+                "default": "light"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "role",
+          "domain",
+          "preferences"
+        ],
+        "additionalProperties": false
+      },
+      "BillingReportFilterSchema": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "startDate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "endDate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000,
+                "default": 100
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "summary"
+                ]
+              },
+              "groupBy": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "department",
+                    "project",
+                    "user"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 3
+              }
+            },
+            "required": [
+              "startDate",
+              "endDate",
+              "type",
+              "groupBy"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "startDate": {
+                "$ref": "#/anyOf/0/properties/startDate"
+              },
+              "endDate": {
+                "$ref": "#/anyOf/0/properties/endDate"
+              },
+              "limit": {
+                "$ref": "#/anyOf/0/properties/limit"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "detailed"
+                ]
+              },
+              "includeTaxes": {
+                "type": "boolean",
+                "default": false
+              },
+              "currency": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 3,
+                "default": "USD"
+              },
+              "minAmount": {
+                "type": "number",
+                "exclusiveMinimum": true,
+                "minimum": 0
+              }
+            },
+            "required": [
+              "startDate",
+              "endDate",
+              "type"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "exportedSchema": {
+        "type": "object",
+        "properties": {
+          "exportedField": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 50,
+            "default": "default-exported"
+          }
+        },
+        "additionalProperties": false
+      },
+      "localSchema": {
+        "type": "object",
+        "properties": {
+          "localField": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 100,
+            "default": "default-local"
+          }
+        },
+        "additionalProperties": false
+      },
+      "exhaustiveFormSchema": {
+        "type": "object",
+        "properties": {
+          "profilePicture": {},
+          "description": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "file": {
+            "type": "array",
+            "items": {}
+          }
+        },
+        "required": [
+          "description",
+          "tags",
+          "file"
+        ],
+        "additionalProperties": false
+      },
+      "typeboxSchema": {
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "age"
+        ],
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "email": {
+            "format": "email",
+            "type": "string"
+          },
+          "age": {
+            "minimum": 18,
+            "maximum": 99,
+            "type": "number"
+          }
+        }
+      },
+      "loginSchema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User's registered email address"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "description": "User's password"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "additionalProperties": false
+      },
+      "registerSchema": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "minLength": 2,
+            "description": "User's first name"
+          },
+          "lastName": {
+            "type": "string",
+            "minLength": 2,
+            "description": "User's last name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "A valid corporate or personal email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 12,
+            "description": "A strong password (12+ characters)"
+          },
+          "company": {
+            "type": "string",
+            "description": "Company name, if applicable"
+          }
+        },
+        "required": [
+          "firstName",
+          "lastName",
+          "email",
+          "password"
+        ],
+        "additionalProperties": false
+      },
+      "createOrderSchema": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the product to order"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Number of items"
+          },
+          "shippingAddress": {
+            "type": "object",
+            "properties": {
+              "line1": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "countryCode": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 2
+              },
+              "postalCode": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "line1",
+              "city",
+              "countryCode",
+              "postalCode"
+            ],
+            "additionalProperties": false,
+            "description": "Destination address"
+          }
+        },
+        "required": [
+          "productId",
+          "quantity",
+          "shippingAddress"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
   "paths": {
     "/api": {
       "get": {
@@ -95,24 +1236,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "User's registered email address"
-                  },
-                  "password": {
-                    "type": "string",
-                    "minLength": 8,
-                    "description": "User's password"
-                  }
-                },
-                "required": [
-                  "email",
-                  "password"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/loginSchema"
               }
             }
           }
@@ -160,40 +1284,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "firstName": {
-                    "type": "string",
-                    "minLength": 2,
-                    "description": "User's first name"
-                  },
-                  "lastName": {
-                    "type": "string",
-                    "minLength": 2,
-                    "description": "User's last name"
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "A valid corporate or personal email"
-                  },
-                  "password": {
-                    "type": "string",
-                    "minLength": 12,
-                    "description": "A strong password (12+ characters)"
-                  },
-                  "company": {
-                    "type": "string",
-                    "description": "Company name, if applicable"
-                  }
-                },
-                "required": [
-                  "firstName",
-                  "lastName",
-                  "email",
-                  "password"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/registerSchema"
               }
             }
           }
@@ -248,42 +1339,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "description": {
-                            "type": "string"
-                          },
-                          "price": {
-                            "type": "number"
-                          },
-                          "currency": {
-                            "type": "string"
-                          },
-                          "inventoryCount": {
-                            "type": "number"
-                          },
-                          "categories": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "name",
-                          "description",
-                          "price",
-                          "currency",
-                          "inventoryCount",
-                          "categories"
-                        ]
+                        "$ref": "#/components/schemas/GetApiProductsResponsedefaultDataItem"
                       }
                     },
                     "meta": {
@@ -365,42 +1421,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "price": {
-                      "type": "number"
-                    },
-                    "currency": {
-                      "type": "string"
-                    },
-                    "inventoryCount": {
-                      "type": "number"
-                    },
-                    "categories": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "name",
-                    "description",
-                    "price",
-                    "currency",
-                    "inventoryCount",
-                    "categories"
-                  ]
+                  "$ref": "#/components/schemas/GetApiProductsResponsedefaultDataItem"
                 }
               }
             }
@@ -468,52 +1489,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "productId": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "ID of the product to order"
-                  },
-                  "quantity": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "description": "Number of items"
-                  },
-                  "shippingAddress": {
-                    "type": "object",
-                    "properties": {
-                      "line1": {
-                        "type": "string"
-                      },
-                      "city": {
-                        "type": "string"
-                      },
-                      "countryCode": {
-                        "type": "string",
-                        "minLength": 2,
-                        "maxLength": 2
-                      },
-                      "postalCode": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "line1",
-                      "city",
-                      "countryCode",
-                      "postalCode"
-                    ],
-                    "additionalProperties": false,
-                    "description": "Destination address"
-                  }
-                },
-                "required": [
-                  "productId",
-                  "quantity",
-                  "shippingAddress"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/createOrderSchema"
               }
             }
           }
@@ -634,23 +1610,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "subcategories": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#"
-                    }
-                  }
-                },
-                "required": [
-                  "name",
-                  "subcategories"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/categorySchema"
               }
             }
           }
@@ -714,31 +1674,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "nodeB": {
-                    "type": "object",
-                    "properties": {
-                      "value": {
-                        "type": "number"
-                      },
-                      "nodeA": {
-                        "$ref": "#"
-                      }
-                    },
-                    "required": [
-                      "value"
-                    ],
-                    "additionalProperties": false
-                  }
-                },
-                "required": [
-                  "name"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/nodeASchema"
               }
             }
           }
@@ -836,25 +1772,7 @@
                       "type": "boolean"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "isActive": {
-                          "type": "boolean",
-                          "nullable": true
-                        },
-                        "role": {
-                          "type": "string",
-                          "enum": [
-                            "user",
-                            "admin"
-                          ],
-                          "nullable": true
-                        }
-                      },
-                      "required": [
-                        "isActive",
-                        "role"
-                      ]
+                      "$ref": "#/components/schemas/PostApiTestsUnionTestBody"
                     }
                   },
                   "required": [
@@ -876,25 +1794,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "isActive": {
-                    "type": "boolean",
-                    "nullable": true
-                  },
-                  "role": {
-                    "type": "string",
-                    "enum": [
-                      "user",
-                      "admin"
-                    ],
-                    "nullable": true
-                  }
-                },
-                "required": [
-                  "isActive",
-                  "role"
-                ]
+                "$ref": "#/components/schemas/PostApiTestsUnionTestBody"
               }
             }
           }
@@ -1504,45 +2404,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
-                  "role": {
-                    "type": "string",
-                    "enum": [
-                      "ADMIN",
-                      "USER",
-                      "GUEST"
-                    ]
-                  },
-                  "domain": {
-                    "type": "string"
-                  },
-                  "preferences": {
-                    "type": "object",
-                    "properties": {
-                      "theme": {
-                        "type": "string",
-                        "enum": [
-                          "light",
-                          "dark"
-                        ],
-                        "default": "light"
-                      }
-                    },
-                    "additionalProperties": false
-                  }
-                },
-                "required": [
-                  "id",
-                  "role",
-                  "domain",
-                  "preferences"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/createAccountSchema"
               }
             }
           }
@@ -1586,88 +2448,7 @@
                         },
                         "anyVal": {},
                         "unknownVal": {
-                          "oneOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "number"
-                            },
-                            {
-                              "type": "boolean",
-                              "enum": [
-                                false
-                              ]
-                            },
-                            {
-                              "type": "boolean",
-                              "enum": [
-                                true
-                              ]
-                            },
-                            {
-                              "type": "object",
-                              "additionalProperties": {
-                                "oneOf": [
-                                  {
-                                    "type": "string"
-                                  },
-                                  {
-                                    "type": "number"
-                                  },
-                                  {
-                                    "type": "boolean",
-                                    "enum": [
-                                      false
-                                    ]
-                                  },
-                                  {
-                                    "type": "boolean",
-                                    "enum": [
-                                      true
-                                    ]
-                                  },
-                                  {},
-                                  {},
-                                  {},
-                                  {
-                                    "type": "array",
-                                    "items": {
-                                      "oneOf": [
-                                        {
-                                          "type": "string"
-                                        },
-                                        {
-                                          "type": "number"
-                                        },
-                                        {
-                                          "type": "boolean",
-                                          "enum": [
-                                            false
-                                          ]
-                                        },
-                                        {
-                                          "type": "boolean",
-                                          "enum": [
-                                            true
-                                          ]
-                                        },
-                                        {},
-                                        {}
-                                      ],
-                                      "nullable": true
-                                    }
-                                  },
-                                  {
-                                    "type": "object"
-                                  }
-                                ],
-                                "nullable": true
-                              }
-                            },
-                            {}
-                          ],
-                          "nullable": true
+                          "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownVal"
                         },
                         "nullVal": {},
                         "emailStr": {
@@ -1710,14 +2491,7 @@
                         "tupleOfTwo": {
                           "type": "array",
                           "items": {
-                            "oneOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "type": "number"
-                              }
-                            ]
+                            "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataTupleOfTwoItem"
                           },
                           "minItems": 2,
                           "maxItems": 2
@@ -1725,14 +2499,7 @@
                         "tupleWithRest": {
                           "type": "array",
                           "items": {
-                            "oneOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "type": "number"
-                              }
-                            ]
+                            "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataTupleOfTwoItem"
                           },
                           "minItems": 2,
                           "maxItems": 2
@@ -1760,14 +2527,7 @@
                           }
                         },
                         "simpleUnion": {
-                          "oneOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "number"
-                            }
-                          ]
+                          "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataTupleOfTwoItem"
                         },
                         "discriminatedUnion": {
                           "oneOf": [
@@ -1825,16 +2585,10 @@
                           ]
                         },
                         "stringRecord": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "string"
-                          }
+                          "$ref": "#/components/schemas/PostApiZodAllFeaturesBodyStringRecord"
                         },
                         "numberRecord": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "number"
-                          }
+                          "$ref": "#/components/schemas/PostApiZodAllFeaturesBodyNumberRecord"
                         },
                         "enumColors": {
                           "type": "string",
@@ -1941,318 +2695,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "str": {
-                    "type": "string"
-                  },
-                  "num": {
-                    "type": "number"
-                  },
-                  "bool": {
-                    "type": "boolean"
-                  },
-                  "big": {
-                    "type": "integer",
-                    "format": "int64"
-                  },
-                  "dt": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "anyVal": {},
-                  "unknownVal": {},
-                  "nullVal": {
-                    "enum": [
-                      "null"
-                    ],
-                    "nullable": true
-                  },
-                  "undefVal": {
-                    "not": {}
-                  },
-                  "emailStr": {
-                    "type": "string",
-                    "format": "email"
-                  },
-                  "urlStr": {
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "uuidStr": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
-                  "dateTimeStr": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "minMaxStr": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 10
-                  },
-                  "regexStr": {
-                    "type": "string",
-                    "pattern": "^[a-z]+$"
-                  },
-                  "integer": {
-                    "type": "integer"
-                  },
-                  "positiveNum": {
-                    "type": "number",
-                    "exclusiveMinimum": true,
-                    "minimum": 0
-                  },
-                  "negativeNum": {
-                    "type": "number",
-                    "exclusiveMaximum": true,
-                    "maximum": 0
-                  },
-                  "minMaxNum": {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 100
-                  },
-                  "strArray": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "setOfStrings": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "tupleOfTwo": {
-                    "type": "array",
-                    "minItems": 2,
-                    "maxItems": 2,
-                    "items": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "number"
-                      }
-                    ]
-                  },
-                  "tupleWithRest": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": [
-                      {
-                        "type": "string"
-                      }
-                    ],
-                    "additionalItems": {
-                      "type": "number"
-                    }
-                  },
-                  "nestedObj": {
-                    "type": "object",
-                    "properties": {
-                      "nestedKey": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "nestedKey"
-                    ],
-                    "additionalProperties": false
-                  },
-                  "partialObj": {
-                    "type": "object",
-                    "properties": {
-                      "x": {
-                        "type": "string"
-                      },
-                      "y": {
-                        "type": "number"
-                      }
-                    },
-                    "additionalProperties": false
-                  },
-                  "simpleUnion": {
-                    "anyOf": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "number"
-                      }
-                    ]
-                  },
-                  "discriminatedUnion": {
-                    "anyOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "admin"
-                            ]
-                          },
-                          "adminRole": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "type",
-                          "adminRole"
-                        ],
-                        "additionalProperties": false
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "member"
-                            ]
-                          },
-                          "memberCode": {
-                            "type": "number"
-                          }
-                        },
-                        "required": [
-                          "type",
-                          "memberCode"
-                        ],
-                        "additionalProperties": false
-                      }
-                    ]
-                  },
-                  "intersectionObj": {
-                    "allOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "partA": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "partA"
-                        ]
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "partB": {
-                            "type": "number"
-                          }
-                        },
-                        "required": [
-                          "partB"
-                        ]
-                      }
-                    ]
-                  },
-                  "stringRecord": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "string"
-                    }
-                  },
-                  "numberRecord": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "number"
-                    }
-                  },
-                  "enumColors": {
-                    "type": "string",
-                    "enum": [
-                      "red",
-                      "green",
-                      "blue"
-                    ]
-                  },
-                  "nativeDirectionEnum": {
-                    "type": "string",
-                    "enum": [
-                      "UP",
-                      "DOWN",
-                      "LEFT",
-                      "RIGHT"
-                    ]
-                  },
-                  "literalValue": {
-                    "type": "string",
-                    "enum": [
-                      "fixed-value"
-                    ]
-                  },
-                  "optionalStr": {
-                    "type": "string"
-                  },
-                  "nullableStr": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "nullishStr": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "defaultStr": {
-                    "type": "string",
-                    "default": "fallback"
-                  },
-                  "transformedNumber": {
-                    "type": "string"
-                  },
-                  "preprocessedStr": {
-                    "type": "string"
-                  },
-                  "refinedStr": {
-                    "type": "string"
-                  },
-                  "brandedStr": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "str",
-                  "num",
-                  "bool",
-                  "big",
-                  "dt",
-                  "nullVal",
-                  "emailStr",
-                  "urlStr",
-                  "uuidStr",
-                  "dateTimeStr",
-                  "minMaxStr",
-                  "regexStr",
-                  "integer",
-                  "positiveNum",
-                  "negativeNum",
-                  "minMaxNum",
-                  "strArray",
-                  "setOfStrings",
-                  "tupleOfTwo",
-                  "tupleWithRest",
-                  "nestedObj",
-                  "partialObj",
-                  "simpleUnion",
-                  "discriminatedUnion",
-                  "intersectionObj",
-                  "stringRecord",
-                  "numberRecord",
-                  "enumColors",
-                  "nativeDirectionEnum",
-                  "literalValue",
-                  "nullableStr",
-                  "transformedNumber",
-                  "refinedStr",
-                  "brandedStr"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/allZodFeaturesSchema"
               }
             }
           }
@@ -2285,35 +2728,12 @@
                           ]
                         },
                         "output": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "string"
-                            },
-                            "email": {
-                              "type": "string"
-                            },
-                            "age": {
-                              "type": "number"
-                            },
-                            "country": {
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "id",
-                            "email",
-                            "age",
-                            "country"
-                          ]
+                          "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1Output"
                         },
                         "issues": {
                           "type": "array",
                           "items": {
-                            "oneOf": [
-                              {},
-                              {}
-                            ]
+                            "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
                           },
                           "minItems": 2,
                           "maxItems": 2
@@ -2327,29 +2747,7 @@
                       ]
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {},
-                        "issues": {}
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
+                      "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
                     }
                   ]
                 }
@@ -2367,27 +2765,7 @@
                       "type": "boolean"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "email": {
-                          "type": "string"
-                        },
-                        "age": {
-                          "type": "number"
-                        },
-                        "country": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "email",
-                        "age",
-                        "country"
-                      ]
+                      "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1Output"
                     }
                   },
                   "required": [
@@ -2404,33 +2782,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  },
-                  "age": {
-                    "type": "number",
-                    "minimum": 18,
-                    "maximum": 99
-                  },
-                  "country": {
-                    "type": "string",
-                    "minLength": 2,
-                    "maxLength": 2
-                  }
-                },
-                "required": [
-                  "id",
-                  "email",
-                  "age",
-                  "country"
-                ]
+                "$ref": "#/components/schemas/externalValibotSchema"
               }
             }
           }
@@ -2488,27 +2840,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "id",
-                  "email",
-                  "age"
-                ],
-                "properties": {
-                  "id": {
-                    "format": "uuid",
-                    "type": "string"
-                  },
-                  "email": {
-                    "format": "email",
-                    "type": "string"
-                  },
-                  "age": {
-                    "minimum": 18,
-                    "maximum": 99,
-                    "type": "number"
-                  }
-                }
+                "$ref": "#/components/schemas/typeboxSchema"
               }
             }
           }
@@ -2546,27 +2878,12 @@
                               ]
                             },
                             "output": {
-                              "type": "object",
-                              "properties": {
-                                "orgId": {
-                                  "type": "string"
-                                },
-                                "invoiceId": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "orgId",
-                                "invoiceId"
-                              ]
+                              "$ref": "#/components/schemas/PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant1Variant1Output"
                             },
                             "issues": {
                               "type": "array",
                               "items": {
-                                "oneOf": [
-                                  {},
-                                  {}
-                                ]
+                                "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
                               },
                               "minItems": 2,
                               "maxItems": 2
@@ -2580,29 +2897,7 @@
                           ]
                         },
                         {
-                          "type": "object",
-                          "properties": {
-                            "typed": {
-                              "type": "boolean",
-                              "enum": [
-                                false
-                              ]
-                            },
-                            "success": {
-                              "type": "boolean",
-                              "enum": [
-                                false
-                              ]
-                            },
-                            "output": {},
-                            "issues": {}
-                          },
-                          "required": [
-                            "typed",
-                            "success",
-                            "output",
-                            "issues"
-                          ]
+                          "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
                         }
                       ]
                     },
@@ -2624,20 +2919,12 @@
                               ]
                             },
                             "output": {
-                              "type": "object",
-                              "properties": {
-                                "ipAddress": {
-                                  "type": "string"
-                                }
-                              }
+                              "$ref": "#/components/schemas/PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant2Variant1Output"
                             },
                             "issues": {
                               "type": "array",
                               "items": {
-                                "oneOf": [
-                                  {},
-                                  {}
-                                ]
+                                "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
                               },
                               "minItems": 2,
                               "maxItems": 2
@@ -2651,29 +2938,7 @@
                           ]
                         },
                         {
-                          "type": "object",
-                          "properties": {
-                            "typed": {
-                              "type": "boolean",
-                              "enum": [
-                                false
-                              ]
-                            },
-                            "success": {
-                              "type": "boolean",
-                              "enum": [
-                                false
-                              ]
-                            },
-                            "output": {},
-                            "issues": {}
-                          },
-                          "required": [
-                            "typed",
-                            "success",
-                            "output",
-                            "issues"
-                          ]
+                          "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
                         }
                       ]
                     }
@@ -2696,27 +2961,10 @@
                       "type": "string"
                     },
                     "params": {
-                      "type": "object",
-                      "properties": {
-                        "orgId": {
-                          "type": "string"
-                        },
-                        "invoiceId": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "orgId",
-                        "invoiceId"
-                      ]
+                      "$ref": "#/components/schemas/PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant1Variant1Output"
                     },
                     "query": {
-                      "type": "object",
-                      "properties": {
-                        "ipAddress": {
-                          "type": "string"
-                        }
-                      }
+                      "$ref": "#/components/schemas/PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant2Variant1Output"
                     },
                     "headers": {
                       "type": "object",
@@ -2905,94 +3153,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "anyOf": [
-                  {
-                    "type": "object",
-                    "properties": {
-                      "startDate": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "endDate": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "limit": {
-                        "type": "integer",
-                        "minimum": 1,
-                        "maximum": 1000,
-                        "default": 100
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "summary"
-                        ]
-                      },
-                      "groupBy": {
-                        "type": "array",
-                        "items": {
-                          "type": "string",
-                          "enum": [
-                            "department",
-                            "project",
-                            "user"
-                          ]
-                        },
-                        "minItems": 1,
-                        "maxItems": 3
-                      }
-                    },
-                    "required": [
-                      "startDate",
-                      "endDate",
-                      "type",
-                      "groupBy"
-                    ],
-                    "additionalProperties": false
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "startDate": {
-                        "$ref": "#/anyOf/0/properties/startDate"
-                      },
-                      "endDate": {
-                        "$ref": "#/anyOf/0/properties/endDate"
-                      },
-                      "limit": {
-                        "$ref": "#/anyOf/0/properties/limit"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "detailed"
-                        ]
-                      },
-                      "includeTaxes": {
-                        "type": "boolean",
-                        "default": false
-                      },
-                      "currency": {
-                        "type": "string",
-                        "minLength": 3,
-                        "maxLength": 3,
-                        "default": "USD"
-                      },
-                      "minAmount": {
-                        "type": "number",
-                        "exclusiveMinimum": true,
-                        "minimum": 0
-                      }
-                    },
-                    "required": [
-                      "startDate",
-                      "endDate",
-                      "type"
-                    ],
-                    "additionalProperties": false
-                  }
-                ]
+                "$ref": "#/components/schemas/BillingReportFilterSchema"
               }
             }
           }
@@ -3205,88 +3366,7 @@
                           "previousState": {
                             "type": "object",
                             "additionalProperties": {
-                              "oneOf": [
-                                {
-                                  "type": "string"
-                                },
-                                {
-                                  "type": "number"
-                                },
-                                {
-                                  "type": "boolean",
-                                  "enum": [
-                                    false
-                                  ]
-                                },
-                                {
-                                  "type": "boolean",
-                                  "enum": [
-                                    true
-                                  ]
-                                },
-                                {
-                                  "type": "object",
-                                  "additionalProperties": {
-                                    "oneOf": [
-                                      {
-                                        "type": "string"
-                                      },
-                                      {
-                                        "type": "number"
-                                      },
-                                      {
-                                        "type": "boolean",
-                                        "enum": [
-                                          false
-                                        ]
-                                      },
-                                      {
-                                        "type": "boolean",
-                                        "enum": [
-                                          true
-                                        ]
-                                      },
-                                      {},
-                                      {},
-                                      {},
-                                      {
-                                        "type": "array",
-                                        "items": {
-                                          "oneOf": [
-                                            {
-                                              "type": "string"
-                                            },
-                                            {
-                                              "type": "number"
-                                            },
-                                            {
-                                              "type": "boolean",
-                                              "enum": [
-                                                false
-                                              ]
-                                            },
-                                            {
-                                              "type": "boolean",
-                                              "enum": [
-                                                true
-                                              ]
-                                            },
-                                            {},
-                                            {}
-                                          ],
-                                          "nullable": true
-                                        }
-                                      },
-                                      {
-                                        "type": "object"
-                                      }
-                                    ],
-                                    "nullable": true
-                                  }
-                                },
-                                {}
-                              ],
-                              "nullable": true
+                              "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownVal"
                             },
                             "nullable": true
                           }
@@ -3421,106 +3501,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "metadata": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "anyOf": [
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "type": "number"
-                        },
-                        {
-                          "type": "boolean"
-                        }
-                      ]
-                    }
-                  },
-                  "settings": {
-                    "type": "object",
-                    "properties": {
-                      "theme": {
-                        "anyOf": [
-                          {
-                            "type": "string",
-                            "enum": [
-                              "dark"
-                            ]
-                          },
-                          {
-                            "type": "string",
-                            "enum": [
-                              "light"
-                            ]
-                          }
-                        ]
-                      },
-                      "notifications": {
-                        "type": "boolean"
-                      }
-                    },
-                    "required": [
-                      "theme",
-                      "notifications"
-                    ],
-                    "additionalProperties": false
-                  },
-                  "event": {
-                    "anyOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "click"
-                            ]
-                          },
-                          "x": {
-                            "type": "number"
-                          },
-                          "y": {
-                            "type": "number"
-                          }
-                        },
-                        "required": [
-                          "type",
-                          "x",
-                          "y"
-                        ],
-                        "additionalProperties": false
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "keypress"
-                            ]
-                          },
-                          "key": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "type",
-                          "key"
-                        ],
-                        "additionalProperties": false
-                      }
-                    ]
-                  }
-                },
-                "required": [
-                  "metadata",
-                  "settings",
-                  "event"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/exhaustiveJsonSchema"
               }
             }
           }
@@ -3558,19 +3539,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "number"
-                    }
-                  },
-                  "required": [
-                    "error",
-                    "code"
-                  ]
+                  "$ref": "#/components/schemas/PostApiExhaustiveFormResponse413"
                 }
               }
             }
@@ -3586,30 +3555,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "profilePicture": {},
-                  "description": {
-                    "type": "string",
-                    "maxLength": 500
-                  },
-                  "tags": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "file": {
-                    "type": "array",
-                    "items": {}
-                  }
-                },
-                "required": [
-                  "description",
-                  "tags",
-                  "file"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/exhaustiveFormSchema"
               }
             }
           }
@@ -3625,10 +3571,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "number"
-                  }
+                  "$ref": "#/components/schemas/PostApiZodAllFeaturesBodyNumberRecord"
                 }
               }
             }
@@ -3802,19 +3745,7 @@
                       ]
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "string"
-                        },
-                        "code": {
-                          "type": "number"
-                        }
-                      },
-                      "required": [
-                        "error",
-                        "code"
-                      ]
+                      "$ref": "#/components/schemas/PostApiExhaustiveFormResponse413"
                     }
                   ],
                   "nullable": true
@@ -3838,15 +3769,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "ok"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
                 }
               }
             }
@@ -4003,15 +3926,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "ok"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
                 }
               }
             }
@@ -4067,15 +3982,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "ok"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
                 }
               }
             }
@@ -4165,15 +4072,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "ok"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
                 }
               }
             },
@@ -4208,15 +4107,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "ok"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
                 }
               }
             },
@@ -4251,15 +4142,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "ok"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
                 }
               }
             },
@@ -4365,16 +4248,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "exportedField": {
-                    "type": "string",
-                    "minLength": 5,
-                    "maxLength": 50,
-                    "default": "default-exported"
-                  }
-                },
-                "additionalProperties": false
+                "$ref": "#/components/schemas/exportedSchema"
               }
             }
           }
@@ -4424,16 +4298,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "localField": {
-                    "type": "string",
-                    "minLength": 10,
-                    "maxLength": 100,
-                    "default": "default-local"
-                  }
-                },
-                "additionalProperties": false
+                "$ref": "#/components/schemas/localSchema"
               }
             }
           }

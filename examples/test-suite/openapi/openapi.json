@@ -17,6 +17,1698 @@
       "name": "E-Commerce Platform"
     }
   ],
+  "components": {
+    "schemas": {
+      "PostApiValibotVbCreateResponse400Variant1IssuesItem": {
+        "oneOf": [
+          {},
+          {}
+        ]
+      },
+      "PostApiValibotVbCreateResponse400Variant2": {
+        "type": "object",
+        "properties": {
+          "typed": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "success": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "output": {},
+          "issues": {}
+        },
+        "required": [
+          "typed",
+          "success",
+          "output",
+          "issues"
+        ]
+      },
+      "GetApiExhaustiveAstRegexIdDetailsCodeResponse200": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok"
+        ]
+      },
+      "valibotJsonSchema": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "age": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "username",
+          "age"
+        ]
+      },
+      "simpleSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ],
+        "additionalProperties": false
+      },
+      "PostApiMultiTypeboxItemJsonResponsedefault": {
+        "type": "object",
+        "properties": {
+          "res": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "res"
+        ]
+      },
+      "PostApiZodAllFeaturesResponsedefaultDataUnknownValVariant5ValueVariant8Item": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          {},
+          {}
+        ],
+        "nullable": true
+      },
+      "JSONObject": {
+        "type": "object",
+        "additionalProperties": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean",
+              "enum": [
+                false
+              ]
+            },
+            {
+              "type": "boolean",
+              "enum": [
+                true
+              ]
+            },
+            {},
+            {},
+            {},
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownValVariant5ValueVariant8Item"
+              }
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "nullable": true
+        }
+      },
+      "PostApiZodAllFeaturesResponsedefaultDataUnknownValVariant5Value": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          {},
+          {},
+          {},
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownValVariant5ValueVariant8Item"
+            }
+          },
+          {
+            "type": "object"
+          }
+        ],
+        "nullable": true
+      },
+      "GetApiMultiValibotItemCodeCodeResponse400Variant1Output": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
+      "PatchApiStressItemIdStatusResponsedefault": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "DeleteApiStressItemIdDeleteResponsedefault": {
+        "type": "object",
+        "properties": {
+          "deleted": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "deleted"
+        ]
+      },
+      "PutApiStressItemIdUpdateResponsedefault": {
+        "type": "object",
+        "properties": {
+          "updated": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "updated"
+        ]
+      },
+      "PostApiZodAllFeaturesResponsedefaultDataUnknownVal": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean",
+                  "enum": [
+                    false
+                  ]
+                },
+                {
+                  "type": "boolean",
+                  "enum": [
+                    true
+                  ]
+                },
+                {},
+                {},
+                {},
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownValVariant5ValueVariant8Item"
+                  }
+                },
+                {
+                  "type": "object"
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {}
+        ],
+        "nullable": true
+      },
+      "PostApiZodAllFeaturesBodyTupleOfTwoItem": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "zodJsonSchema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "title",
+          "count"
+        ],
+        "additionalProperties": false
+      },
+      "PostApiStressItemIdRestoreResponsedefault": {
+        "type": "object",
+        "properties": {
+          "restored": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "restored"
+        ]
+      },
+      "PostApiZodAllFeaturesResponsedefaultDataTupleOfTwoItem": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "PostApiStressItemIdArchiveResponsedefault": {
+        "type": "object",
+        "properties": {
+          "archived": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "archived"
+        ]
+      },
+      "GetApiMultiValibotItemCodeCodeResponse400": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "typed": {
+                "type": "boolean",
+                "enum": [
+                  true
+                ]
+              },
+              "success": {
+                "type": "boolean",
+                "enum": [
+                  false
+                ]
+              },
+              "output": {
+                "$ref": "#/components/schemas/GetApiMultiValibotItemCodeCodeResponse400Variant1Output"
+              },
+              "issues": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+                },
+                "minItems": 2,
+                "maxItems": 2
+              }
+            },
+            "required": [
+              "typed",
+              "success",
+              "output",
+              "issues"
+            ]
+          },
+          {
+            "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
+          }
+        ]
+      },
+      "PostApiExhaustiveFormResponse413": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "code": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "error",
+          "code"
+        ]
+      },
+      "GetApiMultiValibotItemCodeCodeResponse400Variant1": {
+        "type": "object",
+        "properties": {
+          "typed": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "success": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "output": {
+            "$ref": "#/components/schemas/GetApiMultiValibotItemCodeCodeResponse400Variant1Output"
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "required": [
+          "typed",
+          "success",
+          "output",
+          "issues"
+        ]
+      },
+      "PostApiZodAllFeaturesBodyNumberRecord": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "number"
+        }
+      },
+      "PostApiMultiValibotItemExportBody": {
+        "type": "object",
+        "properties": {
+          "format": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "format"
+        ]
+      },
+      "GetApiStressItemIdResponsedefault": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ]
+      },
+      "GetApiProductsResponsedefaultDataItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "inventoryCount": {
+            "type": "number"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "price",
+          "currency",
+          "inventoryCount",
+          "categories"
+        ]
+      },
+      "PostApiZodAllFeaturesBodyStringRecord": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant1Variant1Output": {
+        "type": "object",
+        "properties": {
+          "orgId": {
+            "type": "string"
+          },
+          "invoiceId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "orgId",
+          "invoiceId"
+        ]
+      },
+      "GetApiStressItemIdDetailsResponsedefault": {
+        "type": "object",
+        "properties": {
+          "details": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "details"
+        ]
+      },
+      "GetApiStressItemSearchResponsedefault": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {}
+          },
+          "query": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "results",
+          "query"
+        ]
+      },
+      "PostApiValibotVbCreateResponse400Variant1Output": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "age": {
+            "type": "number"
+          },
+          "country": {
+            "type": "string"
+          },
+          "testCacheProp": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "age",
+          "country"
+        ]
+      },
+      "PostApiStressItemCreateResponse201": {
+        "type": "object",
+        "properties": {
+          "created": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "created"
+        ]
+      },
+      "PostApiMultiValibotItemJsonResponse400": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "typed": {
+                "type": "boolean",
+                "enum": [
+                  true
+                ]
+              },
+              "success": {
+                "type": "boolean",
+                "enum": [
+                  false
+                ]
+              },
+              "output": {
+                "$ref": "#/components/schemas/valibotJsonSchema"
+              },
+              "issues": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+                },
+                "minItems": 2,
+                "maxItems": 2
+              }
+            },
+            "required": [
+              "typed",
+              "success",
+              "output",
+              "issues"
+            ]
+          },
+          {
+            "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
+          }
+        ]
+      },
+      "GetApiEdgeTsAstSimpleResponsedefaultMetadata": {
+        "type": "object",
+        "additionalProperties": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean",
+              "enum": [
+                false
+              ]
+            },
+            {
+              "type": "boolean",
+              "enum": [
+                true
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean",
+                    "enum": [
+                      false
+                    ]
+                  },
+                  {
+                    "type": "boolean",
+                    "enum": [
+                      true
+                    ]
+                  },
+                  {},
+                  {},
+                  {},
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownValVariant5ValueVariant8Item"
+                    }
+                  },
+                  {
+                    "type": "object"
+                  }
+                ],
+                "nullable": true
+              }
+            },
+            {}
+          ],
+          "nullable": true
+        }
+      },
+      "PostApiMultiValibotItemJsonResponse400Variant1": {
+        "type": "object",
+        "properties": {
+          "typed": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "success": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "output": {
+            "$ref": "#/components/schemas/valibotJsonSchema"
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "required": [
+          "typed",
+          "success",
+          "output",
+          "issues"
+        ]
+      },
+      "typeboxJsonSchema": {
+        "type": "object",
+        "required": [
+          "sku",
+          "price"
+        ],
+        "properties": {
+          "sku": {
+            "type": "string"
+          },
+          "price": {
+            "minimum": 0,
+            "type": "number"
+          }
+        }
+      },
+      "GetApiEdgeTsAstSimpleResponsedefault": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/GetApiEdgeTsAstSimpleResponsedefaultMetadata"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "PatchApiMultiValibotItemSyncBody": {
+        "type": "object",
+        "properties": {
+          "synced": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "synced"
+        ]
+      },
+      "PostApiMultiZodItemJsonResponsedefaultData": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "title",
+          "count"
+        ]
+      },
+      "PostApiEdgeResponsesMultiStatusResponse400": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "PostApiTestsUnionTestBody": {
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "user",
+              "admin"
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "isActive",
+          "role"
+        ]
+      },
+      "PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant2Variant1Output": {
+        "type": "object",
+        "properties": {
+          "ipAddress": {
+            "type": "string"
+          }
+        }
+      },
+      "DeleteApiMultiValibotItemRemoveCodeResponsedefault": {
+        "type": "object",
+        "properties": {
+          "removed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "removed"
+        ]
+      },
+      "GetApiExhaustiveAstRegexActionTypeResponse200": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "action"
+        ]
+      },
+      "GetApiComplexArchiveYearMonthResponsedefaultParams": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "string"
+          },
+          "month": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "year",
+          "month"
+        ]
+      },
+      "GetApiComplexNestedInfoResponsedefault": {
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "info"
+        ]
+      },
+      "createAccountSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "USER",
+              "GUEST"
+            ]
+          },
+          "domain": {
+            "type": "string"
+          },
+          "preferences": {
+            "type": "object",
+            "properties": {
+              "theme": {
+                "default": "light",
+                "type": "string",
+                "enum": [
+                  "light",
+                  "dark"
+                ]
+              }
+            },
+            "required": [
+              "theme"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "role",
+          "domain",
+          "preferences"
+        ],
+        "additionalProperties": false
+      },
+      "loginSchema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
+            "description": "User's registered email address"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "description": "User's password"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "additionalProperties": false
+      },
+      "allZodFeaturesSchema": {
+        "type": "object",
+        "properties": {
+          "str": {
+            "type": "string"
+          },
+          "num": {
+            "type": "number"
+          },
+          "bool": {
+            "type": "boolean"
+          },
+          "big": {},
+          "dt": {},
+          "anyVal": {},
+          "unknownVal": {},
+          "nullVal": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              null
+            ]
+          },
+          "undefVal": {},
+          "emailStr": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          },
+          "urlStr": {
+            "type": "string",
+            "format": "uri"
+          },
+          "uuidStr": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "dateTimeStr": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "minMaxStr": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 10
+          },
+          "regexStr": {
+            "type": "string",
+            "pattern": "^[a-z]+$"
+          },
+          "integer": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "positiveNum": {
+            "type": "number",
+            "minimum": 0,
+            "exclusiveMinimum": true
+          },
+          "negativeNum": {
+            "type": "number",
+            "maximum": 0,
+            "exclusiveMaximum": true
+          },
+          "minMaxNum": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "strArray": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "setOfStrings": {},
+          "tupleOfTwo": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostApiZodAllFeaturesBodyTupleOfTwoItem"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "tupleWithRest": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostApiZodAllFeaturesBodyTupleOfTwoItem"
+            },
+            "minItems": 2
+          },
+          "nestedObj": {
+            "type": "object",
+            "properties": {
+              "nestedKey": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "nestedKey"
+            ],
+            "additionalProperties": false
+          },
+          "partialObj": {
+            "type": "object",
+            "properties": {
+              "x": {
+                "type": "string"
+              },
+              "y": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false
+          },
+          "simpleUnion": {
+            "$ref": "#/components/schemas/PostApiZodAllFeaturesBodyTupleOfTwoItem"
+          },
+          "discriminatedUnion": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "admin"
+                    ]
+                  },
+                  "adminRole": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "adminRole"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "member"
+                    ]
+                  },
+                  "memberCode": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "type",
+                  "memberCode"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "intersectionObj": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "partA": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "partA"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "partB": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "partB"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "stringRecord": {
+            "$ref": "#/components/schemas/PostApiZodAllFeaturesBodyStringRecord"
+          },
+          "numberRecord": {
+            "$ref": "#/components/schemas/PostApiZodAllFeaturesBodyNumberRecord"
+          },
+          "enumColors": {
+            "type": "string",
+            "enum": [
+              "red",
+              "green",
+              "blue"
+            ]
+          },
+          "nativeDirectionEnum": {
+            "type": "string",
+            "enum": [
+              "UP",
+              "DOWN",
+              "LEFT",
+              "RIGHT"
+            ]
+          },
+          "literalValue": {
+            "type": "string",
+            "enum": [
+              "fixed-value"
+            ]
+          },
+          "optionalStr": {
+            "type": "string"
+          },
+          "nullableStr": {
+            "nullable": true,
+            "type": "string"
+          },
+          "nullishStr": {
+            "nullable": true,
+            "type": "string"
+          },
+          "defaultStr": {
+            "default": "fallback",
+            "type": "string"
+          },
+          "transformedNumber": {},
+          "preprocessedStr": {
+            "type": "string"
+          },
+          "refinedStr": {
+            "type": "string"
+          },
+          "brandedStr": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "str",
+          "num",
+          "bool",
+          "big",
+          "dt",
+          "anyVal",
+          "unknownVal",
+          "nullVal",
+          "emailStr",
+          "urlStr",
+          "uuidStr",
+          "dateTimeStr",
+          "minMaxStr",
+          "regexStr",
+          "integer",
+          "positiveNum",
+          "negativeNum",
+          "minMaxNum",
+          "strArray",
+          "setOfStrings",
+          "tupleOfTwo",
+          "tupleWithRest",
+          "nestedObj",
+          "partialObj",
+          "simpleUnion",
+          "discriminatedUnion",
+          "intersectionObj",
+          "stringRecord",
+          "numberRecord",
+          "enumColors",
+          "nativeDirectionEnum",
+          "literalValue",
+          "nullableStr",
+          "defaultStr",
+          "transformedNumber",
+          "preprocessedStr",
+          "refinedStr",
+          "brandedStr"
+        ],
+        "additionalProperties": false
+      },
+      "exhaustiveJsonSchema": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            }
+          },
+          "settings": {
+            "type": "object",
+            "properties": {
+              "theme": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "dark"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "light"
+                    ]
+                  }
+                ]
+              },
+              "notifications": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "theme",
+              "notifications"
+            ],
+            "additionalProperties": false
+          },
+          "event": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "click"
+                    ]
+                  },
+                  "x": {
+                    "type": "number"
+                  },
+                  "y": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "type",
+                  "x",
+                  "y"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "keypress"
+                    ]
+                  },
+                  "key": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "key"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "required": [
+          "metadata",
+          "settings",
+          "event"
+        ],
+        "additionalProperties": false
+      },
+      "nodeASchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "nodeB": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "nodeA": {
+                "allOf": [
+                  {
+                    "$ref": "#"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "BillingReportFilterSchema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "startDate": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+              },
+              "endDate": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+              },
+              "limit": {
+                "default": 100,
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "summary"
+                ]
+              },
+              "groupBy": {
+                "minItems": 1,
+                "maxItems": 3,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "department",
+                    "project",
+                    "user"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "startDate",
+              "endDate",
+              "limit",
+              "type",
+              "groupBy"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "startDate": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+              },
+              "endDate": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+              },
+              "limit": {
+                "default": 100,
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "detailed"
+                ]
+              },
+              "includeTaxes": {
+                "default": false,
+                "type": "boolean"
+              },
+              "currency": {
+                "default": "USD",
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 3
+              },
+              "minAmount": {
+                "type": "number",
+                "minimum": 0,
+                "exclusiveMinimum": true
+              }
+            },
+            "required": [
+              "startDate",
+              "endDate",
+              "limit",
+              "type",
+              "includeTaxes",
+              "currency"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "categorySchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "subcategories": {
+            "type": "array",
+            "items": {
+              "$ref": "#"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "subcategories"
+        ],
+        "additionalProperties": false
+      },
+      "registerSchema": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "minLength": 2,
+            "description": "User's first name"
+          },
+          "lastName": {
+            "type": "string",
+            "minLength": 2,
+            "description": "User's last name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
+            "description": "A valid corporate or personal email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 12,
+            "description": "A strong password (12+ characters)"
+          },
+          "company": {
+            "description": "Company name, if applicable",
+            "type": "string"
+          }
+        },
+        "required": [
+          "firstName",
+          "lastName",
+          "email",
+          "password"
+        ],
+        "additionalProperties": false
+      },
+      "externalValibotSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "age": {
+            "type": "number",
+            "minimum": 18,
+            "maximum": 99
+          },
+          "country": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 2
+          },
+          "testCacheProp": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "age",
+          "country"
+        ]
+      },
+      "exhaustiveFormSchema": {
+        "type": "object",
+        "properties": {
+          "profilePicture": {},
+          "description": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "file": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "binary",
+              "contentEncoding": "binary"
+            }
+          }
+        },
+        "required": [
+          "description",
+          "tags",
+          "file"
+        ],
+        "additionalProperties": false
+      },
+      "typeboxSchema": {
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "age"
+        ],
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "email": {
+            "format": "email",
+            "type": "string"
+          },
+          "age": {
+            "minimum": 18,
+            "maximum": 99,
+            "type": "number"
+          }
+        }
+      },
+      "zodFormSchema": {
+        "type": "object",
+        "properties": {
+          "fileUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "fileUrl",
+          "notes"
+        ],
+        "additionalProperties": false
+      },
+      "createOrderSchema": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+            "description": "ID of the product to order"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991,
+            "description": "Number of items"
+          },
+          "shippingAddress": {
+            "type": "object",
+            "properties": {
+              "line1": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "countryCode": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 2
+              },
+              "postalCode": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "line1",
+              "city",
+              "countryCode",
+              "postalCode"
+            ],
+            "additionalProperties": false,
+            "description": "Destination address"
+          }
+        },
+        "required": [
+          "productId",
+          "quantity",
+          "shippingAddress"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
   "paths": {
     "/api": {
       "get": {
@@ -95,25 +1787,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
-                    "description": "User's registered email address"
-                  },
-                  "password": {
-                    "type": "string",
-                    "minLength": 8,
-                    "description": "User's password"
-                  }
-                },
-                "required": [
-                  "email",
-                  "password"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/loginSchema"
               }
             }
           }
@@ -161,41 +1835,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "firstName": {
-                    "type": "string",
-                    "minLength": 2,
-                    "description": "User's first name"
-                  },
-                  "lastName": {
-                    "type": "string",
-                    "minLength": 2,
-                    "description": "User's last name"
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
-                    "description": "A valid corporate or personal email"
-                  },
-                  "password": {
-                    "type": "string",
-                    "minLength": 12,
-                    "description": "A strong password (12+ characters)"
-                  },
-                  "company": {
-                    "description": "Company name, if applicable",
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "firstName",
-                  "lastName",
-                  "email",
-                  "password"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/registerSchema"
               }
             }
           }
@@ -250,42 +1890,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "description": {
-                            "type": "string"
-                          },
-                          "price": {
-                            "type": "number"
-                          },
-                          "currency": {
-                            "type": "string"
-                          },
-                          "inventoryCount": {
-                            "type": "number"
-                          },
-                          "categories": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "name",
-                          "description",
-                          "price",
-                          "currency",
-                          "inventoryCount",
-                          "categories"
-                        ]
+                        "$ref": "#/components/schemas/GetApiProductsResponsedefaultDataItem"
                       }
                     },
                     "meta": {
@@ -367,42 +1972,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "price": {
-                      "type": "number"
-                    },
-                    "currency": {
-                      "type": "string"
-                    },
-                    "inventoryCount": {
-                      "type": "number"
-                    },
-                    "categories": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "name",
-                    "description",
-                    "price",
-                    "currency",
-                    "inventoryCount",
-                    "categories"
-                  ]
+                  "$ref": "#/components/schemas/GetApiProductsResponsedefaultDataItem"
                 }
               }
             }
@@ -470,54 +2040,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "productId": {
-                    "type": "string",
-                    "format": "uuid",
-                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
-                    "description": "ID of the product to order"
-                  },
-                  "quantity": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 9007199254740991,
-                    "description": "Number of items"
-                  },
-                  "shippingAddress": {
-                    "type": "object",
-                    "properties": {
-                      "line1": {
-                        "type": "string"
-                      },
-                      "city": {
-                        "type": "string"
-                      },
-                      "countryCode": {
-                        "type": "string",
-                        "minLength": 2,
-                        "maxLength": 2
-                      },
-                      "postalCode": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "line1",
-                      "city",
-                      "countryCode",
-                      "postalCode"
-                    ],
-                    "additionalProperties": false,
-                    "description": "Destination address"
-                  }
-                },
-                "required": [
-                  "productId",
-                  "quantity",
-                  "shippingAddress"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/createOrderSchema"
               }
             }
           }
@@ -638,23 +2161,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "subcategories": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#"
-                    }
-                  }
-                },
-                "required": [
-                  "name",
-                  "subcategories"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/categorySchema"
               }
             }
           }
@@ -718,35 +2225,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "nodeB": {
-                    "type": "object",
-                    "properties": {
-                      "value": {
-                        "type": "number"
-                      },
-                      "nodeA": {
-                        "allOf": [
-                          {
-                            "$ref": "#"
-                          }
-                        ]
-                      }
-                    },
-                    "required": [
-                      "value"
-                    ],
-                    "additionalProperties": false
-                  }
-                },
-                "required": [
-                  "name"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/nodeASchema"
               }
             }
           }
@@ -844,25 +2323,7 @@
                       "type": "boolean"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "isActive": {
-                          "type": "boolean",
-                          "nullable": true
-                        },
-                        "role": {
-                          "type": "string",
-                          "enum": [
-                            "user",
-                            "admin"
-                          ],
-                          "nullable": true
-                        }
-                      },
-                      "required": [
-                        "isActive",
-                        "role"
-                      ]
+                      "$ref": "#/components/schemas/PostApiTestsUnionTestBody"
                     }
                   },
                   "required": [
@@ -884,25 +2345,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "isActive": {
-                    "type": "boolean",
-                    "nullable": true
-                  },
-                  "role": {
-                    "type": "string",
-                    "enum": [
-                      "user",
-                      "admin"
-                    ],
-                    "nullable": true
-                  }
-                },
-                "required": [
-                  "isActive",
-                  "role"
-                ]
+                "$ref": "#/components/schemas/PostApiTestsUnionTestBody"
               }
             }
           }
@@ -999,19 +2442,7 @@
                       "type": "boolean"
                     },
                     "params": {
-                      "type": "object",
-                      "properties": {
-                        "year": {
-                          "type": "string"
-                        },
-                        "month": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "year",
-                        "month"
-                      ]
+                      "$ref": "#/components/schemas/GetApiComplexArchiveYearMonthResponsedefaultParams"
                     }
                   },
                   "required": [
@@ -1370,15 +2801,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "info": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "info"
-                  ]
+                  "$ref": "#/components/schemas/GetApiComplexNestedInfoResponsedefault"
                 }
               }
             }
@@ -1512,49 +2935,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
-                  },
-                  "role": {
-                    "type": "string",
-                    "enum": [
-                      "ADMIN",
-                      "USER",
-                      "GUEST"
-                    ]
-                  },
-                  "domain": {
-                    "type": "string"
-                  },
-                  "preferences": {
-                    "type": "object",
-                    "properties": {
-                      "theme": {
-                        "default": "light",
-                        "type": "string",
-                        "enum": [
-                          "light",
-                          "dark"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "theme"
-                    ],
-                    "additionalProperties": false
-                  }
-                },
-                "required": [
-                  "id",
-                  "role",
-                  "domain",
-                  "preferences"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/createAccountSchema"
               }
             }
           }
@@ -1598,88 +2979,7 @@
                         },
                         "anyVal": {},
                         "unknownVal": {
-                          "oneOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "number"
-                            },
-                            {
-                              "type": "boolean",
-                              "enum": [
-                                false
-                              ]
-                            },
-                            {
-                              "type": "boolean",
-                              "enum": [
-                                true
-                              ]
-                            },
-                            {
-                              "type": "object",
-                              "additionalProperties": {
-                                "oneOf": [
-                                  {
-                                    "type": "string"
-                                  },
-                                  {
-                                    "type": "number"
-                                  },
-                                  {
-                                    "type": "boolean",
-                                    "enum": [
-                                      false
-                                    ]
-                                  },
-                                  {
-                                    "type": "boolean",
-                                    "enum": [
-                                      true
-                                    ]
-                                  },
-                                  {},
-                                  {},
-                                  {},
-                                  {
-                                    "type": "array",
-                                    "items": {
-                                      "oneOf": [
-                                        {
-                                          "type": "string"
-                                        },
-                                        {
-                                          "type": "number"
-                                        },
-                                        {
-                                          "type": "boolean",
-                                          "enum": [
-                                            false
-                                          ]
-                                        },
-                                        {
-                                          "type": "boolean",
-                                          "enum": [
-                                            true
-                                          ]
-                                        },
-                                        {},
-                                        {}
-                                      ],
-                                      "nullable": true
-                                    }
-                                  },
-                                  {
-                                    "type": "object"
-                                  }
-                                ],
-                                "nullable": true
-                              }
-                            },
-                            {}
-                          ],
-                          "nullable": true
+                          "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownVal"
                         },
                         "nullVal": {},
                         "emailStr": {
@@ -1722,14 +3022,7 @@
                         "tupleOfTwo": {
                           "type": "array",
                           "items": {
-                            "oneOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "type": "number"
-                              }
-                            ]
+                            "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataTupleOfTwoItem"
                           },
                           "minItems": 2,
                           "maxItems": 2
@@ -1737,14 +3030,7 @@
                         "tupleWithRest": {
                           "type": "array",
                           "items": {
-                            "oneOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "type": "number"
-                              }
-                            ]
+                            "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataTupleOfTwoItem"
                           },
                           "minItems": 2,
                           "maxItems": 2
@@ -1772,14 +3058,7 @@
                           }
                         },
                         "simpleUnion": {
-                          "oneOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "number"
-                            }
-                          ]
+                          "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataTupleOfTwoItem"
                         },
                         "discriminatedUnion": {
                           "oneOf": [
@@ -1837,16 +3116,10 @@
                           ]
                         },
                         "stringRecord": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "string"
-                          }
+                          "$ref": "#/components/schemas/PostApiZodAllFeaturesBodyStringRecord"
                         },
                         "numberRecord": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "number"
-                          }
+                          "$ref": "#/components/schemas/PostApiZodAllFeaturesBodyNumberRecord"
                         },
                         "enumColors": {
                           "type": "string",
@@ -1953,319 +3226,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "str": {
-                    "type": "string"
-                  },
-                  "num": {
-                    "type": "number"
-                  },
-                  "bool": {
-                    "type": "boolean"
-                  },
-                  "big": {},
-                  "dt": {},
-                  "anyVal": {},
-                  "unknownVal": {},
-                  "nullVal": {
-                    "type": "string",
-                    "nullable": true,
-                    "enum": [
-                      null
-                    ]
-                  },
-                  "undefVal": {},
-                  "emailStr": {
-                    "type": "string",
-                    "format": "email",
-                    "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
-                  },
-                  "urlStr": {
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "uuidStr": {
-                    "type": "string",
-                    "format": "uuid",
-                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
-                  },
-                  "dateTimeStr": {
-                    "type": "string",
-                    "format": "date-time",
-                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
-                  },
-                  "minMaxStr": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 10
-                  },
-                  "regexStr": {
-                    "type": "string",
-                    "pattern": "^[a-z]+$"
-                  },
-                  "integer": {
-                    "type": "integer",
-                    "minimum": -9007199254740991,
-                    "maximum": 9007199254740991
-                  },
-                  "positiveNum": {
-                    "type": "number",
-                    "minimum": 0,
-                    "exclusiveMinimum": true
-                  },
-                  "negativeNum": {
-                    "type": "number",
-                    "maximum": 0,
-                    "exclusiveMaximum": true
-                  },
-                  "minMaxNum": {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 100
-                  },
-                  "strArray": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "setOfStrings": {},
-                  "tupleOfTwo": {
-                    "type": "array",
-                    "items": {
-                      "anyOf": [
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "type": "number"
-                        }
-                      ]
-                    },
-                    "minItems": 2,
-                    "maxItems": 2
-                  },
-                  "tupleWithRest": {
-                    "type": "array",
-                    "items": {
-                      "anyOf": [
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "type": "number"
-                        }
-                      ]
-                    },
-                    "minItems": 2
-                  },
-                  "nestedObj": {
-                    "type": "object",
-                    "properties": {
-                      "nestedKey": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "nestedKey"
-                    ],
-                    "additionalProperties": false
-                  },
-                  "partialObj": {
-                    "type": "object",
-                    "properties": {
-                      "x": {
-                        "type": "string"
-                      },
-                      "y": {
-                        "type": "number"
-                      }
-                    },
-                    "additionalProperties": false
-                  },
-                  "simpleUnion": {
-                    "anyOf": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "number"
-                      }
-                    ]
-                  },
-                  "discriminatedUnion": {
-                    "oneOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "admin"
-                            ]
-                          },
-                          "adminRole": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "type",
-                          "adminRole"
-                        ],
-                        "additionalProperties": false
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "member"
-                            ]
-                          },
-                          "memberCode": {
-                            "type": "number"
-                          }
-                        },
-                        "required": [
-                          "type",
-                          "memberCode"
-                        ],
-                        "additionalProperties": false
-                      }
-                    ]
-                  },
-                  "intersectionObj": {
-                    "allOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "partA": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "partA"
-                        ],
-                        "additionalProperties": false
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "partB": {
-                            "type": "number"
-                          }
-                        },
-                        "required": [
-                          "partB"
-                        ],
-                        "additionalProperties": false
-                      }
-                    ]
-                  },
-                  "stringRecord": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "string"
-                    }
-                  },
-                  "numberRecord": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "number"
-                    }
-                  },
-                  "enumColors": {
-                    "type": "string",
-                    "enum": [
-                      "red",
-                      "green",
-                      "blue"
-                    ]
-                  },
-                  "nativeDirectionEnum": {
-                    "type": "string",
-                    "enum": [
-                      "UP",
-                      "DOWN",
-                      "LEFT",
-                      "RIGHT"
-                    ]
-                  },
-                  "literalValue": {
-                    "type": "string",
-                    "enum": [
-                      "fixed-value"
-                    ]
-                  },
-                  "optionalStr": {
-                    "type": "string"
-                  },
-                  "nullableStr": {
-                    "nullable": true,
-                    "type": "string"
-                  },
-                  "nullishStr": {
-                    "nullable": true,
-                    "type": "string"
-                  },
-                  "defaultStr": {
-                    "default": "fallback",
-                    "type": "string"
-                  },
-                  "transformedNumber": {},
-                  "preprocessedStr": {
-                    "type": "string"
-                  },
-                  "refinedStr": {
-                    "type": "string"
-                  },
-                  "brandedStr": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "str",
-                  "num",
-                  "bool",
-                  "big",
-                  "dt",
-                  "anyVal",
-                  "unknownVal",
-                  "nullVal",
-                  "emailStr",
-                  "urlStr",
-                  "uuidStr",
-                  "dateTimeStr",
-                  "minMaxStr",
-                  "regexStr",
-                  "integer",
-                  "positiveNum",
-                  "negativeNum",
-                  "minMaxNum",
-                  "strArray",
-                  "setOfStrings",
-                  "tupleOfTwo",
-                  "tupleWithRest",
-                  "nestedObj",
-                  "partialObj",
-                  "simpleUnion",
-                  "discriminatedUnion",
-                  "intersectionObj",
-                  "stringRecord",
-                  "numberRecord",
-                  "enumColors",
-                  "nativeDirectionEnum",
-                  "literalValue",
-                  "nullableStr",
-                  "defaultStr",
-                  "transformedNumber",
-                  "preprocessedStr",
-                  "refinedStr",
-                  "brandedStr"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/allZodFeaturesSchema"
               }
             }
           }
@@ -2298,35 +3259,12 @@
                           ]
                         },
                         "output": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "string"
-                            },
-                            "email": {
-                              "type": "string"
-                            },
-                            "age": {
-                              "type": "number"
-                            },
-                            "country": {
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "id",
-                            "email",
-                            "age",
-                            "country"
-                          ]
+                          "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1Output"
                         },
                         "issues": {
                           "type": "array",
                           "items": {
-                            "oneOf": [
-                              {},
-                              {}
-                            ]
+                            "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
                           },
                           "minItems": 2,
                           "maxItems": 2
@@ -2340,29 +3278,7 @@
                       ]
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {},
-                        "issues": {}
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
+                      "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
                     }
                   ]
                 }
@@ -2380,27 +3296,7 @@
                       "type": "boolean"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "email": {
-                          "type": "string"
-                        },
-                        "age": {
-                          "type": "number"
-                        },
-                        "country": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "email",
-                        "age",
-                        "country"
-                      ]
+                      "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1Output"
                     }
                   },
                   "required": [
@@ -2417,33 +3313,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  },
-                  "age": {
-                    "type": "number",
-                    "minimum": 18,
-                    "maximum": 99
-                  },
-                  "country": {
-                    "type": "string",
-                    "minLength": 2,
-                    "maxLength": 2
-                  }
-                },
-                "required": [
-                  "id",
-                  "email",
-                  "age",
-                  "country"
-                ]
+                "$ref": "#/components/schemas/externalValibotSchema"
               }
             }
           }
@@ -2501,27 +3371,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "id",
-                  "email",
-                  "age"
-                ],
-                "properties": {
-                  "id": {
-                    "format": "uuid",
-                    "type": "string"
-                  },
-                  "email": {
-                    "format": "email",
-                    "type": "string"
-                  },
-                  "age": {
-                    "minimum": 18,
-                    "maximum": 99,
-                    "type": "number"
-                  }
-                }
+                "$ref": "#/components/schemas/typeboxSchema"
               }
             }
           }
@@ -2559,27 +3409,12 @@
                               ]
                             },
                             "output": {
-                              "type": "object",
-                              "properties": {
-                                "orgId": {
-                                  "type": "string"
-                                },
-                                "invoiceId": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "orgId",
-                                "invoiceId"
-                              ]
+                              "$ref": "#/components/schemas/PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant1Variant1Output"
                             },
                             "issues": {
                               "type": "array",
                               "items": {
-                                "oneOf": [
-                                  {},
-                                  {}
-                                ]
+                                "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
                               },
                               "minItems": 2,
                               "maxItems": 2
@@ -2593,29 +3428,7 @@
                           ]
                         },
                         {
-                          "type": "object",
-                          "properties": {
-                            "typed": {
-                              "type": "boolean",
-                              "enum": [
-                                false
-                              ]
-                            },
-                            "success": {
-                              "type": "boolean",
-                              "enum": [
-                                false
-                              ]
-                            },
-                            "output": {},
-                            "issues": {}
-                          },
-                          "required": [
-                            "typed",
-                            "success",
-                            "output",
-                            "issues"
-                          ]
+                          "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
                         }
                       ]
                     },
@@ -2637,20 +3450,12 @@
                               ]
                             },
                             "output": {
-                              "type": "object",
-                              "properties": {
-                                "ipAddress": {
-                                  "type": "string"
-                                }
-                              }
+                              "$ref": "#/components/schemas/PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant2Variant1Output"
                             },
                             "issues": {
                               "type": "array",
                               "items": {
-                                "oneOf": [
-                                  {},
-                                  {}
-                                ]
+                                "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
                               },
                               "minItems": 2,
                               "maxItems": 2
@@ -2664,29 +3469,7 @@
                           ]
                         },
                         {
-                          "type": "object",
-                          "properties": {
-                            "typed": {
-                              "type": "boolean",
-                              "enum": [
-                                false
-                              ]
-                            },
-                            "success": {
-                              "type": "boolean",
-                              "enum": [
-                                false
-                              ]
-                            },
-                            "output": {},
-                            "issues": {}
-                          },
-                          "required": [
-                            "typed",
-                            "success",
-                            "output",
-                            "issues"
-                          ]
+                          "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
                         }
                       ]
                     }
@@ -2709,27 +3492,10 @@
                       "type": "string"
                     },
                     "params": {
-                      "type": "object",
-                      "properties": {
-                        "orgId": {
-                          "type": "string"
-                        },
-                        "invoiceId": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "orgId",
-                        "invoiceId"
-                      ]
+                      "$ref": "#/components/schemas/PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant1Variant1Output"
                     },
                     "query": {
-                      "type": "object",
-                      "properties": {
-                        "ipAddress": {
-                          "type": "string"
-                        }
-                      }
+                      "$ref": "#/components/schemas/PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant2Variant1Output"
                     },
                     "headers": {
                       "type": "object",
@@ -2918,107 +3684,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "type": "object",
-                    "properties": {
-                      "startDate": {
-                        "type": "string",
-                        "format": "date-time",
-                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
-                      },
-                      "endDate": {
-                        "type": "string",
-                        "format": "date-time",
-                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
-                      },
-                      "limit": {
-                        "default": 100,
-                        "type": "integer",
-                        "minimum": 1,
-                        "maximum": 1000
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "summary"
-                        ]
-                      },
-                      "groupBy": {
-                        "minItems": 1,
-                        "maxItems": 3,
-                        "type": "array",
-                        "items": {
-                          "type": "string",
-                          "enum": [
-                            "department",
-                            "project",
-                            "user"
-                          ]
-                        }
-                      }
-                    },
-                    "required": [
-                      "startDate",
-                      "endDate",
-                      "limit",
-                      "type",
-                      "groupBy"
-                    ],
-                    "additionalProperties": false
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "startDate": {
-                        "type": "string",
-                        "format": "date-time",
-                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
-                      },
-                      "endDate": {
-                        "type": "string",
-                        "format": "date-time",
-                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
-                      },
-                      "limit": {
-                        "default": 100,
-                        "type": "integer",
-                        "minimum": 1,
-                        "maximum": 1000
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "detailed"
-                        ]
-                      },
-                      "includeTaxes": {
-                        "default": false,
-                        "type": "boolean"
-                      },
-                      "currency": {
-                        "default": "USD",
-                        "type": "string",
-                        "minLength": 3,
-                        "maxLength": 3
-                      },
-                      "minAmount": {
-                        "type": "number",
-                        "minimum": 0,
-                        "exclusiveMinimum": true
-                      }
-                    },
-                    "required": [
-                      "startDate",
-                      "endDate",
-                      "limit",
-                      "type",
-                      "includeTaxes",
-                      "currency"
-                    ],
-                    "additionalProperties": false
-                  }
-                ]
+                "$ref": "#/components/schemas/BillingReportFilterSchema"
               }
             }
           }
@@ -3231,88 +3897,7 @@
                           "previousState": {
                             "type": "object",
                             "additionalProperties": {
-                              "oneOf": [
-                                {
-                                  "type": "string"
-                                },
-                                {
-                                  "type": "number"
-                                },
-                                {
-                                  "type": "boolean",
-                                  "enum": [
-                                    false
-                                  ]
-                                },
-                                {
-                                  "type": "boolean",
-                                  "enum": [
-                                    true
-                                  ]
-                                },
-                                {
-                                  "type": "object",
-                                  "additionalProperties": {
-                                    "oneOf": [
-                                      {
-                                        "type": "string"
-                                      },
-                                      {
-                                        "type": "number"
-                                      },
-                                      {
-                                        "type": "boolean",
-                                        "enum": [
-                                          false
-                                        ]
-                                      },
-                                      {
-                                        "type": "boolean",
-                                        "enum": [
-                                          true
-                                        ]
-                                      },
-                                      {},
-                                      {},
-                                      {},
-                                      {
-                                        "type": "array",
-                                        "items": {
-                                          "oneOf": [
-                                            {
-                                              "type": "string"
-                                            },
-                                            {
-                                              "type": "number"
-                                            },
-                                            {
-                                              "type": "boolean",
-                                              "enum": [
-                                                false
-                                              ]
-                                            },
-                                            {
-                                              "type": "boolean",
-                                              "enum": [
-                                                true
-                                              ]
-                                            },
-                                            {},
-                                            {}
-                                          ],
-                                          "nullable": true
-                                        }
-                                      },
-                                      {
-                                        "type": "object"
-                                      }
-                                    ],
-                                    "nullable": true
-                                  }
-                                },
-                                {}
-                              ],
-                              "nullable": true
+                              "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownVal"
                             },
                             "nullable": true
                           }
@@ -3451,106 +4036,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "metadata": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "anyOf": [
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "type": "number"
-                        },
-                        {
-                          "type": "boolean"
-                        }
-                      ]
-                    }
-                  },
-                  "settings": {
-                    "type": "object",
-                    "properties": {
-                      "theme": {
-                        "anyOf": [
-                          {
-                            "type": "string",
-                            "enum": [
-                              "dark"
-                            ]
-                          },
-                          {
-                            "type": "string",
-                            "enum": [
-                              "light"
-                            ]
-                          }
-                        ]
-                      },
-                      "notifications": {
-                        "type": "boolean"
-                      }
-                    },
-                    "required": [
-                      "theme",
-                      "notifications"
-                    ],
-                    "additionalProperties": false
-                  },
-                  "event": {
-                    "oneOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "click"
-                            ]
-                          },
-                          "x": {
-                            "type": "number"
-                          },
-                          "y": {
-                            "type": "number"
-                          }
-                        },
-                        "required": [
-                          "type",
-                          "x",
-                          "y"
-                        ],
-                        "additionalProperties": false
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "keypress"
-                            ]
-                          },
-                          "key": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "type",
-                          "key"
-                        ],
-                        "additionalProperties": false
-                      }
-                    ]
-                  }
-                },
-                "required": [
-                  "metadata",
-                  "settings",
-                  "event"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/exhaustiveJsonSchema"
               }
             }
           }
@@ -3588,19 +4074,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "number"
-                    }
-                  },
-                  "required": [
-                    "error",
-                    "code"
-                  ]
+                  "$ref": "#/components/schemas/PostApiExhaustiveFormResponse413"
                 }
               }
             }
@@ -3616,34 +4090,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "profilePicture": {},
-                  "description": {
-                    "type": "string",
-                    "maxLength": 500
-                  },
-                  "tags": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "file": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary",
-                      "contentEncoding": "binary"
-                    }
-                  }
-                },
-                "required": [
-                  "description",
-                  "tags",
-                  "file"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/exhaustiveFormSchema"
               }
             }
           }
@@ -3659,10 +4106,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "number"
-                  }
+                  "$ref": "#/components/schemas/PostApiZodAllFeaturesBodyNumberRecord"
                 }
               }
             }
@@ -3836,19 +4280,7 @@
                       ]
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "error": {
-                          "type": "string"
-                        },
-                        "code": {
-                          "type": "number"
-                        }
-                      },
-                      "required": [
-                        "error",
-                        "code"
-                      ]
+                      "$ref": "#/components/schemas/PostApiExhaustiveFormResponse413"
                     }
                   ],
                   "nullable": true
@@ -3872,15 +4304,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "ok"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
                 }
               }
             }
@@ -3959,15 +4383,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "action": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "action"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexActionTypeResponse200"
                 }
               }
             }
@@ -4037,15 +4453,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "ok"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
                 }
               }
             }
@@ -4101,15 +4509,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "ok"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
                 }
               }
             }
@@ -4199,15 +4599,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "ok"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
                 }
               }
             },
@@ -4242,15 +4634,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "ok"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
                 }
               }
             },
@@ -4285,15 +4669,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "ok"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
                 }
               }
             },
@@ -4386,15 +4762,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "created": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "created"
-                  ]
+                  "$ref": "#/components/schemas/PostApiStressItemCreateResponse201"
                 }
               }
             }
@@ -4405,22 +4773,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "value": {
-                    "type": "integer",
-                    "minimum": -9007199254740991,
-                    "maximum": 9007199254740991
-                  }
-                },
-                "required": [
-                  "name",
-                  "value"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/simpleSchema"
               }
             }
           }
@@ -4439,19 +4792,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "type": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "type"
-                  ]
+                  "$ref": "#/components/schemas/GetApiStressItemIdResponsedefault"
                 }
               }
             }
@@ -4481,15 +4822,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "updated": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "updated"
-                  ]
+                  "$ref": "#/components/schemas/PutApiStressItemIdUpdateResponsedefault"
                 }
               }
             }
@@ -4510,22 +4843,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "value": {
-                    "type": "integer",
-                    "minimum": -9007199254740991,
-                    "maximum": 9007199254740991
-                  }
-                },
-                "required": [
-                  "name",
-                  "value"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/simpleSchema"
               }
             }
           }
@@ -4544,15 +4862,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "deleted"
-                  ]
+                  "$ref": "#/components/schemas/DeleteApiStressItemIdDeleteResponsedefault"
                 }
               }
             }
@@ -4582,15 +4892,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "status"
-                  ]
+                  "$ref": "#/components/schemas/PatchApiStressItemIdStatusResponsedefault"
                 }
               }
             }
@@ -4620,15 +4922,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "details": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "details"
-                  ]
+                  "$ref": "#/components/schemas/GetApiStressItemIdDetailsResponsedefault"
                 }
               }
             }
@@ -4658,15 +4952,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "archived": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "archived"
-                  ]
+                  "$ref": "#/components/schemas/PostApiStressItemIdArchiveResponsedefault"
                 }
               }
             }
@@ -4696,15 +4982,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "restored": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "restored"
-                  ]
+                  "$ref": "#/components/schemas/PostApiStressItemIdRestoreResponsedefault"
                 }
               }
             }
@@ -4734,20 +5012,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "results": {
-                      "type": "array",
-                      "items": {}
-                    },
-                    "query": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "results",
-                    "query"
-                  ]
+                  "$ref": "#/components/schemas/GetApiStressItemSearchResponsedefault"
                 }
               }
             }
@@ -4808,22 +5073,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "value": {
-                    "type": "integer",
-                    "minimum": -9007199254740991,
-                    "maximum": 9007199254740991
-                  }
-                },
-                "required": [
-                  "name",
-                  "value"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/simpleSchema"
               }
             }
           }
@@ -4842,19 +5092,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "type": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "type"
-                  ]
+                  "$ref": "#/components/schemas/GetApiStressItemIdResponsedefault"
                 }
               }
             }
@@ -4884,15 +5122,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "updated": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "updated"
-                  ]
+                  "$ref": "#/components/schemas/PutApiStressItemIdUpdateResponsedefault"
                 }
               }
             }
@@ -4913,22 +5143,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "value": {
-                    "type": "integer",
-                    "minimum": -9007199254740991,
-                    "maximum": 9007199254740991
-                  }
-                },
-                "required": [
-                  "name",
-                  "value"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/simpleSchema"
               }
             }
           }
@@ -4947,15 +5162,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "deleted"
-                  ]
+                  "$ref": "#/components/schemas/DeleteApiStressItemIdDeleteResponsedefault"
                 }
               }
             }
@@ -4985,15 +5192,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "status"
-                  ]
+                  "$ref": "#/components/schemas/PatchApiStressItemIdStatusResponsedefault"
                 }
               }
             }
@@ -5023,15 +5222,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "details": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "details"
-                  ]
+                  "$ref": "#/components/schemas/GetApiStressItemIdDetailsResponsedefault"
                 }
               }
             }
@@ -5061,15 +5252,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "archived": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "archived"
-                  ]
+                  "$ref": "#/components/schemas/PostApiStressItemIdArchiveResponsedefault"
                 }
               }
             }
@@ -5099,15 +5282,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "restored": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "restored"
-                  ]
+                  "$ref": "#/components/schemas/PostApiStressItemIdRestoreResponsedefault"
                 }
               }
             }
@@ -5137,20 +5312,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "results": {
-                      "type": "array",
-                      "items": {}
-                    },
-                    "query": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "results",
-                    "query"
-                  ]
+                  "$ref": "#/components/schemas/GetApiStressItemSearchResponsedefault"
                 }
               }
             }
@@ -5222,22 +5384,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "value": {
-                    "type": "integer",
-                    "minimum": -9007199254740991,
-                    "maximum": 9007199254740991
-                  }
-                },
-                "required": [
-                  "name",
-                  "value"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/simpleSchema"
               }
             }
           }
@@ -5295,15 +5442,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "updated": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "updated"
-                  ]
+                  "$ref": "#/components/schemas/PutApiStressItemIdUpdateResponsedefault"
                 }
               }
             }
@@ -5324,22 +5463,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "value": {
-                    "type": "integer",
-                    "minimum": -9007199254740991,
-                    "maximum": 9007199254740991
-                  }
-                },
-                "required": [
-                  "name",
-                  "value"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/simpleSchema"
               }
             }
           }
@@ -5358,15 +5482,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "deleted"
-                  ]
+                  "$ref": "#/components/schemas/DeleteApiStressItemIdDeleteResponsedefault"
                 }
               }
             }
@@ -5396,15 +5512,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "status"
-                  ]
+                  "$ref": "#/components/schemas/PatchApiStressItemIdStatusResponsedefault"
                 }
               }
             }
@@ -5472,15 +5580,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "archived": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "archived"
-                  ]
+                  "$ref": "#/components/schemas/PostApiStressItemIdArchiveResponsedefault"
                 }
               }
             }
@@ -5510,15 +5610,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "restored": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "restored"
-                  ]
+                  "$ref": "#/components/schemas/PostApiStressItemIdRestoreResponsedefault"
                 }
               }
             }
@@ -5572,19 +5664,7 @@
                       "type": "boolean"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "title": {
-                          "type": "string"
-                        },
-                        "count": {
-                          "type": "number"
-                        }
-                      },
-                      "required": [
-                        "title",
-                        "count"
-                      ]
+                      "$ref": "#/components/schemas/PostApiMultiZodItemJsonResponsedefaultData"
                     }
                   },
                   "required": [
@@ -5601,22 +5681,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string"
-                  },
-                  "count": {
-                    "type": "integer",
-                    "minimum": -9007199254740991,
-                    "maximum": 9007199254740991
-                  }
-                },
-                "required": [
-                  "title",
-                  "count"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/zodJsonSchema"
               }
             }
           }
@@ -5739,22 +5804,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "fileUrl": {
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "notes": {
-                    "type": "string",
-                    "maxLength": 500
-                  }
-                },
-                "required": [
-                  "fileUrl",
-                  "notes"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/zodFormSchema"
               }
             }
           }
@@ -5770,15 +5820,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "updated": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "updated"
-                  ]
+                  "$ref": "#/components/schemas/PutApiStressItemIdUpdateResponsedefault"
                 }
               }
             }
@@ -5811,22 +5853,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string"
-                  },
-                  "count": {
-                    "type": "integer",
-                    "minimum": -9007199254740991,
-                    "maximum": 9007199254740991
-                  }
-                },
-                "required": [
-                  "title",
-                  "count"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/zodJsonSchema"
               }
             }
           }
@@ -5845,15 +5872,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "deleted"
-                  ]
+                  "$ref": "#/components/schemas/DeleteApiStressItemIdDeleteResponsedefault"
                 }
               }
             }
@@ -5916,22 +5935,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string"
-                  },
-                  "count": {
-                    "type": "integer",
-                    "minimum": -9007199254740991,
-                    "maximum": 9007199254740991
-                  }
-                },
-                "required": [
-                  "title",
-                  "count"
-                ],
-                "additionalProperties": false
+                "$ref": "#/components/schemas/zodJsonSchema"
               }
             }
           }
@@ -5971,19 +5975,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "type": "object",
-                  "properties": {
-                    "title": {
-                      "type": "string"
-                    },
-                    "count": {
-                      "type": "number"
-                    }
-                  },
-                  "required": [
-                    "title",
-                    "count"
-                  ]
+                  "$ref": "#/components/schemas/PostApiMultiZodItemJsonResponsedefaultData"
                 }
               }
             }
@@ -6093,82 +6085,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            true
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {
-                          "type": "object",
-                          "properties": {
-                            "username": {
-                              "type": "string"
-                            },
-                            "age": {
-                              "type": "number"
-                            }
-                          },
-                          "required": [
-                            "username",
-                            "age"
-                          ]
-                        },
-                        "issues": {
-                          "type": "array",
-                          "items": {
-                            "oneOf": [
-                              {},
-                              {}
-                            ]
-                          },
-                          "minItems": 2,
-                          "maxItems": 2
-                        }
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {},
-                        "issues": {}
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
-                    }
-                  ]
+                  "$ref": "#/components/schemas/PostApiMultiValibotItemJsonResponse400"
                 }
               }
             }
@@ -6178,15 +6095,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "ok"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
                 }
               }
             }
@@ -6197,19 +6106,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "username": {
-                    "type": "string"
-                  },
-                  "age": {
-                    "type": "number"
-                  }
-                },
-                "required": [
-                  "username",
-                  "age"
-                ]
+                "$ref": "#/components/schemas/valibotJsonSchema"
               }
             }
           }
@@ -6258,10 +6155,7 @@
                         "issues": {
                           "type": "array",
                           "items": {
-                            "oneOf": [
-                              {},
-                              {}
-                            ]
+                            "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
                           },
                           "minItems": 2,
                           "maxItems": 2
@@ -6275,29 +6169,7 @@
                       ]
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {},
-                        "issues": {}
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
+                      "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
                     }
                   ]
                 }
@@ -6345,78 +6217,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            true
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {
-                          "type": "object",
-                          "properties": {
-                            "code": {
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "code"
-                          ]
-                        },
-                        "issues": {
-                          "type": "array",
-                          "items": {
-                            "oneOf": [
-                              {},
-                              {}
-                            ]
-                          },
-                          "minItems": 2,
-                          "maxItems": 2
-                        }
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {},
-                        "issues": {}
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
-                    }
-                  ]
+                  "$ref": "#/components/schemas/GetApiMultiValibotItemCodeCodeResponse400"
                 }
               }
             }
@@ -6426,15 +6227,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "code"
-                  ]
+                  "$ref": "#/components/schemas/GetApiMultiValibotItemCodeCodeResponse400Variant1Output"
                 }
               }
             }
@@ -6466,82 +6259,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            true
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {
-                          "type": "object",
-                          "properties": {
-                            "username": {
-                              "type": "string"
-                            },
-                            "age": {
-                              "type": "number"
-                            }
-                          },
-                          "required": [
-                            "username",
-                            "age"
-                          ]
-                        },
-                        "issues": {
-                          "type": "array",
-                          "items": {
-                            "oneOf": [
-                              {},
-                              {}
-                            ]
-                          },
-                          "minItems": 2,
-                          "maxItems": 2
-                        }
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {},
-                        "issues": {}
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
-                    }
-                  ]
+                  "$ref": "#/components/schemas/PostApiMultiValibotItemJsonResponse400"
                 }
               }
             }
@@ -6570,19 +6288,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "username": {
-                    "type": "string"
-                  },
-                  "age": {
-                    "type": "number"
-                  }
-                },
-                "required": [
-                  "username",
-                  "age"
-                ]
+                "$ref": "#/components/schemas/valibotJsonSchema"
               }
             }
           }
@@ -6601,78 +6307,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            true
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {
-                          "type": "object",
-                          "properties": {
-                            "code": {
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "code"
-                          ]
-                        },
-                        "issues": {
-                          "type": "array",
-                          "items": {
-                            "oneOf": [
-                              {},
-                              {}
-                            ]
-                          },
-                          "minItems": 2,
-                          "maxItems": 2
-                        }
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {},
-                        "issues": {}
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
-                    }
-                  ]
+                  "$ref": "#/components/schemas/GetApiMultiValibotItemCodeCodeResponse400"
                 }
               }
             }
@@ -6682,15 +6317,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "removed": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "removed"
-                  ]
+                  "$ref": "#/components/schemas/DeleteApiMultiValibotItemRemoveCodeResponsedefault"
                 }
               }
             }
@@ -6739,23 +6366,12 @@
                           ]
                         },
                         "output": {
-                          "type": "object",
-                          "properties": {
-                            "synced": {
-                              "type": "boolean"
-                            }
-                          },
-                          "required": [
-                            "synced"
-                          ]
+                          "$ref": "#/components/schemas/PatchApiMultiValibotItemSyncBody"
                         },
                         "issues": {
                           "type": "array",
                           "items": {
-                            "oneOf": [
-                              {},
-                              {}
-                            ]
+                            "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
                           },
                           "minItems": 2,
                           "maxItems": 2
@@ -6769,29 +6385,7 @@
                       ]
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {},
-                        "issues": {}
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
+                      "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
                     }
                   ]
                 }
@@ -6803,15 +6397,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "ok"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
                 }
               }
             }
@@ -6822,15 +6408,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "synced": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "synced"
-                ]
+                "$ref": "#/components/schemas/PatchApiMultiValibotItemSyncBody"
               }
             }
           }
@@ -6868,28 +6446,13 @@
                         "output": {
                           "type": "array",
                           "items": {
-                            "type": "object",
-                            "properties": {
-                              "username": {
-                                "type": "string"
-                              },
-                              "age": {
-                                "type": "number"
-                              }
-                            },
-                            "required": [
-                              "username",
-                              "age"
-                            ]
+                            "$ref": "#/components/schemas/valibotJsonSchema"
                           }
                         },
                         "issues": {
                           "type": "array",
                           "items": {
-                            "oneOf": [
-                              {},
-                              {}
-                            ]
+                            "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
                           },
                           "minItems": 2,
                           "maxItems": 2
@@ -6903,29 +6466,7 @@
                       ]
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {},
-                        "issues": {}
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
+                      "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
                     }
                   ]
                 }
@@ -6958,19 +6499,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "type": "object",
-                  "properties": {
-                    "username": {
-                      "type": "string"
-                    },
-                    "age": {
-                      "type": "number"
-                    }
-                  },
-                  "required": [
-                    "username",
-                    "age"
-                  ]
+                  "$ref": "#/components/schemas/valibotJsonSchema"
                 }
               }
             }
@@ -7020,10 +6549,7 @@
                         "issues": {
                           "type": "array",
                           "items": {
-                            "oneOf": [
-                              {},
-                              {}
-                            ]
+                            "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
                           },
                           "minItems": 2,
                           "maxItems": 2
@@ -7037,29 +6563,7 @@
                       ]
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {},
-                        "issues": {}
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
+                      "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
                     }
                   ]
                 }
@@ -7126,23 +6630,12 @@
                           ]
                         },
                         "output": {
-                          "type": "object",
-                          "properties": {
-                            "format": {
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "format"
-                          ]
+                          "$ref": "#/components/schemas/PostApiMultiValibotItemExportBody"
                         },
                         "issues": {
                           "type": "array",
                           "items": {
-                            "oneOf": [
-                              {},
-                              {}
-                            ]
+                            "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
                           },
                           "minItems": 2,
                           "maxItems": 2
@@ -7156,29 +6649,7 @@
                       ]
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {},
-                        "issues": {}
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
+                      "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
                     }
                   ]
                 }
@@ -7209,15 +6680,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "format": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "format"
-                ]
+                "$ref": "#/components/schemas/PostApiMultiValibotItemExportBody"
               }
             }
           }
@@ -7236,78 +6699,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            true
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {
-                          "type": "object",
-                          "properties": {
-                            "code": {
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "code"
-                          ]
-                        },
-                        "issues": {
-                          "type": "array",
-                          "items": {
-                            "oneOf": [
-                              {},
-                              {}
-                            ]
-                          },
-                          "minItems": 2,
-                          "maxItems": 2
-                        }
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "typed": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "success": {
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "output": {},
-                        "issues": {}
-                      },
-                      "required": [
-                        "typed",
-                        "success",
-                        "output",
-                        "issues"
-                      ]
-                    }
-                  ]
+                  "$ref": "#/components/schemas/GetApiMultiValibotItemCodeCodeResponse400"
                 }
               }
             }
@@ -7317,15 +6709,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "status"
-                  ]
+                  "$ref": "#/components/schemas/PatchApiStressItemIdStatusResponsedefault"
                 }
               }
             }
@@ -7357,15 +6741,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "res": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "res"
-                  ]
+                  "$ref": "#/components/schemas/PostApiMultiTypeboxItemJsonResponsedefault"
                 }
               }
             }
@@ -7376,20 +6752,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "sku",
-                  "price"
-                ],
-                "properties": {
-                  "sku": {
-                    "type": "string"
-                  },
-                  "price": {
-                    "minimum": 0,
-                    "type": "number"
-                  }
-                }
+                "$ref": "#/components/schemas/typeboxJsonSchema"
               }
             }
           }
@@ -7475,15 +6838,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "res": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "res"
-                  ]
+                  "$ref": "#/components/schemas/PostApiMultiTypeboxItemJsonResponsedefault"
                 }
               }
             }
@@ -7494,20 +6849,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "sku",
-                  "price"
-                ],
-                "properties": {
-                  "sku": {
-                    "type": "string"
-                  },
-                  "price": {
-                    "minimum": 0,
-                    "type": "number"
-                  }
-                }
+                "$ref": "#/components/schemas/typeboxJsonSchema"
               }
             }
           }
@@ -7526,15 +6868,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "res": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "res"
-                  ]
+                  "$ref": "#/components/schemas/PostApiMultiTypeboxItemJsonResponsedefault"
                 }
               }
             }
@@ -7565,15 +6899,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "res": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "res"
-                  ]
+                  "$ref": "#/components/schemas/PostApiMultiTypeboxItemJsonResponsedefault"
                 }
               }
             }
@@ -7611,15 +6937,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "res": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "res"
-                  ]
+                  "$ref": "#/components/schemas/PostApiMultiTypeboxItemJsonResponsedefault"
                 }
               }
             }
@@ -7748,15 +7066,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "info": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "info"
-                  ]
+                  "$ref": "#/components/schemas/GetApiComplexNestedInfoResponsedefault"
                 }
               }
             }
@@ -7787,112 +7097,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "tags": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "metadata": {
-                      "type": "object",
-                      "additionalProperties": {
-                        "oneOf": [
-                          {
-                            "type": "string"
-                          },
-                          {
-                            "type": "number"
-                          },
-                          {
-                            "type": "boolean",
-                            "enum": [
-                              false
-                            ]
-                          },
-                          {
-                            "type": "boolean",
-                            "enum": [
-                              true
-                            ]
-                          },
-                          {
-                            "type": "object",
-                            "additionalProperties": {
-                              "oneOf": [
-                                {
-                                  "type": "string"
-                                },
-                                {
-                                  "type": "number"
-                                },
-                                {
-                                  "type": "boolean",
-                                  "enum": [
-                                    false
-                                  ]
-                                },
-                                {
-                                  "type": "boolean",
-                                  "enum": [
-                                    true
-                                  ]
-                                },
-                                {},
-                                {},
-                                {},
-                                {
-                                  "type": "array",
-                                  "items": {
-                                    "oneOf": [
-                                      {
-                                        "type": "string"
-                                      },
-                                      {
-                                        "type": "number"
-                                      },
-                                      {
-                                        "type": "boolean",
-                                        "enum": [
-                                          false
-                                        ]
-                                      },
-                                      {
-                                        "type": "boolean",
-                                        "enum": [
-                                          true
-                                        ]
-                                      },
-                                      {},
-                                      {}
-                                    ],
-                                    "nullable": true
-                                  }
-                                },
-                                {
-                                  "type": "object"
-                                }
-                              ],
-                              "nullable": true
-                            }
-                          },
-                          {}
-                        ],
-                        "nullable": true
-                      }
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "name"
-                  ]
+                  "$ref": "#/components/schemas/GetApiEdgeTsAstSimpleResponsedefault"
                 }
               }
             }
@@ -7915,112 +7120,7 @@
                   "type": "object",
                   "properties": {
                     "received": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "tags": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "metadata": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "oneOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "type": "number"
-                              },
-                              {
-                                "type": "boolean",
-                                "enum": [
-                                  false
-                                ]
-                              },
-                              {
-                                "type": "boolean",
-                                "enum": [
-                                  true
-                                ]
-                              },
-                              {
-                                "type": "object",
-                                "additionalProperties": {
-                                  "oneOf": [
-                                    {
-                                      "type": "string"
-                                    },
-                                    {
-                                      "type": "number"
-                                    },
-                                    {
-                                      "type": "boolean",
-                                      "enum": [
-                                        false
-                                      ]
-                                    },
-                                    {
-                                      "type": "boolean",
-                                      "enum": [
-                                        true
-                                      ]
-                                    },
-                                    {},
-                                    {},
-                                    {},
-                                    {
-                                      "type": "array",
-                                      "items": {
-                                        "oneOf": [
-                                          {
-                                            "type": "string"
-                                          },
-                                          {
-                                            "type": "number"
-                                          },
-                                          {
-                                            "type": "boolean",
-                                            "enum": [
-                                              false
-                                            ]
-                                          },
-                                          {
-                                            "type": "boolean",
-                                            "enum": [
-                                              true
-                                            ]
-                                          },
-                                          {},
-                                          {}
-                                        ],
-                                        "nullable": true
-                                      }
-                                    },
-                                    {
-                                      "type": "object"
-                                    }
-                                  ],
-                                  "nullable": true
-                                }
-                              },
-                              {}
-                            ],
-                            "nullable": true
-                          }
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "name"
-                      ]
+                      "$ref": "#/components/schemas/GetApiEdgeTsAstSimpleResponsedefault"
                     }
                   },
                   "required": [
@@ -8189,19 +7289,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "number"
-                    }
-                  },
-                  "required": [
-                    "error",
-                    "code"
-                  ]
+                  "$ref": "#/components/schemas/PostApiExhaustiveFormResponse413"
                 }
               }
             }
@@ -8221,15 +7309,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "created": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "created"
-                  ]
+                  "$ref": "#/components/schemas/PostApiStressItemCreateResponse201"
                 }
               }
             }
@@ -8239,15 +7319,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
+                  "$ref": "#/components/schemas/PostApiEdgeResponsesMultiStatusResponse400"
                 }
               }
             }
@@ -8267,15 +7339,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
+                  "$ref": "#/components/schemas/PostApiEdgeResponsesMultiStatusResponse400"
                 }
               }
             }
@@ -8370,19 +7434,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "year": {
-                      "type": "string"
-                    },
-                    "month": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "year",
-                    "month"
-                  ]
+                  "$ref": "#/components/schemas/GetApiComplexArchiveYearMonthResponsedefaultParams"
                 }
               }
             }
@@ -8700,15 +7752,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "action": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "action"
-                  ]
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRegexActionTypeResponse200"
                 }
               }
             }
@@ -8764,15 +7808,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "removed": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "removed"
-                  ]
+                  "$ref": "#/components/schemas/DeleteApiMultiValibotItemRemoveCodeResponsedefault"
                 }
               }
             }
