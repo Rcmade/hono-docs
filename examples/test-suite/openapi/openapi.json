@@ -953,27 +953,6 @@
         ],
         "additionalProperties": false
       },
-      "loginSchema": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
-            "description": "User's registered email address"
-          },
-          "password": {
-            "type": "string",
-            "minLength": 8,
-            "description": "User's password"
-          }
-        },
-        "required": [
-          "email",
-          "password"
-        ],
-        "additionalProperties": false
-      },
       "allZodFeaturesSchema": {
         "type": "object",
         "properties": {
@@ -1498,6 +1477,31 @@
           }
         ]
       },
+      "loginSchema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
+            "description": "User's registered email address"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "description": "User's password"
+          },
+          "device": {
+            "description": "Device ID",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "additionalProperties": false
+      },
       "categorySchema": {
         "type": "object",
         "properties": {
@@ -2014,16 +2018,12 @@
                     },
                     "status": {
                       "type": "string"
-                    },
-                    "estimatedShippingDate": {
-                      "type": "string"
                     }
                   },
                   "required": [
                     "success",
                     "orderId",
-                    "status",
-                    "estimatedShippingDate"
+                    "status"
                   ]
                 }
               }

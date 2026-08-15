@@ -15,16 +15,14 @@ export async function loadConfig(configFile: string): Promise<HonoDocsConfig> {
   let configModule: object | { default: object } | null = null;
   try {
     const { createJiti } = await import("jiti");
-    const jiti = createJiti(import.meta.url);
+    const jiti = createJiti(import.meta.url, { moduleCache: false });
     // Use pathToFileURL to guarantee cross-platform compatibility (Windows C:\ paths)
     configModule = await jiti.import(pathToFileURL(fullPath).href, {
       default: true,
     });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
+  } catch (err) {
     throw new Error(
-      `[hono-docs] Failed to load config: ${err.message ?? String(err)}`,
+      `[hono-docs] Failed to load config: ${err instanceof Error ? err.message : String(err)}`,
     );
   }
 

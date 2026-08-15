@@ -19,3 +19,5 @@ export const VALIDATOR_TARGETS = [
   "header",
   "cookie",
 ] as const;
+
+export const PROJECT_CACHE_DIR_NAME = ".hono-docs";

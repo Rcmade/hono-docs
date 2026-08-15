@@ -1,7 +1,13 @@
 // src/utils/logger.ts
 // Grouped-by-phase terminal output for hono-docs CLI.
 
-import type { HttpMethod, RouteSource, SchemaEngine, ValidatorLibrary, ValidatorTarget } from "../types";
+import type {
+  HttpMethod,
+  RouteSource,
+  SchemaEngine,
+  ValidatorLibrary,
+  ValidatorTarget,
+} from "../types";
 
 const c = {
   reset: "\x1b[0m",
@@ -22,7 +28,8 @@ function col(ansi: string, text: string): string {
   return `${ansi}${text}${c.reset}`;
 }
 
-const METHOD_COLORS: Record<HttpMethod, string> & Record<string, string | undefined> = {
+const METHOD_COLORS: Record<HttpMethod, string> &
+  Record<string, string | undefined> = {
   GET: c.bold + c.green,
   POST: c.bold + c.cyan,
   PUT: c.bold + c.yellow,
@@ -38,7 +45,8 @@ function formatMethod(method: string): string {
   return col(ansi, method.toUpperCase().padEnd(6));
 }
 
-const VALIDATOR_COLORS: Record<SchemaEngine, string> & Record<string, string | undefined> = {
+const VALIDATOR_COLORS: Record<SchemaEngine, string> &
+  Record<string, string | undefined> = {
   zod: c.cyan,
   valibot: c.magenta,
   typebox: c.orange,
@@ -55,7 +63,9 @@ function formatValidator(lib: string): string {
 
 function progressBar(count: number, total: number, width = 20): string {
   const filled = total === 0 ? 0 : Math.round((count / total) * width);
-  return col(c.green, "█".repeat(filled)) + col(c.gray, "░".repeat(width - filled));
+  return (
+    col(c.green, "█".repeat(filled)) + col(c.gray, "░".repeat(width - filled))
+  );
 }
 
 type RouteEntry = {
@@ -76,17 +86,19 @@ export const logger = {
       process.stdout.write("\n");
       process.stdout.write(
         `  ${col(c.bold + c.cyan, "◆  hono-docs")} ${col(c.dim, `v${version}`)}` +
-        `  ${col(c.dim, "·")}  ${col(c.white, configPath)}` +
-        `  ${col(c.dim, "·")}  ${col(c.white, tsConfig)}\n\n`,
+          `  ${col(c.dim, "·")}  ${col(c.white, configPath)}` +
+          `  ${col(c.dim, "·")}  ${col(c.white, tsConfig)}\n\n`,
       );
-    } catch { }
+    } catch {}
   },
 
   /** Print the "🔍 Analyzing routes..." phase header. */
   analyzing(): void {
     try {
-      process.stdout.write(`\n  🔍  ${col(c.bold + c.white, "Analyzing routes...")}\n\n`);
-    } catch { }
+      process.stdout.write(
+        `\n  🔍  ${col(c.bold + c.white, "Analyzing routes...")}\n\n`,
+      );
+    } catch {}
   },
 
   /** Print a cache-hit line for a group that was loaded from cache. */
@@ -96,7 +108,7 @@ export const logger = {
       process.stdout.write(
         `      ${col(c.bold + c.green, "⚡")}  ${col(c.white, groupName.padEnd(44))}  ${col(c.dim, "→  loaded from cache (skipped)")}\n`,
       );
-    } catch { }
+    } catch {}
   },
 
   /** Track total group count (called once per group, before or after cache check). */
@@ -108,13 +120,15 @@ export const logger = {
   registerRoute(method: string, routePath: string, hasDoc = false): void {
     try {
       const m = method.toUpperCase();
-      const existing = _buffer.find((r) => r.method === m && r.path === routePath);
+      const existing = _buffer.find(
+        (r) => r.method === m && r.path === routePath,
+      );
       if (existing) {
         existing.hasDoc = Boolean(existing.hasDoc || hasDoc);
       } else {
         _buffer.push({ method: m, path: routePath, hasDoc, sources: [] });
       }
-    } catch { }
+    } catch {}
   },
 
   /** Buffer a single enriched route input source — flushed later via logger.summary(). */
@@ -126,22 +140,34 @@ export const logger = {
   ): void {
     try {
       const m = method.toUpperCase();
-      const existing = _buffer.find((r) => r.method === m && r.path === routePath);
+      const existing = _buffer.find(
+        (r) => r.method === m && r.path === routePath,
+      );
       if (existing) {
-        if (!existing.sources.some((s) => s.src === source && s.library === library)) {
+        if (
+          !existing.sources.some(
+            (s) => s.src === source && s.library === library,
+          )
+        ) {
           existing.sources.push({ src: source, library });
         }
       } else {
-        _buffer.push({ method: m, path: routePath, sources: [{ src: source, library }] });
+        _buffer.push({
+          method: m,
+          path: routePath,
+          sources: [{ src: source, library }],
+        });
       }
-    } catch { }
+    } catch {}
   },
 
   /** Get recorded sources for a specific route (for caching). */
   getRouteSources(method: string, routePath: string): RouteSource[] {
     try {
       const m = method.toUpperCase();
-      const existing = _buffer.find((r) => r.method === m && r.path === routePath);
+      const existing = _buffer.find(
+        (r) => r.method === m && r.path === routePath,
+      );
       return existing ? existing.sources : [];
     } catch {
       return [];
@@ -157,14 +183,16 @@ export const logger = {
   ): void {
     try {
       const m = method.toUpperCase();
-      const existing = _buffer.find((r) => r.method === m && r.path === routePath);
+      const existing = _buffer.find(
+        (r) => r.method === m && r.path === routePath,
+      );
       if (existing) {
         existing.sources = sources;
         existing.hasDoc = Boolean(existing.hasDoc || hasDoc);
       } else {
         _buffer.push({ method: m, path: routePath, hasDoc, sources });
       }
-    } catch { }
+    } catch {}
   },
 
   /** Flush buffered routes + print documentation and schema engine dashboards. */
@@ -177,7 +205,7 @@ export const logger = {
         }
         process.stdout.write(
           `      ${col(c.yellow, "📭  No API endpoints were discovered in the target application.")}\n` +
-          `      ${col(c.dim, "    Please verify your appTypePath in your configuration and check that route types are exported.")}\n`,
+            `      ${col(c.dim, "    Please verify your appTypePath in your configuration and check that route types are exported.")}\n`,
         );
         return;
       }
@@ -189,16 +217,23 @@ export const logger = {
         const pathStr = col(c.white, truncPath.padEnd(44));
 
         if (sources.length === 0) {
-          process.stdout.write(`      ${methodStr}  ${pathStr}  ${col(c.dim, "→  no input")}\n`);
+          process.stdout.write(
+            `      ${methodStr}  ${pathStr}  ${col(c.dim, "→  no input")}\n`,
+          );
         } else {
           const grouped: Record<string, string[]> = {};
           for (const { src, library } of sources) {
             (grouped[library] ??= []).push(src);
           }
           const tagsStr = Object.entries(grouped)
-            .map(([lib, srcs]) => `${formatValidator(lib)} ${col(c.dim, srcs.join(" · "))}`)
+            .map(
+              ([lib, srcs]) =>
+                `${formatValidator(lib)} ${col(c.dim, srcs.join(" · "))}`,
+            )
             .join(col(c.dim, "  "));
-          process.stdout.write(`      ${methodStr}  ${pathStr}  ${col(c.dim, "→")}  ${tagsStr}\n`);
+          process.stdout.write(
+            `      ${methodStr}  ${pathStr}  ${col(c.dim, "→")}  ${tagsStr}\n`,
+          );
         }
       }
 
@@ -211,19 +246,33 @@ export const logger = {
         if (r.hasDoc) docCount++;
       }
 
-      const methodOrder = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD", "ALL"];
+      const methodOrder = [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE",
+        "OPTIONS",
+        "HEAD",
+        "ALL",
+      ];
       const methodParts = Object.entries(methodCounts)
         .sort(
           ([a], [b]) =>
             (methodOrder.indexOf(a) !== -1 ? methodOrder.indexOf(a) : 99) -
             (methodOrder.indexOf(b) !== -1 ? methodOrder.indexOf(b) : 99),
         )
-        .map(([m, cnt]) => `${col(METHOD_COLORS[m] ?? (c.bold + c.white), m)}: ${cnt}`)
+        .map(
+          ([m, cnt]) =>
+            `${col(METHOD_COLORS[m] ?? c.bold + c.white, m)}: ${cnt}`,
+        )
         .join(col(c.dim, " · "));
 
       const docPercentage = Math.round((docCount / total) * 100);
 
-      process.stdout.write(`\n\n  📊  ${col(c.bold + c.white, "Documentation Summary")}\n\n`);
+      process.stdout.write(
+        `\n\n  📊  ${col(c.bold + c.white, "Documentation Summary")}\n\n`,
+      );
       process.stdout.write(
         `      ${col(c.dim, "Endpoints Discovered  :")}  ${col(c.bold + c.white, `${total} total`)}  ${col(c.dim, "(")} ${methodParts} ${col(c.dim, ")")}\n`,
       );
@@ -247,10 +296,19 @@ export const logger = {
       }
 
       if (Object.keys(libCounts).length > 0) {
-        process.stdout.write(`\n\n  ⚙️  ${col(c.bold + c.white, "Schema Resolution Engine")}\n\n`);
+        process.stdout.write(
+          `\n\n  ⚙️  ${col(c.bold + c.white, "Schema Resolution Engine")}\n\n`,
+        );
         const maxLen = Math.max(...Object.keys(libCounts).map((k) => k.length));
 
-        const libOrder = ["zod", "valibot", "typebox", "yup", "ts type", "no input"];
+        const libOrder = [
+          "zod",
+          "valibot",
+          "typebox",
+          "yup",
+          "ts type",
+          "no input",
+        ];
         const sortedLibs = Object.entries(libCounts).sort(([a], [b]) => {
           const ia = libOrder.indexOf(a.toLowerCase());
           const ib = libOrder.indexOf(b.toLowerCase());
@@ -264,11 +322,12 @@ export const logger = {
 
           process.stdout.write(
             `      ${col(VALIDATOR_COLORS[lib.toLowerCase()] ?? c.white, lib.padEnd(maxLen + 2))}` +
-            `${progressBar(cnt, total)}  ${col(c.white, `${cnt} ${cnt === 1 ? "route " : "routes"}`)}  ${col(c.dim, label)}\n`,
+              `${progressBar(cnt, total)}  ${col(c.white, `${cnt} ${cnt === 1 ? "route " : "routes"}`)}  ${col(c.dim, label)}\n`,
           );
         }
       }
-    } catch { } finally {
+    } catch {
+    } finally {
       _buffer.length = 0;
     }
   },
@@ -277,10 +336,16 @@ export const logger = {
   output(outputPath: string, sizeBytes?: number): void {
     try {
       const sizeStr =
-        sizeBytes != null ? col(c.dim, `  ${(sizeBytes / 1024).toFixed(1)} KB`) : "";
-      process.stdout.write(`\n\n  📄  ${col(c.bold + c.white, "Output written")}\n\n`);
-      process.stdout.write(`      ${col(c.cyan + c.bold, outputPath)}${sizeStr}\n`);
-    } catch { }
+        sizeBytes != null
+          ? col(c.dim, `  ${(sizeBytes / 1024).toFixed(1)} KB`)
+          : "";
+      process.stdout.write(
+        `\n\n  📄  ${col(c.bold + c.white, "Output written")}\n\n`,
+      );
+      process.stdout.write(
+        `      ${col(c.cyan + c.bold, outputPath)}${sizeStr}\n`,
+      );
+    } catch {}
   },
 
   /** Print the final success line with elapsed time and optional cache stats. */
@@ -288,7 +353,10 @@ export const logger = {
     try {
       let cacheStr = "";
       if (_totalGroups > 0 && _cacheHits > 0) {
-        cacheStr = col(c.dim, `  (${_cacheHits}/${_totalGroups} groups from cache)`);
+        cacheStr = col(
+          c.dim,
+          `  (${_cacheHits}/${_totalGroups} groups from cache)`,
+        );
       }
       process.stdout.write(
         `\n\n  ${col(c.bold + c.green, "✨  Done")} ${col(c.dim, `in ${elapsedMs}ms`)}${cacheStr}\n\n`,
@@ -296,13 +364,41 @@ export const logger = {
       // Reset counters for next run (e.g. programmatic usage)
       _cacheHits = 0;
       _totalGroups = 0;
-    } catch { }
+    } catch {}
   },
 
   /** Print a non-fatal warning. */
   warn(message: string): void {
     try {
       process.stdout.write(`  ${col(c.yellow, "⚠")}  ${col(c.dim, message)}\n`);
-    } catch { }
+    } catch {}
+  },
+
+  /** Print general info. */
+  info(message: string): void {
+    try {
+      process.stdout.write(
+        `\n  ${col(c.blue, "ℹ")}  ${col(c.white, message)}\n`,
+      );
+    } catch {}
+  },
+
+  /** Print success status. */
+  success(message: string): void {
+    try {
+      process.stdout.write(`  ${col(c.green, "✔")}  ${col(c.dim, message)}\n`);
+    } catch {}
+  },
+
+  /** Print a fatal error. */
+  error(message: string, err?: unknown): void {
+    try {
+      process.stdout.write(
+        `\n  ${col(c.red, "❌")}  ${col(c.bold + c.red, message)}\n`,
+      );
+      if (err) {
+        process.stdout.write(`      ${col(c.red, String(err))}\n`);
+      }
+    } catch {}
   },
 };

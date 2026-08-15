@@ -2,3 +2,4 @@
 export { runGenerate, type RunGenerateOptions } from "./runGenerate";
 export { generateOpenApi } from "./generateOpenApi";
 export { generateTypes } from "./generateTypes";
+export { runWatch } from "./runWatch";

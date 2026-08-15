@@ -18,6 +18,7 @@ import {
 import { join } from "node:path";
 import type { OpenAPIV3 } from "openapi-types";
 import type { RouteSource } from "../types";
+import { PROJECT_CACHE_DIR_NAME } from "../utils/constants";
 
 // ─── Manifest types ──────────────────────────────────────────────────────────
 
@@ -66,9 +67,9 @@ export class CacheManager {
   private readonly pkgVersion: string;
   private dirty = false;
 
-  constructor(libDir: string, pkgVersion: string) {
+  constructor(rootPath: string, pkgVersion: string) {
     this.pkgVersion = pkgVersion;
-    const cacheDir = join(libDir, "output", "cache");
+    const cacheDir = join(rootPath, PROJECT_CACHE_DIR_NAME, "cache");
     mkdirSync(cacheDir, { recursive: true });
     this.manifestPath = join(cacheDir, "manifest.json");
     this.manifest = this._load();

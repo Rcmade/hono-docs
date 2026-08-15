@@ -5,6 +5,7 @@ import { zValidator } from "@hono/zod-validator";
 const loginSchema = z.object({
   email: z.string().email().describe("User's registered email address"),
   password: z.string().min(8).describe("User's password"),
+  device: z.string().optional().describe("Device ID"),
 });
 
 const registerSchema = z.object({
@@ -44,3 +45,4 @@ export const authRoutes = new Hono()
   .post("/logout", (c) => {
     return c.json({ success: true, message: "Successfully logged out" });
   });
+// trigger

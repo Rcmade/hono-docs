@@ -46,6 +46,7 @@ export async function generateOpenApi({
   const sf = project.addSourceFileAtPath(
     path.resolve(rootPath, snapshotPath.appTypePath),
   );
+  sf.refreshFromFileSystemSync();
   const aliasDecl = sf.getTypeAliasOrThrow("AppType");
 
   const topTypeNode = aliasDecl.getTypeNode();

@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path, { resolve } from "node:path";
+import { PROJECT_CACHE_DIR_NAME } from "../utils/constants";
 import { Project } from "ts-morph";
 import { loadConfig } from "../config/loadConfig";
 import { generateTypes } from "./generateTypes";
@@ -14,6 +15,8 @@ import { deduplicateComponents } from "../utils/deduplicateSchemas";
 export interface RunGenerateOptions {
   /** When true, bypass all cache reads and do not write a new cache. */
   noCache?: boolean;
+  /** Persistent ts-morph Project instance for lightning fast watch-mode AST caching. */
+  projectInstance?: Project;
 }
 
 export async function runGenerate(
@@ -39,7 +42,7 @@ export async function runGenerate(
   logger.analyzing();
 
   // ── Cache setup ─────────────────────────────────────────────────────────────
-  const cache = new CacheManager(libDir, pkgVersion);
+  const cache = new CacheManager(rootPath, pkgVersion);
 
   if (noCache) {
     // --no-cache: skip all reads and don't persist at the end
@@ -56,7 +59,7 @@ export async function runGenerate(
     cache.checkGlobal(globalHash);
   }
 
-  let projectInstance: Project | null = null;
+  let projectInstance: Project | null = options.projectInstance || null;
   const getProject = () => {
     if (!projectInstance) {
       projectInstance = new Project({
@@ -68,8 +71,8 @@ export async function runGenerate(
 
   const apis = config.apis;
 
-  const snapshotOutputRoot = path.resolve(libDir, "output/types");
-  const openAPiOutputRoot = path.resolve(libDir, "output/openapi");
+  const snapshotOutputRoot = path.resolve(rootPath, PROJECT_CACHE_DIR_NAME, "types");
+  const openAPiOutputRoot = path.resolve(rootPath, PROJECT_CACHE_DIR_NAME, "openapi");
 
   const commonParams = {
     config,

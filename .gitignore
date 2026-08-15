@@ -6,3 +6,5 @@ node_modules
 temp
 
 *.tgz
+
+.hono-docs
