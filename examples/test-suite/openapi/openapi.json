@@ -1,6 +1,6 @@
 {
-  "security": [],
   "openapi": "3.0.3",
+  "security": [],
   "info": {
     "title": "API Test Suite",
     "version": "1.0.0",

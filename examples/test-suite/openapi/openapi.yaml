@@ -1,0 +1,5596 @@
+openapi: 3.0.3
+security: []
+info:
+  title: API Test Suite
+  version: 1.0.0
+  description: Sandbox and Integration Test Suite.
+servers:
+  - url: http://localhost:3002
+    description: Development Server
+tags:
+  - name: E-Commerce Platform
+components:
+  schemas:
+    PostApiValibotVbCreateResponse400Variant1IssuesItem:
+      oneOf:
+        - {}
+        - {}
+    PostApiValibotVbCreateResponse400Variant2:
+      type: object
+      properties:
+        typed:
+          type: boolean
+          enum:
+            - false
+        success:
+          type: boolean
+          enum:
+            - false
+        output: {}
+        issues: {}
+      required:
+        - typed
+        - success
+        - output
+        - issues
+    GetApiExhaustiveAstRegexIdDetailsCodeResponse200:
+      type: object
+      properties:
+        ok:
+          type: boolean
+      required:
+        - ok
+    valibotJsonSchema:
+      type: object
+      properties:
+        username:
+          type: string
+        age:
+          type: number
+      required:
+        - username
+        - age
+    simpleSchema:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: integer
+          minimum: -9007199254740991
+          maximum: 9007199254740991
+      required:
+        - name
+        - value
+      additionalProperties: false
+    PostApiZodAllFeaturesResponsedefaultDataUnknownValVariant5ValueVariant8Item:
+      oneOf:
+        - type: string
+        - type: number
+        - type: boolean
+          enum:
+            - false
+        - type: boolean
+          enum:
+            - true
+        - {}
+        - {}
+      nullable: true
+    PostApiMultiTypeboxItemJsonResponsedefault:
+      type: object
+      properties:
+        res:
+          type: string
+      required:
+        - res
+    JSONObject:
+      type: object
+      additionalProperties: &a10
+        oneOf:
+          - &a1
+            type: string
+          - &a2
+            type: number
+          - &a3
+            type: boolean
+            enum:
+              - false
+          - &a4
+            type: boolean
+            enum:
+              - true
+          - &a5 {}
+          - &a6 {}
+          - &a7 {}
+          - &a8
+            type: array
+            items:
+              $ref: "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownValV\
+                ariant5ValueVariant8Item"
+          - &a9
+            type: object
+        nullable: true
+    PostApiZodAllFeaturesResponsedefaultDataUnknownValVariant5Value:
+      oneOf:
+        - *a1
+        - *a2
+        - *a3
+        - *a4
+        - *a5
+        - *a6
+        - *a7
+        - *a8
+        - *a9
+      nullable: true
+    PostApiZodAllFeaturesResponsedefaultDataUnknownVal:
+      oneOf:
+        - type: string
+        - type: number
+        - type: boolean
+          enum:
+            - false
+        - type: boolean
+          enum:
+            - true
+        - type: object
+          additionalProperties: *a10
+        - {}
+      nullable: true
+    GetApiMultiValibotItemCodeCodeResponse400Variant1Output:
+      type: object
+      properties:
+        code:
+          type: string
+      required:
+        - code
+    PatchApiStressItemIdStatusResponsedefault:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    DeleteApiStressItemIdDeleteResponsedefault:
+      type: object
+      properties:
+        deleted:
+          type: boolean
+      required:
+        - deleted
+    PutApiStressItemIdUpdateResponsedefault:
+      type: object
+      properties:
+        updated:
+          type: boolean
+      required:
+        - updated
+    PostApiZodAllFeaturesBodyTupleOfTwoItem:
+      anyOf:
+        - type: string
+        - type: number
+    zodJsonSchema:
+      type: object
+      properties:
+        title:
+          type: string
+        count:
+          type: integer
+          minimum: -9007199254740991
+          maximum: 9007199254740991
+      required:
+        - title
+        - count
+      additionalProperties: false
+    PostApiStressItemIdRestoreResponsedefault:
+      type: object
+      properties:
+        restored:
+          type: boolean
+      required:
+        - restored
+    PostApiZodAllFeaturesResponsedefaultDataTupleOfTwoItem:
+      oneOf:
+        - type: string
+        - type: number
+    PostApiStressItemIdArchiveResponsedefault:
+      type: object
+      properties:
+        archived:
+          type: boolean
+      required:
+        - archived
+    GetApiMultiValibotItemCodeCodeResponse400:
+      oneOf:
+        - type: object
+          properties: &a11
+            typed:
+              type: boolean
+              enum:
+                - true
+            success:
+              type: boolean
+              enum:
+                - false
+            output:
+              $ref: "#/components/schemas/GetApiMultiValibotItemCodeCodeResponse400Variant1Ou\
+                tput"
+            issues:
+              type: array
+              items:
+                $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+              minItems: 2
+              maxItems: 2
+          required:
+            - typed
+            - success
+            - output
+            - issues
+        - $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
+    PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadata:
+      type: object
+      properties:
+        preferences:
+          $ref: "#/components/schemas/PostApiNewFrameworksDrizzleZodResponsedefaultDataMe\
+            tadataPreferences"
+        tags:
+          type: array
+          items:
+            type: string
+      required:
+        - preferences
+        - tags
+      nullable: true
+    PostApiExhaustiveFormResponse413:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: number
+      required:
+        - error
+        - code
+    GetApiMultiValibotItemCodeCodeResponse400Variant1:
+      type: object
+      properties: *a11
+      required:
+        - typed
+        - success
+        - output
+        - issues
+    PostApiZodAllFeaturesBodyNumberRecord:
+      type: object
+      additionalProperties:
+        type: number
+    PostApiEdgeResponsesMultiStatusResponse400:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+    PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadataPreferences:
+      type: object
+      properties:
+        theme:
+          type: string
+          enum:
+            - light
+            - dark
+        notifications:
+          type: boolean
+      required:
+        - theme
+        - notifications
+    PostApiMultiValibotItemExportBody:
+      type: object
+      properties:
+        format:
+          type: string
+      required:
+        - format
+    legacySchema:
+      type: object
+      properties:
+        oldApiKey:
+          type: string
+        reason:
+          type: string
+      required:
+        - oldApiKey
+      additionalProperties: false
+    GetApiStressItemIdResponsedefault:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+        - id
+        - type
+    GetApiProductsResponsedefaultDataItem:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        currency:
+          type: string
+        inventoryCount:
+          type: number
+        categories:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - name
+        - description
+        - price
+        - currency
+        - inventoryCount
+        - categories
+    GetApiExhaustiveAstRecordAnyResponse200:
+      type: object
+      additionalProperties: {}
+    PostApiZodAllFeaturesBodyStringRecord:
+      type: object
+      additionalProperties:
+        type: string
+    PostApiNewFrameworksDrizzleValibotResponse400Variant1Output:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        age:
+          type: number
+        isActive:
+          type: boolean
+        role: {}
+        metadata:
+          $ref: "#/components/schemas/PostApiNewFrameworksDrizzleZodResponsedefaultDataMe\
+            tadata"
+        createdAt:
+          type: string
+        lastLoginAt:
+          type: string
+          nullable: true
+      required:
+        - id
+        - name
+        - email
+    PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant1Variant1Output:
+      type: object
+      properties:
+        orgId:
+          type: string
+        invoiceId:
+          type: string
+      required:
+        - orgId
+        - invoiceId
+    GetApiStressItemIdDetailsResponsedefault:
+      type: object
+      properties:
+        details:
+          type: string
+      required:
+        - details
+    GetApiStressItemSearchResponsedefault:
+      type: object
+      properties:
+        results:
+          type: array
+          items: {}
+        query:
+          type: string
+      required:
+        - results
+        - query
+    PostApiValibotVbCreateResponse400Variant1Output:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        age:
+          type: number
+        country:
+          type: string
+        testCacheProp:
+          type: string
+      required:
+        - id
+        - email
+        - age
+        - country
+    PostApiStressItemCreateResponse201:
+      type: object
+      properties:
+        created:
+          type: boolean
+      required:
+        - created
+    PostApiMultiValibotItemJsonResponse400:
+      oneOf:
+        - type: object
+          properties: &a12
+            typed:
+              type: boolean
+              enum:
+                - true
+            success:
+              type: boolean
+              enum:
+                - false
+            output:
+              $ref: "#/components/schemas/valibotJsonSchema"
+            issues:
+              type: array
+              items:
+                $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+              minItems: 2
+              maxItems: 2
+          required:
+            - typed
+            - success
+            - output
+            - issues
+        - $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
+    GetApiEdgeTsAstSimpleResponsedefaultMetadata:
+      type: object
+      additionalProperties:
+        oneOf:
+          - type: string
+          - type: number
+          - type: boolean
+            enum:
+              - false
+          - type: boolean
+            enum:
+              - true
+          - type: object
+            additionalProperties:
+              oneOf:
+                - type: string
+                - type: number
+                - type: boolean
+                  enum:
+                    - false
+                - type: boolean
+                  enum:
+                    - true
+                - {}
+                - {}
+                - {}
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownValV\
+                      ariant5ValueVariant8Item"
+                - type: object
+              nullable: true
+          - {}
+        nullable: true
+    PostApiMultiZodItemFormResponsedefault:
+      type: object
+      properties:
+        uploaded:
+          type: boolean
+      required:
+        - uploaded
+    PostApiMultiValibotItemJsonResponse400Variant1:
+      type: object
+      properties: *a12
+      required:
+        - typed
+        - success
+        - output
+        - issues
+    typeboxJsonSchema:
+      type: object
+      required:
+        - sku
+        - price
+      properties:
+        sku:
+          type: string
+        price:
+          minimum: 0
+          type: number
+    GetApiEdgeTsAstSimpleResponsedefault:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        metadata:
+          $ref: "#/components/schemas/GetApiEdgeTsAstSimpleResponsedefaultMetadata"
+      required:
+        - id
+        - name
+    PatchApiMultiValibotItemSyncBody:
+      type: object
+      properties:
+        synced:
+          type: boolean
+      required:
+        - synced
+    PostApiMultiZodItemJsonResponsedefaultData:
+      type: object
+      properties:
+        title:
+          type: string
+        count:
+          type: number
+      required:
+        - title
+        - count
+    PostApiTestsUnionTestBody:
+      type: object
+      properties:
+        isActive:
+          type: boolean
+          nullable: true
+        role:
+          type: string
+          enum:
+            - user
+            - admin
+          nullable: true
+      required:
+        - isActive
+        - role
+    PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant2Variant1Output:
+      type: object
+      properties:
+        ipAddress:
+          type: string
+    DeleteApiMultiValibotItemRemoveCodeResponsedefault:
+      type: object
+      properties:
+        removed:
+          type: boolean
+      required:
+        - removed
+    GetApiExhaustiveAstRegexActionTypeResponse200:
+      type: object
+      properties:
+        action:
+          type: string
+      required:
+        - action
+    GetApiComplexArchiveYearMonthResponsedefaultParams:
+      type: object
+      properties:
+        year:
+          type: string
+        month:
+          type: string
+      required:
+        - year
+        - month
+    GetApiComplexNestedInfoResponsedefault:
+      type: object
+      properties:
+        info:
+          type: string
+      required:
+        - info
+    createAccountSchema:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        role:
+          type: string
+          enum:
+            - ADMIN
+            - USER
+            - GUEST
+        domain:
+          type: string
+        preferences:
+          type: object
+          properties:
+            theme:
+              default: light
+              type: string
+              enum:
+                - light
+                - dark
+          required:
+            - theme
+          additionalProperties: false
+      required:
+        - id
+        - role
+        - domain
+        - preferences
+      additionalProperties: false
+    allZodFeaturesSchema:
+      type: object
+      properties:
+        str:
+          type: string
+        num:
+          type: number
+        bool:
+          type: boolean
+        big: {}
+        dt: {}
+        anyVal: {}
+        unknownVal: {}
+        nullVal:
+          type: string
+          nullable: true
+          enum:
+            - null
+        undefVal: {}
+        emailStr:
+          type: string
+          format: email
+          pattern: ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+        urlStr:
+          type: string
+          format: uri
+        uuidStr:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        dateTimeStr:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+        minMaxStr:
+          type: string
+          minLength: 3
+          maxLength: 10
+        regexStr:
+          type: string
+          pattern: ^[a-z]+$
+        integer:
+          type: integer
+          minimum: -9007199254740991
+          maximum: 9007199254740991
+        positiveNum:
+          type: number
+          minimum: 0
+          exclusiveMinimum: true
+        negativeNum:
+          type: number
+          maximum: 0
+          exclusiveMaximum: true
+        minMaxNum:
+          type: number
+          minimum: 0
+          maximum: 100
+        strArray:
+          type: array
+          items:
+            type: string
+        setOfStrings: {}
+        tupleOfTwo:
+          type: array
+          items:
+            $ref: "#/components/schemas/PostApiZodAllFeaturesBodyTupleOfTwoItem"
+          minItems: 2
+          maxItems: 2
+        tupleWithRest:
+          type: array
+          items:
+            $ref: "#/components/schemas/PostApiZodAllFeaturesBodyTupleOfTwoItem"
+          minItems: 2
+        nestedObj:
+          type: object
+          properties:
+            nestedKey:
+              type: string
+          required:
+            - nestedKey
+          additionalProperties: false
+        partialObj:
+          type: object
+          properties:
+            x:
+              type: string
+            y:
+              type: number
+          additionalProperties: false
+        simpleUnion:
+          $ref: "#/components/schemas/PostApiZodAllFeaturesBodyTupleOfTwoItem"
+        discriminatedUnion:
+          oneOf:
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - admin
+                adminRole:
+                  type: string
+              required:
+                - type
+                - adminRole
+              additionalProperties: false
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - member
+                memberCode:
+                  type: number
+              required:
+                - type
+                - memberCode
+              additionalProperties: false
+        intersectionObj:
+          allOf:
+            - type: object
+              properties:
+                partA:
+                  type: string
+              required:
+                - partA
+              additionalProperties: false
+            - type: object
+              properties:
+                partB:
+                  type: number
+              required:
+                - partB
+              additionalProperties: false
+        stringRecord:
+          $ref: "#/components/schemas/PostApiZodAllFeaturesBodyStringRecord"
+        numberRecord:
+          $ref: "#/components/schemas/PostApiZodAllFeaturesBodyNumberRecord"
+        enumColors:
+          type: string
+          enum:
+            - red
+            - green
+            - blue
+        nativeDirectionEnum:
+          type: string
+          enum:
+            - UP
+            - DOWN
+            - LEFT
+            - RIGHT
+        literalValue:
+          type: string
+          enum:
+            - fixed-value
+        optionalStr:
+          type: string
+        nullableStr:
+          nullable: true
+          type: string
+        nullishStr:
+          nullable: true
+          type: string
+        defaultStr:
+          default: fallback
+          type: string
+        transformedNumber: {}
+        preprocessedStr:
+          type: string
+        refinedStr:
+          type: string
+        brandedStr:
+          type: string
+      required:
+        - str
+        - num
+        - bool
+        - big
+        - dt
+        - anyVal
+        - unknownVal
+        - nullVal
+        - emailStr
+        - urlStr
+        - uuidStr
+        - dateTimeStr
+        - minMaxStr
+        - regexStr
+        - integer
+        - positiveNum
+        - negativeNum
+        - minMaxNum
+        - strArray
+        - setOfStrings
+        - tupleOfTwo
+        - tupleWithRest
+        - nestedObj
+        - partialObj
+        - simpleUnion
+        - discriminatedUnion
+        - intersectionObj
+        - stringRecord
+        - numberRecord
+        - enumColors
+        - nativeDirectionEnum
+        - literalValue
+        - nullableStr
+        - defaultStr
+        - transformedNumber
+        - preprocessedStr
+        - refinedStr
+        - brandedStr
+      additionalProperties: false
+    exhaustiveJsonSchema:
+      type: object
+      properties:
+        metadata:
+          type: object
+          additionalProperties:
+            anyOf:
+              - type: string
+              - type: number
+              - type: boolean
+        settings:
+          type: object
+          properties:
+            theme:
+              anyOf:
+                - type: string
+                  enum:
+                    - dark
+                - type: string
+                  enum:
+                    - light
+            notifications:
+              type: boolean
+          required:
+            - theme
+            - notifications
+          additionalProperties: false
+        event:
+          oneOf:
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - click
+                x:
+                  type: number
+                y:
+                  type: number
+              required:
+                - type
+                - x
+                - y
+              additionalProperties: false
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - keypress
+                key:
+                  type: string
+              required:
+                - type
+                - key
+              additionalProperties: false
+      required:
+        - metadata
+        - settings
+        - event
+      additionalProperties: false
+    nodeASchema:
+      type: object
+      properties:
+        name:
+          type: string
+        nodeB:
+          type: object
+          properties:
+            value:
+              type: number
+            nodeA:
+              allOf:
+                - $ref: "#"
+          required:
+            - value
+          additionalProperties: false
+      required:
+        - name
+      additionalProperties: false
+    BillingReportFilterSchema:
+      oneOf:
+        - type: object
+          properties:
+            startDate:
+              type: string
+              format: date-time
+              pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            endDate:
+              type: string
+              format: date-time
+              pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            limit:
+              default: 100
+              type: integer
+              minimum: 1
+              maximum: 1000
+            type:
+              type: string
+              enum:
+                - summary
+            groupBy:
+              minItems: 1
+              maxItems: 3
+              type: array
+              items:
+                type: string
+                enum:
+                  - department
+                  - project
+                  - user
+          required:
+            - startDate
+            - endDate
+            - limit
+            - type
+            - groupBy
+          additionalProperties: false
+        - type: object
+          properties:
+            startDate:
+              type: string
+              format: date-time
+              pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            endDate:
+              type: string
+              format: date-time
+              pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            limit:
+              default: 100
+              type: integer
+              minimum: 1
+              maximum: 1000
+            type:
+              type: string
+              enum:
+                - detailed
+            includeTaxes:
+              default: false
+              type: boolean
+            currency:
+              default: USD
+              type: string
+              minLength: 3
+              maxLength: 3
+            minAmount:
+              type: number
+              minimum: 0
+              exclusiveMinimum: true
+          required:
+            - startDate
+            - endDate
+            - limit
+            - type
+            - includeTaxes
+            - currency
+          additionalProperties: false
+    loginSchema:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          pattern: ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+          description: User's registered email address
+        password:
+          type: string
+          minLength: 8
+          description: User's password
+        device:
+          description: Device ID
+          type: string
+      required:
+        - email
+        - password
+      additionalProperties: false
+    insertUserZod:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+          pattern: ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+        age:
+          type: number
+          minimum: 18
+          maximum: 120
+        isActive:
+          type: boolean
+        role:
+          type: string
+          enum:
+            - admin
+            - editor
+            - viewer
+        metadata:
+          nullable: true
+          anyOf:
+            - anyOf:
+                - type: string
+                - type: number
+                - type: boolean
+                - type: string
+                  nullable: true
+                  enum:
+                    - null
+            - $ref: "#/components/schemas/GetApiExhaustiveAstRecordAnyResponse200"
+            - type: array
+              items: {}
+        createdAt:
+          type: string
+        lastLoginAt:
+          nullable: true
+          type: string
+      required:
+        - id
+        - name
+        - email
+      additionalProperties: false
+    categorySchema:
+      type: object
+      properties:
+        name:
+          type: string
+        subcategories:
+          type: array
+          items:
+            $ref: "#"
+      required:
+        - name
+        - subcategories
+      additionalProperties: false
+    externalValibotSchema:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        age:
+          type: number
+          minimum: 18
+          maximum: 99
+        country:
+          type: string
+          minLength: 2
+          maxLength: 2
+        testCacheProp:
+          type: string
+      required:
+        - id
+        - email
+        - age
+        - country
+    registerSchema:
+      type: object
+      properties:
+        lastName:
+          type: string
+          minLength: 2
+          description: User's last name
+        email:
+          type: string
+          format: email
+          pattern: ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+          description: A valid corporate or personal email
+        password:
+          type: string
+          minLength: 12
+          description: A strong password (12+ characters)
+        company:
+          description: Company name, if applicable
+          type: string
+      required:
+        - lastName
+        - email
+        - password
+      additionalProperties: false
+    insertUserValibot:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        age:
+          type: number
+          minimum: 18
+          maximum: 120
+        isActive:
+          type: boolean
+        role:
+          enum:
+            - admin
+            - editor
+            - viewer
+          type: string
+        metadata:
+          anyOf:
+            - anyOf:
+                - anyOf:
+                    - type: string
+                    - type: number
+                    - type: boolean
+                    - type: "null"
+                - type: array
+                  items: {}
+                - type: object
+                  propertyNames:
+                    type: string
+                  additionalProperties: {}
+            - type: "null"
+        createdAt:
+          type: string
+        lastLoginAt:
+          anyOf:
+            - type: string
+            - type: "null"
+      required:
+        - id
+        - name
+        - email
+    exhaustiveFormSchema:
+      type: object
+      properties:
+        profilePicture: {}
+        description:
+          type: string
+          maxLength: 500
+        tags:
+          type: array
+          items:
+            type: string
+        file:
+          type: array
+          items:
+            type: string
+            format: binary
+            contentEncoding: binary
+      required:
+        - description
+        - tags
+        - file
+      additionalProperties: false
+    myArktypeSchema:
+      type: object
+      properties:
+        id:
+          type: string
+        metadata:
+          type: object
+          properties:
+            lastLogin:
+              type: string
+            settings:
+              type: object
+              properties:
+                notifications:
+                  type: boolean
+                theme:
+                  enum:
+                    - dark
+                    - light
+                    - system
+              required:
+                - notifications
+                - theme
+            customData: {}
+          required:
+            - lastLogin
+            - settings
+        nestedTuple:
+          type: array
+          minItems: 3
+          prefixItems:
+            - type: string
+            - type: number
+            - type: boolean
+          items: false
+        scores:
+          type: array
+          items:
+            type: number
+        status:
+          enum:
+            - active
+            - inactive
+            - pending
+        tags:
+          type: array
+          items:
+            type: string
+        unionTest:
+          anyOf:
+            - type: number
+            - type: string
+            - type: boolean
+        userProfile:
+          type: object
+          properties:
+            age:
+              type: number
+              exclusiveMinimum: 0
+            isActive:
+              type: boolean
+            role:
+              enum:
+                - admin
+                - guest
+                - user
+            username:
+              type: string
+              minLength: 3
+            email:
+              type: string
+              pattern: ^[\w%+.-]+@[\d.A-Za-z-]+\.[A-Za-z]{2,}$
+              format: email
+          required:
+            - age
+            - isActive
+            - role
+            - username
+        avatarUrl:
+          type: string
+      required:
+        - id
+        - metadata
+        - nestedTuple
+        - scores
+        - status
+        - tags
+        - unionTest
+        - userProfile
+    typeboxSchema:
+      type: object
+      required:
+        - id
+        - email
+        - age
+      properties:
+        id:
+          format: uuid
+          type: string
+        email:
+          format: email
+          type: string
+        age:
+          minimum: 18
+          maximum: 99
+          type: number
+    zodFormSchema:
+      type: object
+      properties:
+        fileUrl:
+          type: string
+          format: uri
+        notes:
+          type: string
+          maxLength: 500
+      required:
+        - fileUrl
+        - notes
+      additionalProperties: false
+    createOrderSchema:
+      type: object
+      properties:
+        productId:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+          description: ID of the product to order
+        quantity:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Number of items
+        shippingAddress:
+          type: object
+          properties:
+            line1:
+              type: string
+            city:
+              type: string
+            countryCode:
+              type: string
+              minLength: 2
+              maxLength: 2
+            postalCode:
+              type: string
+          required:
+            - line1
+            - city
+            - countryCode
+            - postalCode
+          additionalProperties: false
+          description: Destination address
+      required:
+        - productId
+        - quantity
+        - shippingAddress
+      additionalProperties: false
+paths:
+  /api:
+    get:
+      summary: Get Root
+      responses:
+        default:
+          description: Default fallback response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  version:
+                    type: string
+                required:
+                  - status
+                  - version
+      tags:
+        - E-Commerce Platform
+  /api/auth/login:
+    post:
+      summary: Authenticate User
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                    required:
+                      - email
+                required:
+                  - token
+                  - user
+      description: Authenticates a user and returns a signed JWT session token.
+      tags:
+        - Authentication
+        - E-Commerce Platform
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/loginSchema"
+  /api/auth/register:
+    post:
+      summary: Register New Account
+      responses:
+        "201":
+          description: Status 201
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  id:
+                    type: string
+                  email:
+                    type: string
+                required:
+                  - success
+                  - id
+                  - email
+      description: Provisions a new user account in the system and sends a
+        verification email.
+      tags:
+        - Authentication
+        - E-Commerce Platform
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/registerSchema"
+  /api/auth/logout:
+    post:
+      summary: Logout User
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                required:
+                  - success
+                  - message
+      description: Invalidates the current user session and clears authentication cookies.
+      tags:
+        - Authentication
+        - E-Commerce Platform
+  /api/products:
+    get:
+      summary: List Catalog Products
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/GetApiProductsResponsedefaultDataItem"
+                  meta:
+                    type: object
+                    properties:
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    required:
+                      - page
+                      - limit
+                      - total
+                required:
+                  - data
+                  - meta
+      description: Returns a paginated list of all active products in the store catalog.
+      tags:
+        - Catalog
+        - E-Commerce Platform
+      parameters:
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: inStock
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: string
+  /api/products/{productId}:
+    get:
+      summary: Retrieve Product Details
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiProductsResponsedefaultDataItem"
+      description: Fetches the full product details, including pricing and inventory
+        data, by its unique ID.
+      tags:
+        - Catalog
+        - E-Commerce Platform
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+  /api/orders:
+    post:
+      summary: Create Order
+      responses:
+        "201":
+          description: Status 201
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  orderId:
+                    type: string
+                  status:
+                    type: string
+                required:
+                  - success
+                  - orderId
+                  - status
+      description: Places a new order for a product and triggers the fulfillment pipeline.
+      tags:
+        - Orders
+        - E-Commerce Platform
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createOrderSchema"
+  /api/orders/tracking/{trackingNumber}:
+    get:
+      summary: Get Shipment Tracking
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  trackingNumber:
+                    type: string
+                  status:
+                    type: string
+                  location:
+                    type: object
+                    properties:
+                      lat:
+                        type: number
+                      lng:
+                        type: number
+                    required:
+                      - lat
+                      - lng
+                  estimatedDelivery:
+                    type: string
+                required:
+                  - trackingNumber
+                  - status
+                  - location
+                  - estimatedDelivery
+      description: Fetches real-time GPS tracking data for a specific shipment.
+      tags:
+        - Logistics
+        - E-Commerce Platform
+      parameters:
+        - name: trackingNumber
+          in: path
+          required: true
+          schema:
+            type: string
+  /api/tests/circular-test:
+    post:
+      summary: Test Circular Schema Generation
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      subcategories:
+                        type: array
+                        items: {}
+                    required:
+                      - name
+                      - subcategories
+                required:
+                  - success
+                  - data
+      description: Test endpoint to check self-referencing circular structure handling.
+      tags:
+        - Circular Testing
+        - E-Commerce Platform
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/categorySchema"
+  /api/tests/mutual-circular-test:
+    post:
+      summary: Test Mutually Recursive Schema Generation
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      nodeB:
+                        type: object
+                        properties:
+                          value:
+                            type: number
+                          nodeA: {}
+                        required:
+                          - value
+                    required:
+                      - name
+                required:
+                  - success
+                  - data
+      description: Test endpoint to check mutually recursive structures handling.
+      tags:
+        - Circular Testing
+        - E-Commerce Platform
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/nodeASchema"
+  /api/tests/complex-test/{id}:
+    post:
+      summary: Test Various Parameters
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  timestamp:
+                    type: string
+                required:
+                  - success
+                  - timestamp
+      description: Test endpoint to check query, headers, cookies, path parameters,
+        and Date type formatting.
+      tags:
+        - Parameter Testing
+        - E-Commerce Platform
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-api-key
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: cookie
+          required: true
+          schema:
+            type: string
+  /api/tests/union-test:
+    post:
+      summary: Test Union Type Simplifications
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/PostApiTestsUnionTestBody"
+                required:
+                  - success
+                  - data
+      description: Test endpoint to check boolean union simplifies to boolean, and
+        nullable fields resolve to nullable.
+      tags:
+        - Union Testing
+        - E-Commerce Platform
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostApiTestsUnionTestBody"
+  /api/complex/org/{orgId}/projects/{projectId}/{subTaskId?}:
+    get:
+      summary: Complex Path Parameters
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  params:
+                    type: object
+                    properties:
+                      orgId:
+                        type: string
+                      projectId:
+                        type: string
+                      subTaskId:
+                        type: string
+                    required:
+                      - orgId
+                      - projectId
+                required:
+                  - success
+                  - params
+      description: Route with multiple path parameters and an optional one.
+      tags:
+        - Parameter Testing
+        - E-Commerce Platform
+      parameters:
+        - name: orgId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: subTaskId
+          in: path
+          required: false
+          schema:
+            type: string
+  /api/complex/archive/{year}/{month}:
+    get:
+      summary: Get Complex Archive By Year By Month
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  params:
+                    $ref: "#/components/schemas/GetApiComplexArchiveYearMonthResponsedefaultParams"
+                required:
+                  - success
+                  - params
+      parameters:
+        - name: year
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: "[0-9]{4}"
+        - name: month
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: "[0-9]{2}"
+      tags:
+        - E-Commerce Platform
+  /api/complex/files/*:
+    get:
+      summary: Wildcard Path Parameter
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  filePath:
+                    type: string
+                required:
+                  - success
+                  - filePath
+      description: Route using a wildcard parameter.
+      tags:
+        - Parameter Testing
+        - E-Commerce Platform
+  /api/complex/upload-form:
+    post:
+      summary: Multipart Form Data Validation
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  fileTitle:
+                    type: string
+                  fileSize:
+                    type: number
+                required:
+                  - success
+                  - fileTitle
+                  - fileSize
+      description: Route that validates multipart/form-data or urlencoded form bodies.
+      tags:
+        - Body Testing
+        - E-Commerce Platform
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileTitle:
+                  type: string
+                fileSize:
+                  type: string
+              required:
+                - fileTitle
+                - fileSize
+  /api/complex/any-method:
+    all:
+      summary: All Methods Route
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  method:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - method
+                  - message
+      description: Route responding to any HTTP method.
+      tags:
+        - Method Testing
+        - E-Commerce Platform
+  /api/complex/union-responses:
+    get:
+      summary: Union Status Code Responses
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    type: object
+                    properties:
+                      value:
+                        type: number
+                    required:
+                      - value
+                required:
+                  - success
+                  - payload
+        "400":
+          description: Status 400
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: string
+                required:
+                  - success
+                  - error
+      description: Route returning different JSON schemas depending on status code.
+      tags:
+        - Response Testing
+        - E-Commerce Platform
+  /api/complex/ts-utilities:
+    get:
+      summary: TypeScript Utility Shapes
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  withoutAge:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      tags:
+                        type: array
+                        items:
+                          type: string
+                    required:
+                      - email
+                      - id
+                      - name
+                      - tags
+                  partialU:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      age:
+                        type: number
+                      tags: {}
+                  readonlyU:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      age:
+                        type: number
+                      tags: {}
+                    required:
+                      - id
+                      - name
+                      - email
+                      - age
+                      - tags
+                  map:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        keyName:
+                          type: string
+                        count:
+                          type: number
+                      required:
+                        - keyName
+                        - count
+                required:
+                  - success
+                  - withoutAge
+                  - partialU
+                  - readonlyU
+                  - map
+      description: Route returning Omit, Record, Partial, and Readonly types.
+      tags:
+        - Response Testing
+        - E-Commerce Platform
+  /api/complex/nested/info:
+    get:
+      summary: Sub route info
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiComplexNestedInfoResponsedefault"
+      description: Get sub router info
+      tags:
+        - Complex Routing
+        - E-Commerce Platform
+  /api/complex/nested/update:
+    post:
+      summary: Sub route update
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated:
+                    type: boolean
+                  code:
+                    type: number
+                required:
+                  - updated
+                  - code
+      description: Perform sub router update
+      tags:
+        - Complex Routing
+        - E-Commerce Platform
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: number
+              required:
+                - code
+  /api/zod/complex-merge:
+    post:
+      summary: Create Zod Complex merge
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      role:
+                        type: string
+                        enum:
+                          - ADMIN
+                          - USER
+                          - GUEST
+                      domain:
+                        type: string
+                      preferences:
+                        type: object
+                        properties:
+                          theme:
+                            type: string
+                            enum:
+                              - light
+                              - dark
+                        required:
+                          - theme
+                    required:
+                      - id
+                      - role
+                      - domain
+                      - preferences
+                required:
+                  - success
+                  - data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createAccountSchema"
+      tags:
+        - E-Commerce Platform
+  /api/zod/all-features:
+    post:
+      summary: Test All Zod Validations
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      str:
+                        type: string
+                      num:
+                        type: number
+                      bool:
+                        type: boolean
+                      big:
+                        type: string
+                      dt:
+                        type: string
+                      anyVal: {}
+                      unknownVal:
+                        $ref: "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownVal"
+                      nullVal: {}
+                      emailStr:
+                        type: string
+                      urlStr:
+                        type: string
+                      uuidStr:
+                        type: string
+                      dateTimeStr:
+                        type: string
+                      minMaxStr:
+                        type: string
+                      regexStr:
+                        type: string
+                      integer:
+                        type: number
+                      positiveNum:
+                        type: number
+                      negativeNum:
+                        type: number
+                      minMaxNum:
+                        type: number
+                      strArray:
+                        type: array
+                        items:
+                          type: string
+                      setOfStrings: {}
+                      tupleOfTwo:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataTupleOfTwoI\
+                            tem"
+                        minItems: 2
+                        maxItems: 2
+                      tupleWithRest:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataTupleOfTwoI\
+                            tem"
+                        minItems: 2
+                        maxItems: 2
+                      nestedObj:
+                        type: object
+                        properties:
+                          nestedKey:
+                            type: string
+                        required:
+                          - nestedKey
+                      partialObj:
+                        type: object
+                        properties:
+                          x:
+                            type: string
+                          y:
+                            type: number
+                      simpleUnion:
+                        $ref: "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataTupleOfTwoI\
+                          tem"
+                      discriminatedUnion:
+                        oneOf:
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - admin
+                              adminRole:
+                                type: string
+                            required:
+                              - type
+                              - adminRole
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - member
+                              memberCode:
+                                type: number
+                            required:
+                              - type
+                              - memberCode
+                      intersectionObj:
+                        type: object
+                        properties:
+                          partA:
+                            type: string
+                          partB:
+                            type: number
+                        required:
+                          - partA
+                          - partB
+                      stringRecord:
+                        $ref: "#/components/schemas/PostApiZodAllFeaturesBodyStringRecord"
+                      numberRecord:
+                        $ref: "#/components/schemas/PostApiZodAllFeaturesBodyNumberRecord"
+                      enumColors:
+                        type: string
+                        enum:
+                          - red
+                          - green
+                          - blue
+                      nativeDirectionEnum: {}
+                      literalValue:
+                        type: string
+                        enum:
+                          - fixed-value
+                      optionalStr:
+                        type: string
+                      nullableStr:
+                        type: string
+                        nullable: true
+                      nullishStr:
+                        type: string
+                        nullable: true
+                      defaultStr:
+                        type: string
+                      transformedNumber:
+                        type: number
+                      preprocessedStr:
+                        type: string
+                      refinedStr:
+                        type: string
+                      brandedStr:
+                        type: string
+                    required:
+                      - str
+                      - num
+                      - bool
+                      - big
+                      - dt
+                      - anyVal
+                      - unknownVal
+                      - nullVal
+                      - emailStr
+                      - urlStr
+                      - uuidStr
+                      - dateTimeStr
+                      - minMaxStr
+                      - regexStr
+                      - integer
+                      - positiveNum
+                      - negativeNum
+                      - minMaxNum
+                      - strArray
+                      - setOfStrings
+                      - tupleOfTwo
+                      - tupleWithRest
+                      - nestedObj
+                      - partialObj
+                      - simpleUnion
+                      - discriminatedUnion
+                      - intersectionObj
+                      - stringRecord
+                      - numberRecord
+                      - enumColors
+                      - nativeDirectionEnum
+                      - literalValue
+                      - optionalStr
+                      - nullableStr
+                      - nullishStr
+                      - defaultStr
+                      - transformedNumber
+                      - preprocessedStr
+                      - refinedStr
+                      - brandedStr
+                required:
+                  - success
+                  - data
+      description: Test route receiving a request body constructed with all possible
+        Zod features.
+      tags:
+        - Zod Testing
+        - E-Commerce Platform
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/allZodFeaturesSchema"
+  /api/valibot/vb-create:
+    post:
+      summary: Create Valibot Vb create
+      responses:
+        "400":
+          description: Status 400
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      typed:
+                        type: boolean
+                        enum:
+                          - true
+                      success:
+                        type: boolean
+                        enum:
+                          - false
+                      output:
+                        $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant1Output"
+                      issues:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+                        minItems: 2
+                        maxItems: 2
+                    required:
+                      - typed
+                      - success
+                      - output
+                      - issues
+                  - $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant1Output"
+                required:
+                  - success
+                  - data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/externalValibotSchema"
+      tags:
+        - E-Commerce Platform
+  /api/typebox/tb-create:
+    post:
+      summary: Create Typebox Tb create
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                      id:
+                        type: string
+                      age:
+                        type: number
+                    required:
+                      - email
+                      - id
+                      - age
+                required:
+                  - success
+                  - data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/typeboxSchema"
+      tags:
+        - E-Commerce Platform
+  /api/enterprise/orgs/{orgId}/billing/invoices/{invoiceId}/adjust:
+    post:
+      summary: Create Enterprise Orgs By Org Id Billing Invoices By Invoice Id Adjust
+      responses:
+        "400":
+          description: Status 400
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - oneOf:
+                      - type: object
+                        properties:
+                          typed:
+                            type: boolean
+                            enum:
+                              - true
+                          success:
+                            type: boolean
+                            enum:
+                              - false
+                          output:
+                            $ref: "#/components/schemas/PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdA\
+                              djustResponse400Variant1Variant1Output"
+                          issues:
+                            type: array
+                            items:
+                              $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+                            minItems: 2
+                            maxItems: 2
+                        required:
+                          - typed
+                          - success
+                          - output
+                          - issues
+                      - $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
+                  - oneOf:
+                      - type: object
+                        properties:
+                          typed:
+                            type: boolean
+                            enum:
+                              - true
+                          success:
+                            type: boolean
+                            enum:
+                              - false
+                          output:
+                            $ref: "#/components/schemas/PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdA\
+                              djustResponse400Variant2Variant1Output"
+                          issues:
+                            type: array
+                            items:
+                              $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+                            minItems: 2
+                            maxItems: 2
+                        required:
+                          - typed
+                          - success
+                          - output
+                          - issues
+                      - $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  params:
+                    $ref: "#/components/schemas/PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdA\
+                      djustResponse400Variant1Variant1Output"
+                  query:
+                    $ref: "#/components/schemas/PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdA\
+                      djustResponse400Variant2Variant1Output"
+                  headers:
+                    type: object
+                    properties:
+                      x-enterprise-token:
+                        type: string
+                      x-client-version:
+                        type: string
+                      x-correlation-id:
+                        type: string
+                      x-request-id:
+                        type: string
+                    required:
+                      - x-enterprise-token
+                      - x-client-version
+                      - x-request-id
+                  body:
+                    oneOf:
+                      - type: object
+                        properties:
+                          startDate:
+                            type: string
+                          endDate:
+                            type: string
+                          limit:
+                            type: number
+                          type:
+                            type: string
+                            enum:
+                              - summary
+                          groupBy:
+                            type: array
+                            items:
+                              type: string
+                              enum:
+                                - user
+                                - department
+                                - project
+                        required:
+                          - startDate
+                          - endDate
+                          - limit
+                          - type
+                          - groupBy
+                      - type: object
+                        properties:
+                          startDate:
+                            type: string
+                          endDate:
+                            type: string
+                          limit:
+                            type: number
+                          type:
+                            type: string
+                            enum:
+                              - detailed
+                          includeTaxes:
+                            type: boolean
+                          currency:
+                            type: string
+                          minAmount:
+                            type: number
+                        required:
+                          - startDate
+                          - endDate
+                          - limit
+                          - type
+                          - includeTaxes
+                          - currency
+                required:
+                  - success
+                  - message
+                  - params
+                  - query
+                  - headers
+                  - body
+      parameters:
+        - name: ipAddress
+          in: query
+          required: false
+          schema:
+            type: string
+            format: ipv4
+        - name: orgId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^INV-\d{4}-\d{6}$
+        - name: x-enterprise-token
+          in: header
+          required: true
+          schema:
+            pattern: ^ent_[a-zA-Z0-9]{32}$
+            description: Enterprise SSO token
+            type: string
+        - name: x-client-version
+          in: header
+          required: true
+          schema:
+            description: Client application version
+            default: 1.0.0
+            type: string
+        - name: x-request-id
+          in: header
+          required: true
+          schema:
+            format: uuid
+            type: string
+        - name: x-correlation-id
+          in: header
+          required: false
+          schema:
+            format: uuid
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BillingReportFilterSchema"
+      tags:
+        - E-Commerce Platform
+  /api/enterprise/orgs/{orgId}/billing/invoices/{invoiceId}/dispute:
+    put:
+      summary: Update Enterprise Orgs By Org Id Billing Invoices By Invoice Id Dispute
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  status:
+                    type: string
+                required:
+                  - success
+                  - status
+      parameters:
+        - name: reason
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - wrong_amount
+              - duplicate
+              - other
+        - name: urgency
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - high
+              - normal
+              - low
+        - name: orgId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                disputedAmount:
+                  type: number
+                evidenceAttachments:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - disputedAmount
+      tags:
+        - E-Commerce Platform
+  /api/exhaustive/full/{userId}/docs/{documentId}:
+    post:
+      summary: Full Exhaustive Test
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  description:
+                    type: string
+                    nullable: true
+                  isActive:
+                    type: boolean
+                  score:
+                    type: number
+                  status:
+                    type: string
+                    enum:
+                      - active
+                      - archived
+                      - deleted
+                  permissions:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                        - admin
+                        - read
+                        - write
+                  auditInfo:
+                    type: object
+                    properties:
+                      createdBy:
+                        type: string
+                      createdAt:
+                        type: string
+                    required:
+                      - createdBy
+                      - createdAt
+                  metrics:
+                    type: array
+                    items:
+                      type: number
+                  coordinates:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: number
+                        - type: number
+                        - type: string
+                    minItems: 3
+                    maxItems: 3
+                  customData:
+                    type: object
+                    additionalProperties:
+                      type: string
+                      nullable: true
+                  history:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        action:
+                          type: string
+                        timestamp:
+                          type: string
+                        previousState:
+                          type: object
+                          additionalProperties:
+                            $ref: "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownVal"
+                          nullable: true
+                      required:
+                        - action
+                        - timestamp
+                        - previousState
+                required:
+                  - id
+                  - description
+                  - isActive
+                  - score
+                  - status
+                  - permissions
+                  - auditInfo
+                  - metrics
+                  - coordinates
+                  - customData
+                  - history
+      description: Validates cookies, headers, path, query, json body, and highly
+        complex TS response types.
+      tags:
+        - Exhaustive Validation
+        - E-Commerce Platform
+      parameters:
+        - name: filters
+          in: query
+          required: false
+          schema:
+            minItems: 1
+            maxItems: 5
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        - name: page
+          in: query
+          required: true
+          schema:
+            default: 1
+            type: number
+            minimum: 1
+        - name: includeDeleted
+          in: query
+          required: true
+          schema:
+            default: false
+            type: boolean
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^usr_[a-zA-Z0-9]+$
+        - name: documentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        - name: x-api-key
+          in: header
+          required: true
+          schema:
+            type: string
+            minLength: 10
+            description: API Key
+        - name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: integer
+            minimum: -9007199254740991
+            maximum: 9007199254740991
+        - name: session_id
+          in: cookie
+          required: true
+          schema:
+            type: string
+            format: uuid
+            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+            description: The user session token
+        - name: tracking
+          in: cookie
+          required: false
+          schema:
+            type: string
+            enum:
+              - allow
+              - deny
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/exhaustiveJsonSchema"
+  /api/exhaustive/form:
+    post:
+      summary: Multipart Form Test
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  uploadedAt:
+                    type: string
+                required:
+                  - success
+                  - uploadedAt
+        "413":
+          description: Status 413
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiExhaustiveFormResponse413"
+      description: Validates multipart/form-data schemas and error unions.
+      tags:
+        - Exhaustive Validation
+        - E-Commerce Platform
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/exhaustiveFormSchema"
+  /api/exhaustive/ast/record:
+    get:
+      summary: Test Record AST Fallback
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiZodAllFeaturesBodyNumberRecord"
+      description: Returns a Record<string, number> to test AST index signature parsing
+      tags:
+        - E-Commerce Platform
+  /api/exhaustive/ast/intersection:
+    get:
+      summary: Test Intersection AST Fallback
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  active:
+                    type: boolean
+                required:
+                  - id
+                  - active
+      description: Returns an intersection type (A & B) to test AST allOf parsing
+      tags:
+        - E-Commerce Platform
+  /api/exhaustive/ast/any:
+    get:
+      summary: Test Any AST Fallback
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                type: object
+      description: Returns an any type to ensure the generator doesn't crash
+      tags:
+        - E-Commerce Platform
+  /api/exhaustive/ast/record-any:
+    get:
+      summary: Test Record<string, any> AST Fallback
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiExhaustiveAstRecordAnyResponse200"
+      description: Returns a Record<string, any>
+      tags:
+        - E-Commerce Platform
+  /api/exhaustive/ast/complex-record:
+    get:
+      summary: Test Complex Nested Record
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    metadata:
+                      type: object
+                      additionalProperties:
+                        oneOf:
+                          - type: number
+                          - type: boolean
+                            enum:
+                              - false
+                          - type: boolean
+                            enum:
+                              - true
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                        nullable: true
+                  required:
+                    - id
+                    - metadata
+                    - tags
+      description: Returns a deeply nested Record with unions
+      tags:
+        - E-Commerce Platform
+  /api/exhaustive/ast/union:
+    get:
+      summary: Test AST Union Fallback
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: string
+                    enum:
+                      - success
+                  - type: string
+                    enum:
+                      - pending
+                  - $ref: "#/components/schemas/PostApiExhaustiveFormResponse413"
+                nullable: true
+      description: Returns a union of literal strings and objects
+      tags:
+        - E-Commerce Platform
+  /api/exhaustive/ast/regex/{id}/details/{code}:
+    get:
+      summary: Get Exhaustive Ast Regex By Id Details By Code
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: "[0-9]+"
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: "[A-Z]{3}"
+      tags:
+        - E-Commerce Platform
+  /api/exhaustive/ast/regex/date/{date}:
+    get:
+      summary: Get Exhaustive Ast Regex Date By Date
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  date:
+                    type: string
+                required:
+                  - date
+      parameters:
+        - name: date
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: \d{4}-\d{2}-\d{2}
+      tags:
+        - E-Commerce Platform
+  /api/exhaustive/ast/regex/action/{type}:
+    get:
+      summary: Get Exhaustive Ast Regex Action By Type
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiExhaustiveAstRegexActionTypeResponse200"
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: buy|sell|trade
+      tags:
+        - E-Commerce Platform
+  /api/exhaustive/ast/regex/wildcard/{path}:
+    get:
+      summary: Get Exhaustive Ast Regex Wildcard By Path
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  path:
+                    type: string
+                required:
+                  - path
+      parameters:
+        - name: path
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: .*
+      tags:
+        - E-Commerce Platform
+  /api/exhaustive/query/array-styling:
+    get:
+      summary: Test Array Query Parameters
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
+      description: Verifies OpenAPI style and explode styling for query arrays
+      parameters:
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        - name: filters
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+          style: form
+          explode: true
+      tags:
+        - E-Commerce Platform
+  /api/exhaustive/query/mixed-styling/{id}:
+    get:
+      summary: Test Mixed Parameters
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
+      description: Verifies array formatting only applies to query parameters and
+        doesn't pollute headers or path
+      parameters:
+        - name: tags
+          in: query
+          required: true
+          schema:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+          style: form
+          explode: true
+        - name: page
+          in: query
+          required: true
+          schema:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+          style: form
+          explode: true
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-tags
+          in: header
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: x-id
+          in: header
+          required: false
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/exhaustive/headers/ast:
+    get:
+      summary: Test AST Response Headers
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: string
+              example: "1000"
+            X-RateLimit-Remaining:
+              schema:
+                type: string
+              example: "999"
+      description: Verifies AST extraction of c.header
+      tags:
+        - E-Commerce Platform
+  /api/exhaustive/headers/jsdoc:
+    get:
+      summary: Test JSDoc Response Headers
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
+          headers:
+            X-Trace-Id:
+              schema:
+                type: string
+              description: string The trace ID
+            Set-Cookie:
+              schema:
+                type: string
+              description: string The session cookie
+      description: Verifies JSDoc extraction of
+      tags:
+        - E-Commerce Platform
+  /api/exhaustive/headers/mixed:
+    get:
+      summary: Test Hybrid Response Headers
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
+          headers:
+            X-Cache:
+              schema:
+                type: string
+              description: string Overridden description from JSDoc
+            X-Server:
+              schema:
+                type: string
+              example: Hono
+      description: Verifies JSDoc overrides AST fallback
+      tags:
+        - E-Commerce Platform
+  /api/docs:
+    get:
+      summary: Get Docs
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - E-Commerce Platform
+  /api/docs/open-api:
+    get:
+      summary: Get Docs Open api
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - E-Commerce Platform
+  /api/stress/item/list:
+    get:
+      summary: Get Stress Item List
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema: {}
+      tags:
+        - E-Commerce Platform
+  /api/stress/item/create:
+    post:
+      summary: Create Stress Item Create
+      responses:
+        "201":
+          description: Status 201
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiStressItemCreateResponse201"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/simpleSchema"
+      tags:
+        - E-Commerce Platform
+  /api/stress/item/{id}:
+    get:
+      summary: Get Stress Item By Id
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiStressItemIdResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/item/{id}/update:
+    put:
+      summary: Update Stress Item By Id Update
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PutApiStressItemIdUpdateResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/simpleSchema"
+      tags:
+        - E-Commerce Platform
+  /api/stress/item/{id}/delete:
+    delete:
+      summary: Delete Stress Item By Id Delete
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteApiStressItemIdDeleteResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/item/{id}/status:
+    patch:
+      summary: Update Stress Item By Id Status
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PatchApiStressItemIdStatusResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/item/{id}/details:
+    get:
+      summary: Get Stress Item By Id Details
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiStressItemIdDetailsResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/item/{id}/archive:
+    post:
+      summary: Create Stress Item By Id Archive
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiStressItemIdArchiveResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/item/{id}/restore:
+    post:
+      summary: Create Stress Item By Id Restore
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiStressItemIdRestoreResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/item/search:
+    get:
+      summary: Get Stress Item Search
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiStressItemSearchResponsedefault"
+      tags:
+        - E-Commerce Platform
+  /api/stress/order/list:
+    get:
+      summary: Get Stress Order List
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema: {}
+      tags:
+        - E-Commerce Platform
+  /api/stress/order/create:
+    post:
+      summary: Create Stress Order Create
+      responses:
+        "201":
+          description: Status 201
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: boolean
+                  orderId:
+                    type: string
+                required:
+                  - created
+                  - orderId
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/simpleSchema"
+      tags:
+        - E-Commerce Platform
+  /api/stress/order/{id}:
+    get:
+      summary: Get Stress Order By Id
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiStressItemIdResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/order/{id}/update:
+    put:
+      summary: Update Stress Order By Id Update
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PutApiStressItemIdUpdateResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/simpleSchema"
+      tags:
+        - E-Commerce Platform
+  /api/stress/order/{id}/delete:
+    delete:
+      summary: Delete Stress Order By Id Delete
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteApiStressItemIdDeleteResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/order/{id}/status:
+    patch:
+      summary: Update Stress Order By Id Status
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PatchApiStressItemIdStatusResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/order/{id}/details:
+    get:
+      summary: Get Stress Order By Id Details
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiStressItemIdDetailsResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/order/{id}/archive:
+    post:
+      summary: Create Stress Order By Id Archive
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiStressItemIdArchiveResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/order/{id}/restore:
+    post:
+      summary: Create Stress Order By Id Restore
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiStressItemIdRestoreResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/order/search:
+    get:
+      summary: Get Stress Order Search
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiStressItemSearchResponsedefault"
+      tags:
+        - E-Commerce Platform
+  /api/stress/user/list:
+    get:
+      summary: Retrieve all users
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema: {}
+          headers:
+            X-Total-Count:
+              schema:
+                type: string
+              example: "100"
+      description: Fetches a paginated user directory.
+      tags:
+        - Users
+        - E-Commerce Platform
+  /api/stress/user/create:
+    post:
+      summary: Create a user
+      responses:
+        "201":
+          description: Status 201
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: string
+                required:
+                  - userId
+      description: Register a new active user account.
+      tags:
+        - Users
+        - E-Commerce Platform
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/simpleSchema"
+  /api/stress/user/{id}:
+    get:
+      summary: Get Stress User By Id
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  role:
+                    type: string
+                required:
+                  - id
+                  - role
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/user/{id}/update:
+    put:
+      summary: Update Stress User By Id Update
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PutApiStressItemIdUpdateResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/simpleSchema"
+      tags:
+        - E-Commerce Platform
+  /api/stress/user/{id}/delete:
+    delete:
+      summary: Delete Stress User By Id Delete
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteApiStressItemIdDeleteResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/user/{id}/status:
+    patch:
+      summary: Update Stress User By Id Status
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PatchApiStressItemIdStatusResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/user/{id}/details:
+    get:
+      summary: Get Stress User By Id Details
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bio:
+                    type: string
+                required:
+                  - bio
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/user/{id}/archive:
+    post:
+      summary: Create Stress User By Id Archive
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiStressItemIdArchiveResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/user/{id}/restore:
+    post:
+      summary: Create Stress User By Id Restore
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiStressItemIdRestoreResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/stress/user/search:
+    get:
+      summary: Get Stress User Search
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema: {}
+      tags:
+        - E-Commerce Platform
+  /api/multi/zod-item/json:
+    post:
+      summary: Create Multi Zod item Json
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/PostApiMultiZodItemJsonResponsedefaultData"
+                required:
+                  - success
+                  - data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/zodJsonSchema"
+      tags:
+        - E-Commerce Platform
+  /api/multi/zod-item/query:
+    get:
+      summary: Get Multi Zod item Query
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema: {}
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      tags:
+        - E-Commerce Platform
+  /api/multi/zod-item/{id}/param:
+    get:
+      summary: Get Multi Zod item By Id Param
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                required:
+                  - id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+      tags:
+        - E-Commerce Platform
+  /api/multi/zod-item/form:
+    post:
+      summary: Multipart Form Test
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiMultiZodItemFormResponsedefault"
+      description: Validates multipart/form-data schemas and error unions.
+      tags:
+        - Exhaustive Validation
+        - E-Commerce Platform
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/zodFormSchema"
+  /api/multi/zod-item/update:
+    put:
+      summary: Update Multi Zod item Update
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PutApiStressItemIdUpdateResponsedefault"
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/zodJsonSchema"
+      tags:
+        - E-Commerce Platform
+  /api/multi/zod-item/{id}:
+    delete:
+      summary: Delete Multi Zod item By Id
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteApiStressItemIdDeleteResponsedefault"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+      tags:
+        - E-Commerce Platform
+  /api/multi/zod-item/{id}/patch:
+    patch:
+      summary: Update Multi Zod item By Id Patch
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  patched:
+                    type: boolean
+                required:
+                  - patched
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/zodJsonSchema"
+      tags:
+        - E-Commerce Platform
+  /api/multi/zod-item/bulk:
+    post:
+      summary: Create Multi Zod item Bulk
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bulk:
+                    type: boolean
+                required:
+                  - bulk
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/PostApiMultiZodItemJsonResponsedefaultData"
+      tags:
+        - E-Commerce Platform
+  /api/multi/zod-item/{id}/verify:
+    get:
+      summary: Get Multi Zod item By Id Verify
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  verified:
+                    type: boolean
+                required:
+                  - verified
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+      tags:
+        - E-Commerce Platform
+  /api/multi/zod-item/clone:
+    post:
+      summary: Create Multi Zod item Clone
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cloned:
+                    type: boolean
+                required:
+                  - cloned
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sourceId:
+                  type: string
+                targetName:
+                  type: string
+              required:
+                - sourceId
+                - targetName
+      tags:
+        - E-Commerce Platform
+  /api/multi/valibot-item/json:
+    post:
+      summary: Create Multi Valibot item Json
+      responses:
+        "400":
+          description: Status 400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiMultiValibotItemJsonResponse400"
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/valibotJsonSchema"
+      tags:
+        - E-Commerce Platform
+  /api/multi/valibot-item/query:
+    get:
+      summary: Get Multi Valibot item Query
+      responses:
+        "400":
+          description: Status 400
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      typed:
+                        type: boolean
+                        enum:
+                          - true
+                      success:
+                        type: boolean
+                        enum:
+                          - false
+                      output:
+                        type: object
+                        properties:
+                          filter:
+                            type: string
+                          page:
+                            type: string
+                      issues:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+                        minItems: 2
+                        maxItems: 2
+                    required:
+                      - typed
+                      - success
+                      - output
+                      - issues
+                  - $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema: {}
+      parameters:
+        - name: filter
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/multi/valibot-item/code/{code}:
+    get:
+      summary: Get Multi Valibot item Code By Code
+      responses:
+        "400":
+          description: Status 400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiMultiValibotItemCodeCodeResponse400"
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiMultiValibotItemCodeCodeResponse400Variant1Ou\
+                  tput"
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 10
+      tags:
+        - E-Commerce Platform
+  /api/multi/valibot-item/update:
+    put:
+      summary: Update Multi Valibot item Update
+      responses:
+        "400":
+          description: Status 400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiMultiValibotItemJsonResponse400"
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  modified:
+                    type: boolean
+                required:
+                  - modified
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/valibotJsonSchema"
+      tags:
+        - E-Commerce Platform
+  /api/multi/valibot-item/remove/{code}:
+    delete:
+      summary: Delete Multi Valibot item Remove By Code
+      responses:
+        "400":
+          description: Status 400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiMultiValibotItemCodeCodeResponse400"
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteApiMultiValibotItemRemoveCodeResponsedefault"
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 10
+      tags:
+        - E-Commerce Platform
+  /api/multi/valibot-item/sync:
+    patch:
+      summary: Update Multi Valibot item Sync
+      responses:
+        "400":
+          description: Status 400
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      typed:
+                        type: boolean
+                        enum:
+                          - true
+                      success:
+                        type: boolean
+                        enum:
+                          - false
+                      output:
+                        $ref: "#/components/schemas/PatchApiMultiValibotItemSyncBody"
+                      issues:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+                        minItems: 2
+                        maxItems: 2
+                    required:
+                      - typed
+                      - success
+                      - output
+                      - issues
+                  - $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiExhaustiveAstRegexIdDetailsCodeResponse200"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchApiMultiValibotItemSyncBody"
+      tags:
+        - E-Commerce Platform
+  /api/multi/valibot-item/import:
+    post:
+      summary: Create Multi Valibot item Import
+      responses:
+        "400":
+          description: Status 400
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      typed:
+                        type: boolean
+                        enum:
+                          - true
+                      success:
+                        type: boolean
+                        enum:
+                          - false
+                      output:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/valibotJsonSchema"
+                      issues:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+                        minItems: 2
+                        maxItems: 2
+                    required:
+                      - typed
+                      - success
+                      - output
+                      - issues
+                  - $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                required:
+                  - count
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/valibotJsonSchema"
+      tags:
+        - E-Commerce Platform
+  /api/multi/valibot-item/search:
+    get:
+      summary: Get Multi Valibot item Search
+      responses:
+        "400":
+          description: Status 400
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      typed:
+                        type: boolean
+                        enum:
+                          - true
+                      success:
+                        type: boolean
+                        enum:
+                          - false
+                      output:
+                        type: object
+                        properties:
+                          q:
+                            type: string
+                        required:
+                          - q
+                      issues:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+                        minItems: 2
+                        maxItems: 2
+                    required:
+                      - typed
+                      - success
+                      - output
+                      - issues
+                  - $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  found:
+                    type: number
+                required:
+                  - found
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/multi/valibot-item/export:
+    post:
+      summary: Create Multi Valibot item Export
+      responses:
+        "400":
+          description: Status 400
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      typed:
+                        type: boolean
+                        enum:
+                          - true
+                      success:
+                        type: boolean
+                        enum:
+                          - false
+                      output:
+                        $ref: "#/components/schemas/PostApiMultiValibotItemExportBody"
+                      issues:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+                        minItems: 2
+                        maxItems: 2
+                    required:
+                      - typed
+                      - success
+                      - output
+                      - issues
+                  - $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  file:
+                    type: string
+                required:
+                  - file
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostApiMultiValibotItemExportBody"
+      tags:
+        - E-Commerce Platform
+  /api/multi/valibot-item/status/{code}:
+    get:
+      summary: Get Multi Valibot item Status By Code
+      responses:
+        "400":
+          description: Status 400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiMultiValibotItemCodeCodeResponse400"
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PatchApiStressItemIdStatusResponsedefault"
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 10
+      tags:
+        - E-Commerce Platform
+  /api/multi/typebox-item/json:
+    post:
+      summary: Create Multi Typebox item Json
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiMultiTypeboxItemJsonResponsedefault"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/typeboxJsonSchema"
+      tags:
+        - E-Commerce Platform
+  /api/multi/typebox-item/query:
+    get:
+      summary: Get Multi Typebox item Query
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema: {}
+      parameters:
+        - name: active
+          in: query
+          required: false
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/multi/typebox-item/ref/{ref}:
+    get:
+      summary: Get Multi Typebox item Ref By Ref
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ref:
+                    type: string
+                required:
+                  - ref
+      parameters:
+        - name: ref
+          in: path
+          required: true
+          schema:
+            minLength: 4
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/multi/typebox-item/edit:
+    put:
+      summary: Update Multi Typebox item Edit
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiMultiTypeboxItemJsonResponsedefault"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/typeboxJsonSchema"
+      tags:
+        - E-Commerce Platform
+  /api/multi/typebox-item/drop/{ref}:
+    delete:
+      summary: Delete Multi Typebox item Drop By Ref
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiMultiTypeboxItemJsonResponsedefault"
+      parameters:
+        - name: ref
+          in: path
+          required: true
+          schema:
+            minLength: 4
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/multi/typebox-item/flag:
+    patch:
+      summary: Update Multi Typebox item Flag
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiMultiTypeboxItemJsonResponsedefault"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                flag:
+                  type: boolean
+              required:
+                - flag
+      tags:
+        - E-Commerce Platform
+  /api/multi/typebox-item/batch:
+    post:
+      summary: Create Multi Typebox item Batch
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiMultiTypeboxItemJsonResponsedefault"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  price:
+                    type: number
+                  sku:
+                    type: string
+                required:
+                  - price
+                  - sku
+      tags:
+        - E-Commerce Platform
+  /api/multi/typebox-item/find:
+    get:
+      summary: Get Multi Typebox item Find
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  hits:
+                    type: number
+                required:
+                  - hits
+      parameters:
+        - name: keyword
+          in: query
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/multi/typebox-item/generate:
+    post:
+      summary: Create Multi Typebox item Generate
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  generated:
+                    type: boolean
+                required:
+                  - generated
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                template:
+                  type: string
+              required:
+                - template
+      tags:
+        - E-Commerce Platform
+  /api/multi/typebox-item/info/{ref}:
+    get:
+      summary: Get Multi Typebox item Info By Ref
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiComplexNestedInfoResponsedefault"
+      parameters:
+        - name: ref
+          in: path
+          required: true
+          schema:
+            minLength: 4
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/edge/ts-ast/simple:
+    get:
+      summary: Get Edge Ts ast Simple
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiEdgeTsAstSimpleResponsedefault"
+      tags:
+        - E-Commerce Platform
+  /api/edge/ts-ast/echo:
+    post:
+      summary: Create Edge Ts ast Echo
+      responses:
+        "201":
+          description: Status 201
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  received:
+                    $ref: "#/components/schemas/GetApiEdgeTsAstSimpleResponsedefault"
+                required:
+                  - received
+      tags:
+        - E-Commerce Platform
+  /api/edge/ts-ast/modify/{id}:
+    put:
+      summary: Update Edge Ts ast Modify By Id
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  modifiedId:
+                    type: string
+                  status:
+                    type: string
+                required:
+                  - modifiedId
+                  - status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/edge/ts-ast/delete/{id}:
+    delete:
+      summary: Delete Edge Ts ast Delete By Id
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+                  timestamp:
+                    type: number
+                required:
+                  - deleted
+                  - timestamp
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/edge/ts-ast/optional/{opt?}:
+    get:
+      summary: Get Edge Ts ast Optional By Opt
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  opt:
+                    type: string
+                required:
+                  - opt
+      parameters:
+        - name: opt
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/edge/responses/union-status:
+    get:
+      summary: Get Edge Responses Union status
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    type: string
+                required:
+                  - status
+                  - data
+        "404":
+          description: Status 404
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiExhaustiveFormResponse413"
+      tags:
+        - E-Commerce Platform
+  /api/edge/responses/multi-status:
+    post:
+      summary: Create Edge Responses Multi status
+      responses:
+        "201":
+          description: Status 201
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiStressItemCreateResponse201"
+        "400":
+          description: Status 400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiEdgeResponsesMultiStatusResponse400"
+      tags:
+        - E-Commerce Platform
+  /api/edge/responses/server-error:
+    get:
+      summary: Get Edge Responses Server error
+      responses:
+        "500":
+          description: Status 500
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiEdgeResponsesMultiStatusResponse400"
+      tags:
+        - E-Commerce Platform
+  /api/edge/responses/no-content-test:
+    delete:
+      summary: Delete Edge Responses No content test
+      responses:
+        "204":
+          description: Status 204
+          content:
+            application/json:
+              schema: {}
+      tags:
+        - E-Commerce Platform
+  /api/edge/responses/redirect-test:
+    get:
+      summary: Get Edge Responses Redirect test
+      responses:
+        "302":
+          description: Status 302
+          content:
+            application/json:
+              schema: {}
+      tags:
+        - E-Commerce Platform
+  /api/edge/regex/code/{code}:
+    get:
+      summary: Get Edge Regex Code By Code
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  validCode:
+                    type: string
+                required:
+                  - validCode
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: "[A-Z]{4}"
+      tags:
+        - E-Commerce Platform
+  /api/edge/regex/year/{year}/month/{month}:
+    get:
+      summary: Get Edge Regex Year By Year Month By Month
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiComplexArchiveYearMonthResponsedefaultParams"
+      parameters:
+        - name: year
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: "[0-9]{4}"
+        - name: month
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: "[0-9]{2}"
+      tags:
+        - E-Commerce Platform
+  /api/edge/wildcard/files/*:
+    get:
+      summary: Get Edge Wildcard Files By Wildcard
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  wildcard:
+                    type: boolean
+                required:
+                  - wildcard
+      tags:
+        - E-Commerce Platform
+  /api/edge/all-handler/check:
+    all:
+      summary: All Edge All handler Check
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  method:
+                    type: string
+                required:
+                  - method
+      tags:
+        - E-Commerce Platform
+  /api/edge/headers/custom-test:
+    get:
+      summary: Get Edge Headers Custom test
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  authed:
+                    type: boolean
+                required:
+                  - authed
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+              example: no-cache
+            X-Custom-Token:
+              schema:
+                type: string
+              example: token_123
+      tags:
+        - E-Commerce Platform
+  /api/edge/misc/status:
+    get:
+      summary: Get Edge Misc Status
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  healthy:
+                    type: boolean
+                  uptime:
+                    type: number
+                required:
+                  - healthy
+                  - uptime
+      tags:
+        - E-Commerce Platform
+  /api/edge/misc/ping:
+    post:
+      summary: Create Edge Misc Ping
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pong:
+                    type: boolean
+                required:
+                  - pong
+      tags:
+        - E-Commerce Platform
+  /api/edge/misc/reset:
+    put:
+      summary: Update Edge Misc Reset
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reset:
+                    type: string
+                required:
+                  - reset
+      tags:
+        - E-Commerce Platform
+  /api/edge/misc/cleanup:
+    delete:
+      summary: Delete Edge Misc Cleanup
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cleaned:
+                    type: boolean
+                required:
+                  - cleaned
+      tags:
+        - E-Commerce Platform
+  /api/edge/misc/info:
+    get:
+      summary: Get Edge Misc Info
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                  name:
+                    type: string
+                required:
+                  - version
+                  - name
+      tags:
+        - E-Commerce Platform
+  /api/edge/legacy/migrate:
+    post:
+      summary: Legacy Migration Endpoint
+      responses:
+        "200":
+          description: Successfully triggered legacy account migration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  migrated:
+                    type: boolean
+                  newAccountId:
+                    type: string
+                required:
+                  - migrated
+                  - newAccountId
+              example:
+                migrated: true
+                newAccountId: acc_999
+      description: Migrates a legacy account to the new system.
+      deprecated: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/legacySchema"
+            example:
+              oldApiKey: legacy_key_12345
+              reason: System Upgrade
+      tags:
+        - E-Commerce Platform
+  /api/edge/legacy/bare-deprecated:
+    get:
+      summary: Bare Deprecated Endpoint
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deprecated:
+                    type: boolean
+                required:
+                  - deprecated
+      deprecated: true
+      tags:
+        - E-Commerce Platform
+  /api/edge/legacy/multi-example:
+    post:
+      summary: Multi-Example Request & Responses
+      responses:
+        "201":
+          description: Account successfully provisioned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: boolean
+                  id:
+                    type: string
+                required:
+                  - created
+                  - id
+              examples:
+                example1:
+                  value:
+                    created: true
+                    id: acc_101
+                example2:
+                  value:
+                    created: true
+                    id: acc_102
+        "400":
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiEdgeResponsesMultiStatusResponse400"
+              example:
+                error: Invalid API key format
+      description: Demonstrates multiple named examples for request body and status codes.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/legacySchema"
+            examples:
+              example1:
+                value:
+                  oldApiKey: key_alpha
+                  reason: Batch Alpha
+              example2:
+                value:
+                  oldApiKey: key_beta
+                  reason: Batch Beta
+      tags:
+        - E-Commerce Platform
+  /api/edge/legacy/form-upload:
+    post:
+      summary: Form Upload with Examples
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostApiMultiZodItemFormResponsedefault"
+          headers:
+            X-Upload-ID:
+              schema:
+                type: string
+              example: upl_777
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileTitle:
+                  type: string
+                fileTag:
+                  type: string
+              required:
+                - fileTitle
+            example: plain text raw example
+      tags:
+        - E-Commerce Platform
+  /api/edge/deep/sub-resource:
+    get:
+      summary: Get Edge Deep Sub resource
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nested:
+                    type: boolean
+                  level:
+                    type: string
+                required:
+                  - nested
+                  - level
+      tags:
+        - E-Commerce Platform
+  /api/edge/deep/sub-action:
+    post:
+      summary: Create Edge Deep Sub action
+      responses:
+        "201":
+          description: Status 201
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiExhaustiveAstRegexActionTypeResponse200"
+      tags:
+        - E-Commerce Platform
+  /api/edge/deep/sub-item/{subId}:
+    get:
+      summary: Get Edge Deep Sub item By Sub Id
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subId:
+                    type: string
+                required:
+                  - subId
+      parameters:
+        - name: subId
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+    delete:
+      summary: Delete Edge Deep Sub item By Sub Id
+      responses:
+        "200":
+          description: Status 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteApiMultiValibotItemRemoveCodeResponsedefault"
+      parameters:
+        - name: subId
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/edge/deep/sub-item/{subId}/flag:
+    patch:
+      summary: Update Edge Deep Sub item By Sub Id Flag
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  flagged:
+                    type: boolean
+                required:
+                  - flagged
+      parameters:
+        - name: subId
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - E-Commerce Platform
+  /api/new-frameworks/drizzle-zod:
+    post:
+      summary: Create New frameworks Drizzle zod
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      age:
+                        type: number
+                      isActive:
+                        type: boolean
+                      role:
+                        type: string
+                        enum:
+                          - admin
+                          - editor
+                          - viewer
+                      metadata:
+                        $ref: "#/components/schemas/PostApiNewFrameworksDrizzleZodResponsedefaultDataMe\
+                          tadata"
+                      createdAt:
+                        type: string
+                      lastLoginAt:
+                        type: string
+                        nullable: true
+                    required:
+                      - id
+                      - name
+                      - email
+                required:
+                  - success
+                  - data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/insertUserZod"
+      tags:
+        - E-Commerce Platform
+  /api/new-frameworks/drizzle-valibot:
+    post:
+      summary: Create New frameworks Drizzle valibot
+      responses:
+        "400":
+          description: Status 400
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      typed:
+                        type: boolean
+                        enum:
+                          - true
+                      success:
+                        type: boolean
+                        enum:
+                          - false
+                      output:
+                        $ref: "#/components/schemas/PostApiNewFrameworksDrizzleValibotResponse400Varian\
+                          t1Output"
+                      issues:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+                        minItems: 2
+                        maxItems: 2
+                    required:
+                      - typed
+                      - success
+                      - output
+                      - issues
+                  - $ref: "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/PostApiNewFrameworksDrizzleValibotResponse400Varian\
+                      t1Output"
+                required:
+                  - success
+                  - data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/insertUserValibot"
+      tags:
+        - E-Commerce Platform
+  /api/new-frameworks/arktype:
+    post:
+      summary: Create New frameworks Arktype
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      userProfile:
+                        type: object
+                        properties:
+                          username:
+                            type: string
+                          age:
+                            type: number
+                          role:
+                            type: string
+                            enum:
+                              - user
+                              - admin
+                              - guest
+                          isActive:
+                            type: boolean
+                          email:
+                            type: string
+                        required:
+                          - username
+                          - age
+                          - role
+                          - isActive
+                      tags:
+                        type: array
+                        items:
+                          type: string
+                      metadata:
+                        type: object
+                        properties:
+                          lastLogin:
+                            type: string
+                          settings:
+                            type: object
+                            properties:
+                              theme:
+                                type: string
+                                enum:
+                                  - light
+                                  - dark
+                                  - system
+                              notifications:
+                                type: boolean
+                            required:
+                              - theme
+                              - notifications
+                          customData:
+                            $ref: "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownVal"
+                        required:
+                          - lastLogin
+                          - settings
+                      scores:
+                        type: array
+                        items:
+                          type: number
+                      status:
+                        type: string
+                        enum:
+                          - active
+                          - pending
+                          - inactive
+                      nestedTuple:
+                        type: array
+                        items:
+                          oneOf:
+                            - type: string
+                            - type: number
+                            - type: boolean
+                        minItems: 3
+                        maxItems: 3
+                      unionTest:
+                        oneOf:
+                          - type: string
+                          - type: number
+                          - type: boolean
+                            enum:
+                              - false
+                          - type: boolean
+                            enum:
+                              - true
+                      avatarUrl:
+                        type: string
+                    required:
+                      - id
+                      - userProfile
+                      - tags
+                      - metadata
+                      - scores
+                      - status
+                      - nestedTuple
+                      - unionTest
+                required:
+                  - success
+                  - data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/myArktypeSchema"
+      tags:
+        - E-Commerce Platform

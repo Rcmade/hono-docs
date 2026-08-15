@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path, { resolve } from "node:path";
+import yaml from "yaml";
 import { PROJECT_CACHE_DIR_NAME } from "../utils/constants";
 import { Project } from "ts-morph";
 import { loadConfig } from "../config/loadConfig";
@@ -51,12 +52,22 @@ export async function runGenerate(
   } else {
     // Compute global hash: any change here wipes all groups
     const configContent = (() => {
-      try { return fs.readFileSync(resolve(rootPath, configPath), "utf-8"); } catch { return ""; }
+      try {
+        return fs.readFileSync(resolve(rootPath, configPath), "utf-8");
+      } catch {
+        return "";
+      }
     })();
     const tsConfigContent = (() => {
-      try { return fs.readFileSync(resolve(rootPath, config.tsConfigPath), "utf-8"); } catch { return ""; }
+      try {
+        return fs.readFileSync(resolve(rootPath, config.tsConfigPath), "utf-8");
+      } catch {
+        return "";
+      }
     })();
-    const globalHash = cache.hashString(pkgVersion + configContent + tsConfigContent);
+    const globalHash = cache.hashString(
+      pkgVersion + configContent + tsConfigContent,
+    );
     cache.checkGlobal(globalHash);
   }
 
@@ -72,8 +83,16 @@ export async function runGenerate(
 
   const apis = config.apis;
 
-  const snapshotOutputRoot = path.resolve(rootPath, PROJECT_CACHE_DIR_NAME, "types");
-  const openAPiOutputRoot = path.resolve(rootPath, PROJECT_CACHE_DIR_NAME, "openapi");
+  const snapshotOutputRoot = path.resolve(
+    rootPath,
+    PROJECT_CACHE_DIR_NAME,
+    "types",
+  );
+  const openAPiOutputRoot = path.resolve(
+    rootPath,
+    PROJECT_CACHE_DIR_NAME,
+    "openapi",
+  );
 
   const commonParams = {
     config,
@@ -145,11 +164,14 @@ export async function runGenerate(
             const realFp = fs.existsSync(fp) ? fs.realpathSync(fp) : fp;
             if (visited.has(realFp)) continue;
             visited.add(realFp);
-            const sf = depProject.getSourceFile(realFp) || depProject.getSourceFile(fp);
+            const sf =
+              depProject.getSourceFile(realFp) || depProject.getSourceFile(fp);
             if (!sf) continue;
             for (const ref of sf.getReferencedSourceFiles()) {
               const refPath = ref.getFilePath();
-              const realRef = fs.existsSync(refPath) ? fs.realpathSync(refPath) : refPath;
+              const realRef = fs.existsSync(refPath)
+                ? fs.realpathSync(refPath)
+                : refPath;
               if (!realRef.includes("node_modules")) {
                 queue.push(realRef);
               }
@@ -200,11 +222,15 @@ export async function runGenerate(
 
       // Record the result in cache only when we have a valid hash
       if (!noCache && groupHash && expectedOutput) {
-        cache.setGroupCache(sanitizedName, groupHash, expectedOutput, groupDepFiles);
+        cache.setGroupCache(
+          sanitizedName,
+          groupHash,
+          expectedOutput,
+          groupDepFiles,
+        );
       }
     }
   }
-
 
   const merged = {
     security: [],
@@ -290,18 +316,33 @@ export async function runGenerate(
     }
   }
 
-  const outputPath = path.join(rootPath, config.outputs.openApiJson);
-  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-
   // Apply version-specific document root fields (e.g. $schema for 3.1)
   const adapter = getAdapter(config.openApiVersion);
   const finalSpec = adapter.makeDocumentRoot(
-    merged as unknown as Record<string, unknown>
+    merged as unknown as Record<string, unknown>,
   );
 
-  const deduplicatedSpec = deduplicateComponents(finalSpec as unknown as import("openapi-types").OpenAPIV3.Document);
-  const specContent = `${JSON.stringify(deduplicatedSpec, null, 2)}\n`;
-  fs.writeFileSync(outputPath, specContent);
+  const deduplicatedSpec = deduplicateComponents(
+    finalSpec as unknown as import("openapi-types").OpenAPIV3.Document,
+  );
+
+  let jsonSize: number | undefined;
+  if (config.outputs.openApiJson) {
+    const jsonPath = path.join(rootPath, config.outputs.openApiJson);
+    fs.mkdirSync(path.dirname(jsonPath), { recursive: true });
+    const specContent = `${JSON.stringify(deduplicatedSpec, null, 2)}\n`;
+    fs.writeFileSync(jsonPath, specContent);
+    jsonSize = Buffer.byteLength(specContent, "utf-8");
+  }
+
+  let yamlSize: number | undefined;
+  if (config.outputs.openApiYaml) {
+    const yamlPath = path.join(rootPath, config.outputs.openApiYaml);
+    fs.mkdirSync(path.dirname(yamlPath), { recursive: true });
+    const yamlContent = yaml.stringify(deduplicatedSpec);
+    fs.writeFileSync(yamlPath, yamlContent);
+    yamlSize = Buffer.byteLength(yamlContent, "utf-8");
+  }
 
   // Persist cache manifest to disk (no-op if nothing changed or --no-cache)
   if (!noCache) {
@@ -309,7 +350,13 @@ export async function runGenerate(
   }
 
   logger.summary();
-  logger.output(config.outputs.openApiJson, Buffer.byteLength(specContent, "utf-8"));
+
+  if (config.outputs.openApiJson) {
+    logger.output(config.outputs.openApiJson, jsonSize);
+  }
+  if (config.outputs.openApiYaml) {
+    logger.output(config.outputs.openApiYaml, yamlSize);
+  }
+
   logger.done(Date.now() - startTime);
 }
-

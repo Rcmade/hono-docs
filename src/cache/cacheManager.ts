@@ -178,7 +178,11 @@ export class CacheManager {
     outputPath: string,
     dependencyFiles?: string[],
   ): void {
-    this.manifest.groups[groupName] = { inputHash: groupHash, outputPath, dependencyFiles };
+    this.manifest.groups[groupName] = {
+      inputHash: groupHash,
+      outputPath,
+      dependencyFiles,
+    };
     this.dirty = true;
   }
 

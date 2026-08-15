@@ -15,7 +15,7 @@ import { PROJECT_CACHE_DIR_NAME } from "../utils/constants";
  */
 function watchDirectory(
   dir: string,
-  outDir: string,
+  outDirs: string[],
   internalCacheDir: string,
   onChange: (filepath: string) => void,
 ) {
@@ -33,8 +33,8 @@ function watchDirectory(
     ignored: (filePath: string) => {
       if (filePath.includes("node_modules") || filePath.includes(".git"))
         return true;
-      // Exclude final openapi output dir (e.g. openapi/)
-      if (filePath.startsWith(outDir)) return true;
+      // Exclude final openapi output dirs (e.g. openapi/)
+      if (outDirs.some((outDir) => filePath.startsWith(outDir))) return true;
       // Exclude internal .hono-docs/ cache dir (contains generated .d.ts snapshots
       // and intermediate openapi JSONs — watching these causes an infinite rebuild loop)
       if (filePath.startsWith(internalCacheDir)) return true;
@@ -51,7 +51,6 @@ function watchDirectory(
 
   return () => watcher.close();
 }
-
 
 export async function runWatch(
   configPath: string,
@@ -102,10 +101,14 @@ export async function runWatch(
   // Perform initial generation
   await build();
 
-  const outDir = path.resolve(
-    rootPath,
-    path.dirname(config.outputs?.openApiJson || ""),
-  );
+  const outDirs = [
+    config.outputs?.openApiJson
+      ? path.resolve(rootPath, path.dirname(config.outputs.openApiJson))
+      : null,
+    config.outputs?.openApiYaml
+      ? path.resolve(rootPath, path.dirname(config.outputs.openApiYaml))
+      : null,
+  ].filter(Boolean) as string[];
 
   // Resolve the internal .hono-docs/ cache dir — must be excluded from the watcher
   // to prevent an infinite rebuild loop caused by generated .d.ts snapshots and
@@ -137,5 +140,5 @@ export async function runWatch(
     debounceTimeout = setTimeout(build, 300);
   };
 
-  watchDirectory(rootPath, outDir, internalCacheDir, handleFileChange);
+  watchDirectory(rootPath, outDirs, internalCacheDir, handleFileChange);
 }

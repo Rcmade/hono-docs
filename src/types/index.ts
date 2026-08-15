@@ -106,12 +106,21 @@ export type HonoDocsConfig = {
   /**
    * Output configuration for generated files.
    */
-  outputs: {
-    /**
-     * File path where the generated `openapi.json` should be saved.
-     */
-    openApiJson: string;
-  };
+  outputs:
+    | {
+        /**
+         * File path where the generated `openapi.json` should be saved.
+         */
+        openApiJson: string;
+        /**
+         * File path where the generated `openapi.yaml` should be saved.
+         */
+        openApiYaml?: string;
+      }
+    | {
+        openApiJson?: string;
+        openApiYaml: string;
+      };
 
   /**
    * List of API groups (routes) to generate docs for.

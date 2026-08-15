@@ -34,6 +34,13 @@ export async function loadConfig(configFile: string): Promise<HonoDocsConfig> {
     );
   }
 
+  const c = config as Partial<HonoDocsConfig>;
+  if (!c.outputs || (!c.outputs.openApiJson && !c.outputs.openApiYaml)) {
+    throw new Error(
+      "[hono-docs] Invalid config: `outputs` must be defined and specify at least one of `openApiJson` or `openApiYaml`.",
+    );
+  }
+
   // console.log({ config });
   return config as HonoDocsConfig;
 }
