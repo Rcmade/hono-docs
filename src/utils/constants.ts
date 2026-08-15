@@ -21,3 +21,12 @@ export const VALIDATOR_TARGETS = [
 ] as const;
 
 export const PROJECT_CACHE_DIR_NAME = ".hono-docs";
+
+export const VALIDATOR_LIBRARIES = [
+  "zod",
+  "valibot",
+  "typebox",
+  "yup",
+  "arktype",
+  "unsupported",
+] as const;

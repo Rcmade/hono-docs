@@ -94,17 +94,6 @@
         ],
         "additionalProperties": false
       },
-      "PostApiMultiTypeboxItemJsonResponsedefault": {
-        "type": "object",
-        "properties": {
-          "res": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "res"
-        ]
-      },
       "PostApiZodAllFeaturesResponsedefaultDataUnknownValVariant5ValueVariant8Item": {
         "oneOf": [
           {
@@ -129,6 +118,17 @@
           {}
         ],
         "nullable": true
+      },
+      "PostApiMultiTypeboxItemJsonResponsedefault": {
+        "type": "object",
+        "properties": {
+          "res": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "res"
+        ]
       },
       "JSONObject": {
         "type": "object",
@@ -203,50 +203,6 @@
         ],
         "nullable": true
       },
-      "GetApiMultiValibotItemCodeCodeResponse400Variant1Output": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "code"
-        ]
-      },
-      "PatchApiStressItemIdStatusResponsedefault": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "status"
-        ]
-      },
-      "DeleteApiStressItemIdDeleteResponsedefault": {
-        "type": "object",
-        "properties": {
-          "deleted": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "deleted"
-        ]
-      },
-      "PutApiStressItemIdUpdateResponsedefault": {
-        "type": "object",
-        "properties": {
-          "updated": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "updated"
-        ]
-      },
       "PostApiZodAllFeaturesResponsedefaultDataUnknownVal": {
         "oneOf": [
           {
@@ -308,6 +264,50 @@
           {}
         ],
         "nullable": true
+      },
+      "GetApiMultiValibotItemCodeCodeResponse400Variant1Output": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
+      "PatchApiStressItemIdStatusResponsedefault": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "DeleteApiStressItemIdDeleteResponsedefault": {
+        "type": "object",
+        "properties": {
+          "deleted": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "deleted"
+        ]
+      },
+      "PutApiStressItemIdUpdateResponsedefault": {
+        "type": "object",
+        "properties": {
+          "updated": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "updated"
+        ]
       },
       "PostApiZodAllFeaturesBodyTupleOfTwoItem": {
         "anyOf": [
@@ -410,6 +410,25 @@
           }
         ]
       },
+      "PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadata": {
+        "type": "object",
+        "properties": {
+          "preferences": {
+            "$ref": "#/components/schemas/PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadataPreferences"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "preferences",
+          "tags"
+        ],
+        "nullable": true
+      },
       "PostApiExhaustiveFormResponse413": {
         "type": "object",
         "properties": {
@@ -464,6 +483,25 @@
         "additionalProperties": {
           "type": "number"
         }
+      },
+      "PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadataPreferences": {
+        "type": "object",
+        "properties": {
+          "theme": {
+            "type": "string",
+            "enum": [
+              "light",
+              "dark"
+            ]
+          },
+          "notifications": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "theme",
+          "notifications"
+        ]
       },
       "PostApiMultiValibotItemExportBody": {
         "type": "object",
@@ -529,11 +567,51 @@
           "categories"
         ]
       },
+      "GetApiExhaustiveAstRecordAnyResponse200": {
+        "type": "object",
+        "additionalProperties": {}
+      },
       "PostApiZodAllFeaturesBodyStringRecord": {
         "type": "object",
         "additionalProperties": {
           "type": "string"
         }
+      },
+      "PostApiNewFrameworksDrizzleValibotResponse400Variant1Output": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "age": {
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "role": {},
+          "metadata": {
+            "$ref": "#/components/schemas/PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadata"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "lastLoginAt": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email"
+        ]
       },
       "PostApiEnterpriseOrgsOrgIdBillingInvoicesInvoiceIdAdjustResponse400Variant1Variant1Output": {
         "type": "object",
@@ -1502,6 +1580,83 @@
         ],
         "additionalProperties": false
       },
+      "insertUserZod": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          },
+          "age": {
+            "type": "number",
+            "minimum": 18,
+            "maximum": 120
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "admin",
+              "editor",
+              "viewer"
+            ]
+          },
+          "metadata": {
+            "nullable": true,
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "string",
+                    "nullable": true,
+                    "enum": [
+                      null
+                    ]
+                  }
+                ]
+              },
+              {
+                "$ref": "#/components/schemas/GetApiExhaustiveAstRecordAnyResponse200"
+              },
+              {
+                "type": "array",
+                "items": {}
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "lastLoginAt": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email"
+        ],
+        "additionalProperties": false
+      },
       "categorySchema": {
         "type": "object",
         "properties": {
@@ -1584,6 +1739,93 @@
         ],
         "additionalProperties": false
       },
+      "insertUserValibot": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "age": {
+            "type": "number",
+            "minimum": 18,
+            "maximum": 120
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "role": {
+            "enum": [
+              "admin",
+              "editor",
+              "viewer"
+            ],
+            "type": "string"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "array",
+                    "items": {}
+                  },
+                  {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string"
+                    },
+                    "additionalProperties": {}
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "lastLoginAt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email"
+        ]
+      },
       "exhaustiveFormSchema": {
         "type": "object",
         "properties": {
@@ -1613,6 +1855,141 @@
           "file"
         ],
         "additionalProperties": false
+      },
+      "myArktypeSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "lastLogin": {
+                "type": "string"
+              },
+              "settings": {
+                "type": "object",
+                "properties": {
+                  "notifications": {
+                    "type": "boolean"
+                  },
+                  "theme": {
+                    "enum": [
+                      "dark",
+                      "light",
+                      "system"
+                    ]
+                  }
+                },
+                "required": [
+                  "notifications",
+                  "theme"
+                ]
+              },
+              "customData": {}
+            },
+            "required": [
+              "lastLogin",
+              "settings"
+            ]
+          },
+          "nestedTuple": {
+            "type": "array",
+            "minItems": 3,
+            "prefixItems": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              }
+            ],
+            "items": false
+          },
+          "scores": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "status": {
+            "enum": [
+              "active",
+              "inactive",
+              "pending"
+            ]
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "unionTest": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "userProfile": {
+            "type": "object",
+            "properties": {
+              "age": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "isActive": {
+                "type": "boolean"
+              },
+              "role": {
+                "enum": [
+                  "admin",
+                  "guest",
+                  "user"
+                ]
+              },
+              "username": {
+                "type": "string",
+                "minLength": 3
+              },
+              "email": {
+                "type": "string",
+                "pattern": "^[\\w%+.-]+@[\\d.A-Za-z-]+\\.[A-Za-z]{2,}$",
+                "format": "email"
+              }
+            },
+            "required": [
+              "age",
+              "isActive",
+              "role",
+              "username"
+            ]
+          },
+          "avatarUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "metadata",
+          "nestedTuple",
+          "scores",
+          "status",
+          "tags",
+          "unionTest",
+          "userProfile"
+        ]
       },
       "typeboxSchema": {
         "type": "object",
@@ -4175,8 +4552,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {}
+                  "$ref": "#/components/schemas/GetApiExhaustiveAstRecordAnyResponse200"
                 }
               }
             }
@@ -7856,6 +8232,364 @@
             }
           }
         ],
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/new-frameworks/drizzle-zod": {
+      "post": {
+        "summary": "Create New frameworks Drizzle zod",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "age": {
+                          "type": "number"
+                        },
+                        "isActive": {
+                          "type": "boolean"
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "admin",
+                            "editor",
+                            "viewer"
+                          ]
+                        },
+                        "metadata": {
+                          "$ref": "#/components/schemas/PostApiNewFrameworksDrizzleZodResponsedefaultDataMetadata"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        },
+                        "lastLoginAt": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "email"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/insertUserZod"
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/new-frameworks/drizzle-valibot": {
+      "post": {
+        "summary": "Create New frameworks Drizzle valibot",
+        "responses": {
+          "400": {
+            "description": "Status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "typed": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "success": {
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "output": {
+                          "$ref": "#/components/schemas/PostApiNewFrameworksDrizzleValibotResponse400Variant1Output"
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant1IssuesItem"
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "typed",
+                        "success",
+                        "output",
+                        "issues"
+                      ]
+                    },
+                    {
+                      "$ref": "#/components/schemas/PostApiValibotVbCreateResponse400Variant2"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/PostApiNewFrameworksDrizzleValibotResponse400Variant1Output"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/insertUserValibot"
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/new-frameworks/arktype": {
+      "post": {
+        "summary": "Create New frameworks Arktype",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "userProfile": {
+                          "type": "object",
+                          "properties": {
+                            "username": {
+                              "type": "string"
+                            },
+                            "age": {
+                              "type": "number"
+                            },
+                            "role": {
+                              "type": "string",
+                              "enum": [
+                                "user",
+                                "admin",
+                                "guest"
+                              ]
+                            },
+                            "isActive": {
+                              "type": "boolean"
+                            },
+                            "email": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "username",
+                            "age",
+                            "role",
+                            "isActive"
+                          ]
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "metadata": {
+                          "type": "object",
+                          "properties": {
+                            "lastLogin": {
+                              "type": "string"
+                            },
+                            "settings": {
+                              "type": "object",
+                              "properties": {
+                                "theme": {
+                                  "type": "string",
+                                  "enum": [
+                                    "light",
+                                    "dark",
+                                    "system"
+                                  ]
+                                },
+                                "notifications": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "required": [
+                                "theme",
+                                "notifications"
+                              ]
+                            },
+                            "customData": {
+                              "$ref": "#/components/schemas/PostApiZodAllFeaturesResponsedefaultDataUnknownVal"
+                            }
+                          },
+                          "required": [
+                            "lastLogin",
+                            "settings"
+                          ]
+                        },
+                        "scores": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          }
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "active",
+                            "pending",
+                            "inactive"
+                          ]
+                        },
+                        "nestedTuple": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "boolean"
+                              }
+                            ]
+                          },
+                          "minItems": 3,
+                          "maxItems": 3
+                        },
+                        "unionTest": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "boolean",
+                              "enum": [
+                                false
+                              ]
+                            },
+                            {
+                              "type": "boolean",
+                              "enum": [
+                                true
+                              ]
+                            }
+                          ]
+                        },
+                        "avatarUrl": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "userProfile",
+                        "tags",
+                        "metadata",
+                        "scores",
+                        "status",
+                        "nestedTuple",
+                        "unionTest"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/myArktypeSchema"
+              }
+            }
+          }
+        },
         "tags": [
           "E-Commerce Platform"
         ]

@@ -12,6 +12,7 @@ import { loadLiveSchema } from "./loadSchema";
 import { convertZodSchema } from "./converters/zodConverter";
 import { convertValibotSchema } from "./converters/valibotConverter";
 import { convertTypeBoxSchema } from "./converters/typeboxConverter";
+import { convertArktypeSchema } from "./converters/arktypeConverter";
 import { attachSchemaName } from "../utils/schemaHelper";
 
 import type { OpenAPIV3 } from "openapi-types";
@@ -100,7 +101,8 @@ export async function resolveValidatorSchema(
     if (!liveSchema) return null;
 
     // Step 5: Convert using library-native serializer
-    let schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject | null = null;
+    let schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject | null =
+      null;
 
     switch (library) {
       case "zod":
@@ -114,6 +116,11 @@ export async function resolveValidatorSchema(
         break;
       case "typebox":
         schema = convertTypeBoxSchema(
+          liveSchema,
+        ) as OpenAPIV3.SchemaObject | null;
+        break;
+      case "arktype":
+        schema = convertArktypeSchema(
           liveSchema,
         ) as OpenAPIV3.SchemaObject | null;
         break;
@@ -134,4 +141,3 @@ export async function resolveValidatorSchema(
     return null;
   }
 }
-

@@ -50,5 +50,15 @@ export function detectLibrary(type: Type): ValidatorLibrary {
     return "yup";
   }
 
+  // ── Arktype detection ─────────────────────────────────────────────────────────
+  // Arktype schemas have toJsonSchema, infer, and ~standard properties
+  if (
+    type.getProperty("toJsonSchema") &&
+    type.getProperty("infer") &&
+    type.getProperty("~standard")
+  ) {
+    return "arktype";
+  }
+
   return "unsupported";
 }

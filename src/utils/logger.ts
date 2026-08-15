@@ -45,24 +45,29 @@ function formatMethod(method: string): string {
   return col(ansi, method.toUpperCase().padEnd(6));
 }
 
-const VALIDATOR_COLORS: Record<SchemaEngine, string> &
-  Record<string, string | undefined> = {
+const VALIDATOR_COLORS: Record<SchemaEngine, string> = {
   zod: c.cyan,
   valibot: c.magenta,
   typebox: c.orange,
   yup: c.yellow,
-  unsupported: c.red,
   "ts type": c.blue,
+  arktype: c.green,
   "no input": c.gray,
+  unsupported: c.red,
 };
 
 function formatValidator(lib: string): string {
-  const ansi = VALIDATOR_COLORS[lib.toLowerCase()] ?? c.white;
+  const ansi = VALIDATOR_COLORS[lib.toLowerCase() as SchemaEngine] ?? c.white;
   return col(ansi, lib.toLowerCase());
 }
 
 function progressBar(count: number, total: number, width = 20): string {
-  const filled = total === 0 ? 0 : Math.round((count / total) * width);
+  const filled =
+    total === 0
+      ? 0
+      : count > 0
+        ? Math.max(1, Math.round((count / total) * width))
+        : 0;
   return (
     col(c.green, "█".repeat(filled)) + col(c.gray, "░".repeat(width - filled))
   );
@@ -212,9 +217,9 @@ export const logger = {
 
       for (const { method, path, sources } of _buffer) {
         const truncPath =
-          path.length > 44 ? path.slice(0, 22) + "…" + path.slice(-21) : path;
+          path.length > 60 ? path.slice(0, 30) + "…" + path.slice(-29) : path;
         const methodStr = formatMethod(method);
-        const pathStr = col(c.white, truncPath.padEnd(44));
+        const pathStr = col(c.white, truncPath.padEnd(60));
 
         if (sources.length === 0) {
           process.stdout.write(
@@ -301,14 +306,7 @@ export const logger = {
         );
         const maxLen = Math.max(...Object.keys(libCounts).map((k) => k.length));
 
-        const libOrder = [
-          "zod",
-          "valibot",
-          "typebox",
-          "yup",
-          "ts type",
-          "no input",
-        ];
+        const libOrder = Object.keys(VALIDATOR_COLORS);
         const sortedLibs = Object.entries(libCounts).sort(([a], [b]) => {
           const ia = libOrder.indexOf(a.toLowerCase());
           const ib = libOrder.indexOf(b.toLowerCase());
@@ -321,7 +319,7 @@ export const logger = {
           if (lib === "no input") label = "(No validation required)";
 
           process.stdout.write(
-            `      ${col(VALIDATOR_COLORS[lib.toLowerCase()] ?? c.white, lib.padEnd(maxLen + 2))}` +
+            `      ${col(VALIDATOR_COLORS[lib.toLowerCase() as SchemaEngine] ?? c.white, lib.padEnd(maxLen + 2))}` +
               `${progressBar(cnt, total)}  ${col(c.white, `${cnt} ${cnt === 1 ? "route " : "routes"}`)}  ${col(c.dim, label)}\n`,
           );
         }

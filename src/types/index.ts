@@ -1,6 +1,10 @@
 import type { Project } from "ts-morph";
 import type { OpenAPIV3 } from "openapi-types";
-import type { HONO_METHOD_NAMES, VALIDATOR_TARGETS } from "../utils/constants";
+import type {
+  HONO_METHOD_NAMES,
+  VALIDATOR_TARGETS,
+  VALIDATOR_LIBRARIES,
+} from "../utils/constants";
 
 /** Supported lowercase Hono HTTP methods */
 export type HonoMethod = (typeof HONO_METHOD_NAMES)[number];
@@ -137,12 +141,7 @@ export type OpenApiPath = {
 /**
  * Identifies which validation library a schema originated from.
  */
-export type ValidatorLibrary =
-  | "zod"
-  | "valibot"
-  | "typebox"
-  | "yup"
-  | "unsupported";
+export type ValidatorLibrary = (typeof VALIDATOR_LIBRARIES)[number];
 
 /** Supported schema resolution engine labels used in documentation and CLI logging */
 export type SchemaEngine = ValidatorLibrary | "ts type" | "no input";

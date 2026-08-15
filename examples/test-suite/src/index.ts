@@ -14,6 +14,7 @@ import { docs } from "./routes/docs";
 import { cacheStressRoutes } from "./routes/cacheStressRoutes";
 import { multiValidatorRoutes } from "./routes/multiValidatorRoutes";
 import { edgeCaseRoutes } from "./routes/edgeCaseRoutes";
+import { newFrameworksRoutes } from "./routes/newFrameworksRoutes";
 
 const app1 = new Hono()
   .basePath("/api")
@@ -37,8 +38,8 @@ const app2 = app
   .route("/docs", docs)
   .route("/stress", cacheStressRoutes)
   .route("/multi", multiValidatorRoutes)
-  .route("/edge", edgeCaseRoutes);
-
+  .route("/edge", edgeCaseRoutes)
+  .route("/new-frameworks", newFrameworksRoutes);
 
 serve(
   {
