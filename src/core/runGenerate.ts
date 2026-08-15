@@ -19,6 +19,8 @@ export interface RunGenerateOptions {
   noCache?: boolean;
   /** Persistent ts-morph Project instance for lightning fast watch-mode AST caching. */
   projectInstance?: Project;
+  /** When true, validate existing specs without writing anything to disk. */
+  validate?: boolean;
 }
 
 export async function runGenerate(
@@ -327,20 +329,48 @@ export async function runGenerate(
   );
 
   let jsonSize: number | undefined;
+  let validationFailed = false;
+
   if (config.outputs.openApiJson) {
     const jsonPath = path.join(rootPath, config.outputs.openApiJson);
-    fs.mkdirSync(path.dirname(jsonPath), { recursive: true });
     const specContent = `${JSON.stringify(deduplicatedSpec, null, 2)}\n`;
-    fs.writeFileSync(jsonPath, specContent);
+
+    if (options.validate) {
+      const existing = fs.existsSync(jsonPath)
+        ? fs.readFileSync(jsonPath, "utf-8")
+        : null;
+      if (existing !== specContent) {
+        logger.error(
+          `Validation failed: ${config.outputs.openApiJson} is out of date. Please run 'generate' to update it.`,
+        );
+        validationFailed = true;
+      }
+    } else {
+      fs.mkdirSync(path.dirname(jsonPath), { recursive: true });
+      fs.writeFileSync(jsonPath, specContent);
+    }
     jsonSize = Buffer.byteLength(specContent, "utf-8");
   }
 
   let yamlSize: number | undefined;
   if (config.outputs.openApiYaml) {
     const yamlPath = path.join(rootPath, config.outputs.openApiYaml);
-    fs.mkdirSync(path.dirname(yamlPath), { recursive: true });
     const yamlContent = yaml.stringify(deduplicatedSpec);
-    fs.writeFileSync(yamlPath, yamlContent);
+
+    if (options.validate) {
+      const existing = fs.existsSync(yamlPath)
+        ? fs.readFileSync(yamlPath, "utf-8")
+        : null;
+      if (existing !== yamlContent) {
+        logger.error(
+          `Validation failed: ${config.outputs.openApiYaml} is out of date. Please run 'generate' to update it.`,
+        );
+        validationFailed = true;
+      }
+    } else {
+      fs.mkdirSync(path.dirname(yamlPath), { recursive: true });
+      fs.writeFileSync(yamlPath, yamlContent);
+    }
     yamlSize = Buffer.byteLength(yamlContent, "utf-8");
   }
 
@@ -349,13 +379,23 @@ export async function runGenerate(
     cache.flush();
   }
 
+  if (options.validate && validationFailed) {
+    throw new Error("Validation failed: Output file(s) are out of date.");
+  }
+
   logger.summary();
 
-  if (config.outputs.openApiJson) {
-    logger.output(config.outputs.openApiJson, jsonSize);
-  }
-  if (config.outputs.openApiYaml) {
-    logger.output(config.outputs.openApiYaml, yamlSize);
+  if (!options.validate) {
+    if (config.outputs.openApiJson) {
+      logger.output(config.outputs.openApiJson, jsonSize);
+    }
+    if (config.outputs.openApiYaml) {
+      logger.output(config.outputs.openApiYaml, yamlSize);
+    }
+  } else {
+    logger.success(
+      "Validation passed: OpenAPI specifications match the codebase.",
+    );
   }
 
   logger.done(Date.now() - startTime);
