@@ -15,24 +15,24 @@
 
 ## Features
 
-| Feature                               | Description                                                                                                                                                                                                                               |
-| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🔀 **Nested Routing**                 | Fully supports complex apps composed with `.route()` and `.basePath()`. Point to your single root `AppType` and every sub-route is auto-discovered.                                                                                       |
-| ⚡ **Incremental Caching**            | Automatically caches route definitions and validator schemas between builds. Unchanged endpoints and schemas are served from cache without regenerating.                                                                                  |
-| 👁️ **Watch Mode**                     | Run `--watch` (or `-w`) to automatically rebuild docs on every file save. Uses a persistent ts-morph project and debounced AST hot-reloading for near-instant incremental updates.                                                        |
-| 🔁 **Schema Deduplication**           | Repeated inline schemas are automatically extracted into `components/schemas` and replaced with `$ref` pointers. Named schemas (via `x-schema-name`) are always promoted; anonymous schemas are promoted when they appear more than once. |
-| 📝 **JSDoc Extraction**               | Write `@summary`, `@description`, `@tag`, and `@ignore` in comments above your routes. The engine automatically maps them to the correct nested path in the spec, even across multiple mount prefixes.                                    |
-| ✅ **Multi-Library Schema Inference** | Extracts full validation schemas for request bodies and responses from **Zod (v3 & v4), Valibot, and TypeBox**. Automatically detects the library and uses runtime resolution for highest accuracy. Supports `oneOf` response unions.     |
-| 🗂️ **Path Parameters**                | Automatically generates `in: path` parameters from Hono path patterns like `/:id`.                                                                                                                                                        |
-| 🔍 **Input Parameters**               | Extracts `query`, `header`, and `cookie` parameters with correct `required` flags from your validators.                                                                                                                                   |
-| 📦 **Request Body**                   | Generates `requestBody` with `application/json` and `multipart/form-data` content types automatically.                                                                                                                                    |
-| 🔢 **HTTP Status Codes**              | Resolves exact HTTP status codes (e.g. `201`, `404`) from your route return types, not just generic `default`. Supports all methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `OPTIONS`, `HEAD`, `ALL`.                                   |
-| 🏷️ **Tag Grouping**                   | Routes are automatically grouped by tags from JSDoc comments for clean, navigable documentation.                                                                                                                                          |
-| 🧹 **Auto-Clean**                     | Automatically omits completely excluded or empty routes from the final spec.                                                                                                                                                              |
-| 🌐 **Cross-Platform**                 | Works on Windows, macOS, and Linux. Uses `jiti` for config loading with full `pathToFileURL` support.                                                                                                                                     |
-| 🚀 **Zero Runtime Overhead**          | All analysis is done at build time. Nothing is injected into your production bundle.                                                                                                                                                      |
-| ⚙️ **TypeScript & JS Configs**        | Config files can be `.ts` or `.js` with full `defineConfig` type inference.                                                                                                                                                               |
-| 🔗 **Monorepo Ready**                 | Works seamlessly in `pnpm`/`npm`/`yarn` workspaces and monorepo setups.                                                                                                                                                                   |
+| Feature                               | Description                                                                                                                                                                                                                                    |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🔀 **Nested Routing**                 | Fully supports complex apps composed with `.route()` and `.basePath()`. Point to your single root `AppType` and every sub-route is auto-discovered.                                                                                            |
+| ⚡ **Incremental Caching**            | Automatically caches route definitions and validator schemas between builds. Unchanged endpoints and schemas are served from cache without regenerating.                                                                                       |
+| 👁️ **Watch Mode**                     | Run `--watch` (or `-w`) to automatically rebuild docs on every file save. Uses a persistent ts-morph project and debounced AST hot-reloading for near-instant incremental updates.                                                             |
+| 🔁 **Schema Deduplication**           | Repeated inline schemas are automatically extracted into `components/schemas` and replaced with `$ref` pointers. Named schemas (via `x-schema-name`) are always promoted; anonymous schemas are promoted when they appear more than once.      |
+| 📝 **JSDoc Extraction**               | Write `@summary`, `@description`, `@tag`, and `@ignore` in comments above your routes. The engine automatically maps them to the correct nested path in the spec, even across multiple mount prefixes.                                         |
+| ✅ **Multi-Library Schema Inference** | Extracts full validation schemas for request bodies and responses from **Zod (v3 & v4), Valibot, Arktype, and TypeBox**. Automatically detects the library and uses runtime resolution for highest accuracy. Supports `oneOf` response unions. |
+| 🗂️ **Path Parameters**                | Automatically generates `in: path` parameters from Hono path patterns like `/:id`.                                                                                                                                                             |
+| 🔍 **Input Parameters**               | Extracts `query`, `header`, and `cookie` parameters with correct `required` flags from your validators.                                                                                                                                        |
+| 📦 **Request Body**                   | Generates `requestBody` with `application/json` and `multipart/form-data` content types automatically.                                                                                                                                         |
+| 🔢 **HTTP Status Codes**              | Resolves exact HTTP status codes (e.g. `201`, `404`) from your route return types, not just generic `default`. Supports all methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `OPTIONS`, `HEAD`, `ALL`.                                        |
+| 🏷️ **Tag Grouping**                   | Routes are automatically grouped by tags from JSDoc comments for clean, navigable documentation.                                                                                                                                               |
+| 🧹 **Auto-Clean**                     | Automatically omits completely excluded or empty routes from the final spec.                                                                                                                                                                   |
+| 🌐 **Cross-Platform**                 | Works on Windows, macOS, and Linux. Uses `jiti` for config loading with full `pathToFileURL` support.                                                                                                                                          |
+| 🚀 **Zero Runtime Overhead**          | All analysis is done at build time. Nothing is injected into your production bundle.                                                                                                                                                           |
+| ⚙️ **TypeScript & JS Configs**        | Config files can be `.ts` or `.js` with full `defineConfig` type inference.                                                                                                                                                                    |
+| 🔗 **Monorepo Ready**                 | Works seamlessly in `pnpm`/`npm`/`yarn` workspaces and monorepo setups.                                                                                                                                                                        |
 
 ---
 
@@ -169,6 +169,9 @@ Supported JSDoc tags:
 | `@summary`        | Short one-line title shown in the docs UI                                      |
 | `@description`    | Longer markdown-friendly description for the endpoint                          |
 | `@tag`            | Groups the endpoint under a named tag in the sidebar                           |
+| `@deprecated`     | Marks the endpoint as deprecated in the generated spec                         |
+| `@response`       | Custom response description: `@response <status> <desc>`                       |
+| `@example`        | Adds a JSON example: `@example {"foo": "bar"}`                                 |
 | `@responseHeader` | Documents a response header: `@responseHeader <status> <name> [<type>] <desc>` |
 | `@ignore`         | (or `@exclude`, `@hide`) Completely omits the endpoint from the generated docs |
 
@@ -300,7 +303,6 @@ npm run docs -- --no-cache
 
 ---
 
-
 ## Watch Mode
 
 `hono-docs` includes a built-in file watcher for development workflows. Pass `--watch` (or `-w`) to the `generate` command and docs will automatically rebuild every time you save a source file.
@@ -339,7 +341,6 @@ Watch mode rebuilds your docs instantly on every file save — no manual re-runs
 Deduplication runs automatically after generation — no configuration is required.
 
 ---
-
 
 ## Serving the OpenAPI Docs
 
@@ -394,12 +395,14 @@ All options live in your `defineConfig({ ... })` call:
 | Field                       | Type                                                                              | Required | Description                                                                                                                         |
 | --------------------------- | --------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | `tsConfigPath`              | `string`                                                                          | ✅       | Path to your project's `tsconfig.json`                                                                                              |
+| `openApiVersion`            | `"3.0" \| "3.1"`                                                                  | —        | The OpenAPI version adapter to use (defaults to "3.0")                                                                              |
 | `openApi`                   | `OpenAPIConfig`                                                                   | ✅       | Static OpenAPI document fields                                                                                                      |
 | └ `openapi`                 | `string`                                                                          | ✅       | OpenAPI version string (e.g. `"3.0.0"`)                                                                                             |
 | └ `info`                    | `{ title, version, description? }`                                                | ✅       | API title, version, and optional description                                                                                        |
 | └ `servers`                 | `Array<{ url, description? }>`                                                    | ✅       | Server base URL(s)                                                                                                                  |
-| `outputs`                   | `{ openApiJson: string }`                                                         | ✅       | Output file paths                                                                                                                   |
-| └ `openApiJson`             | `string`                                                                          | ✅       | Where to write the merged `openapi.json`                                                                                            |
+| `outputs`                   | `{ openApiJson?: string, openApiYaml?: string }`                                  | ✅       | Output file paths (at least one is required)                                                                                        |
+| └ `openApiJson`             | `string`                                                                          | —        | Where to write the merged `openapi.json`                                                                                            |
+| └ `openApiYaml`             | `string`                                                                          | —        | Where to write the merged `openapi.yaml`                                                                                            |
 | `apis`                      | `ApiGroup[]`                                                                      | ✅       | Route groups to document                                                                                                            |
 | └ `name`                    | `string`                                                                          | ✅       | Human-readable name for this group                                                                                                  |
 | └ `apiPrefix`               | `string`                                                                          | ✅       | Extra URL prefix prepended at merge time. Use `""` when `AppType` already includes the full path (typical with `.basePath()`).      |
@@ -417,7 +420,11 @@ All options live in your `defineConfig({ ... })` call:
 ## CLI Usage
 
 ```text
-Usage: hono-docs generate --config <path> [options]
+Usage: hono-docs <command> [options]
+
+Commands:
+  hono-docs generate  Generate OpenAPI JSON/YAML
+  hono-docs validate  Validate that the generated OpenAPI spec matches the source code without writing to disk
 
 Options:
   -c, --config     Path to your hono-docs config file (.ts or .js)   [required]
