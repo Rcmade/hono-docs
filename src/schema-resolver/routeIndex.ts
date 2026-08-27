@@ -4,6 +4,7 @@
 
 import { SyntaxKind, type Project, type CallExpression } from "ts-morph";
 import { HONO_METHODS } from "../utils/constants";
+import { calculateRelevanceScore } from "./routeScoring";
 
 export interface IndexedRoute {
   call: CallExpression;
@@ -29,7 +30,8 @@ class RouteASTIndex {
   }
 
   private buildIndex(project: Project) {
-    const quickCheckRegex = /\.(get|post|put|delete|patch|all|options|head)\s*\(/i;
+    const quickCheckRegex =
+      /\.(get|post|put|delete|patch|all|options|head)\s*\(/i;
 
     for (const sourceFile of project.getSourceFiles()) {
       const text = sourceFile.getFullText();
@@ -92,9 +94,14 @@ class RouteASTIndex {
       return allExact[0];
     }
 
-    // 2. Suffix matching with intelligent ranking (longest suffix + file path relevance scoring)
+    // 2. Suffix matching with ranking (longest suffix + file path relevance scoring)
     const candidates: IndexedRoute[] = [];
-    let rootFallback: IndexedRoute | null = null;
+    // Collect ALL "/" root-fallback candidates so we can rank them by path-segment
+    // scoring — identical to how non-"/" candidates are ranked below. Previously
+    // only the first "/" handler found was stored, which caused cross-route schema
+    // contamination when multiple routes shared rawPath="/" (e.g. signinRoutes vs
+    // clientsRoutes both register `.post("/")`).
+    const rootFallbacks: IndexedRoute[] = [];
 
     for (const r of this.routes) {
       if (r.method !== method && r.method !== "all") continue;
@@ -106,30 +113,52 @@ class RouteASTIndex {
         !targetPath.includes(":") &&
         !targetPath.includes("{")
       ) {
-        if (!rootFallback) {
-          rootFallback = r;
-        }
+        rootFallbacks.push(r);
       }
     }
+
+    const targetSegments = targetPath.toLowerCase().split("/").filter(Boolean);
 
     if (candidates.length === 1) {
       return candidates[0];
     } else if (candidates.length > 1) {
-      const targetSegments = targetPath.toLowerCase().split("/").filter(Boolean);
       candidates.sort((a, b) => {
         // Primary sort: prefer longer matching route suffix
         if (b.rawPath.length !== a.rawPath.length) {
           return b.rawPath.length - a.rawPath.length;
         }
-        // Secondary sort: score by overlap between target path segments and source file path
-        const scoreA = targetSegments.reduce((acc, seg) => acc + (a.sourceFilePath.toLowerCase().includes(seg) ? 1 : 0), 0);
-        const scoreB = targetSegments.reduce((acc, seg) => acc + (b.sourceFilePath.toLowerCase().includes(seg) ? 1 : 0), 0);
+        // Secondary sort: robust scoring
+        const scoreA = calculateRelevanceScore(
+          targetSegments,
+          a.sourceFilePath,
+        );
+        const scoreB = calculateRelevanceScore(
+          targetSegments,
+          b.sourceFilePath,
+        );
         return scoreB - scoreA;
       });
       return candidates[0];
     }
 
-    return rootFallback;
+    if (rootFallbacks.length === 1) {
+      return rootFallbacks[0];
+    } else if (rootFallbacks.length > 1) {
+      rootFallbacks.sort((a, b) => {
+        const scoreA = calculateRelevanceScore(
+          targetSegments,
+          a.sourceFilePath,
+        );
+        const scoreB = calculateRelevanceScore(
+          targetSegments,
+          b.sourceFilePath,
+        );
+        return scoreB - scoreA;
+      });
+      return rootFallbacks[0];
+    }
+
+    return null;
   }
 }
 
