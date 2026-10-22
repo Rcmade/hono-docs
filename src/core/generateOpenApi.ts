@@ -18,11 +18,21 @@ import { extractJSDocs, type ParsedJSDoc } from "../utils/jsdoc";
 import { genParameters } from "../utils/parameters";
 import { genRequestBody } from "../utils/requestBody";
 import { buildSchema } from "../utils/buildSchema";
-import { groupBy, unwrapUnion, generateDefaultSummary } from "../utils/format";
+import {
+  groupBy,
+  unwrapUnion,
+  generateDefaultSummary,
+  addTagToSpec,
+  toOpenApiPath,
+  extractPathParamPatterns,
+  stripAllQuotes,
+  type OpenApiTagObject,
+} from "../utils/format";
 import { locateRouteEntry } from "../schema-resolver/routeIndex";
 import { extractASTHeaders } from "../utils/responseHeaders";
 import { logger } from "../utils/logger";
 import type { CacheManager } from "../cache/index";
+import { HONO_METHODS, HONO_METHOD_PREFIX } from "../utils/constants";
 
 import type { OpenAPIV3 } from "openapi-types";
 import { getAdapter } from "../openapi/adapters/index";
@@ -74,41 +84,44 @@ GenerateParams & {
   const adapter = getAdapter(config.openApiVersion);
 
   // Memoized dependency tracer to ensure instantaneous per-route caching without repeated AST traversals
-  const fileDependenciesCache = new Map<
-    string,
-    { hash: string; files: string[] }
-  >();
+  const fileDependenciesCache = new Map<string, { files: string[] }>();
   const getRouteDepInfo = (
     filePath: string,
+    extraFiles?: string[],
   ): { hash: string; files: string[] } => {
     if (!cacheManager) return { hash: "", files: [] };
-    const cached = fileDependenciesCache.get(filePath);
-    if (cached) return cached;
-
-    const visited = new Set<string>();
-    const queue = [filePath];
-    while (queue.length > 0) {
-      const fp = queue.pop()!;
-      const realFp = fs.existsSync(fp) ? fs.realpathSync(fp) : fp;
-      if (visited.has(realFp)) continue;
-      visited.add(realFp);
-      const currSf = project.getSourceFile(realFp) || project.getSourceFile(fp);
-      if (!currSf) continue;
-      for (const ref of currSf.getReferencedSourceFiles()) {
-        const refPath = ref.getFilePath();
-        const realRef = fs.existsSync(refPath)
-          ? fs.realpathSync(refPath)
-          : refPath;
-        if (!realRef.includes("node_modules")) {
-          queue.push(realRef);
+    let base = fileDependenciesCache.get(filePath);
+    if (!base) {
+      const visited = new Set<string>();
+      const queue = [filePath];
+      while (queue.length > 0) {
+        const fp = queue.pop()!;
+        const realFp = fs.existsSync(fp) ? fs.realpathSync(fp) : fp;
+        if (visited.has(realFp)) continue;
+        visited.add(realFp);
+        const currSf =
+          project.getSourceFile(realFp) || project.getSourceFile(fp);
+        if (!currSf) continue;
+        for (const ref of currSf.getReferencedSourceFiles()) {
+          const refPath = ref.getFilePath();
+          const realRef = fs.existsSync(refPath)
+            ? fs.realpathSync(refPath)
+            : refPath;
+          if (!realRef.includes("node_modules")) {
+            queue.push(realRef);
+          }
         }
       }
+      base = { files: Array.from(visited) };
+      fileDependenciesCache.set(filePath, base);
     }
-    const files = Array.from(visited);
-    const hash = cacheManager.hashGroup(files);
-    const result = { hash, files };
-    fileDependenciesCache.set(filePath, result);
-    return result;
+
+    const allFiles =
+      extraFiles && extraFiles.length > 0
+        ? Array.from(new Set([...base.files, ...extraFiles]))
+        : base.files;
+    const hash = cacheManager.hashGroup(allFiles);
+    return { hash, files: allFiles };
   };
 
   // Extract all JSDocs globally from all project files
@@ -124,17 +137,9 @@ GenerateParams & {
 
   for (const t of types) {
     for (const routeProp of t.getProperties()) {
-      const raw = routeProp.getName().replace(/"/g, "").replace(/'/g, "");
-      const pathPatterns: Record<string, string> = {};
-      const regexExtractor = /:([a-zA-Z0-9_]+)(?:{([^{}]*(?:{[^{}]*}[^{}]*)*)})?/g;
-      let match;
-      while ((match = regexExtractor.exec(raw)) !== null) {
-        if (match[2]) {
-          pathPatterns[match[1]] = match[2];
-        }
-      }
-
-      const route = raw.replace(/:([a-zA-Z0-9_]+)(?:{([^{}]*(?:{[^{}]*}[^{}]*)*)})?/g, "{$1}");
+      const raw = stripAllQuotes(routeProp.getName());
+      const pathPatterns = extractPathParamPatterns(raw);
+      const route = toOpenApiPath(raw);
       if (!paths[route]) paths[route] = {};
 
       // Get the type of the route methods object (e.g. { $get: ... })
@@ -146,8 +151,8 @@ GenerateParams & {
 
       for (const methodSymbol of routeType.getProperties()) {
         const name = methodSymbol.getName(); // e.g. "$get"
-        if (!name.startsWith("$")) continue;
-        const http = name.slice(1).toLowerCase(); // "get", "post", etc.
+        if (!name.startsWith(HONO_METHOD_PREFIX)) continue;
+        const http = name.slice(HONO_METHOD_PREFIX.length).toLowerCase(); // "get", "post", etc.
         const routeEntry = locateRouteEntry(http, raw, project);
 
         // Get the type of the method (e.g. { input: ..., output: ... })
@@ -159,13 +164,36 @@ GenerateParams & {
 
         const variants = unwrapUnion(methodType);
 
+        const exactKey = `${http} ${route}`;
+        let jsDoc: ParsedJSDoc | undefined;
+
+        if (jsDocMap.has(exactKey)) {
+          jsDoc = jsDocMap.get(exactKey)![0];
+        } else {
+          for (const [k, docs] of jsDocMap.entries()) {
+            const [mapHttp, ...mapPathParts] = k.split(" ");
+            const mapPath = mapPathParts.join(" ");
+            if (mapHttp === http && route.endsWith(mapPath)) {
+              jsDoc = docs[0];
+              break;
+            }
+          }
+        }
+
+        if (jsDoc?.exclude) {
+          continue;
+        }
+
         let depHash = "";
         let depFiles: string[] = [];
         const routeKey = `${http.toLowerCase()} ${raw}`;
 
         if (cacheManager) {
           if (routeEntry?.sourceFilePath) {
-            const depInfo = getRouteDepInfo(routeEntry.sourceFilePath);
+            const depInfo = getRouteDepInfo(
+              routeEntry.sourceFilePath,
+              jsDoc?.sourceFilePaths,
+            );
             depHash = depInfo.hash;
             depFiles = depInfo.files;
             if (depHash) {
@@ -188,26 +216,6 @@ GenerateParams & {
               }
             }
           }
-        }
-
-        const exactKey = `${http} ${route}`;
-        let jsDoc: ParsedJSDoc | undefined;
-
-        if (jsDocMap.has(exactKey)) {
-          jsDoc = jsDocMap.get(exactKey)![0];
-        } else {
-          for (const [k, docs] of jsDocMap.entries()) {
-            const [mapHttp, ...mapPathParts] = k.split(" ");
-            const mapPath = mapPathParts.join(" ");
-            if (mapHttp === http && route.endsWith(mapPath)) {
-              jsDoc = docs[0];
-              break;
-            }
-          }
-        }
-
-        if (jsDoc?.exclude) {
-          continue;
         }
 
         const hasDoc = !!(
@@ -410,8 +418,32 @@ GenerateParams & {
     }
   }
 
+  const specTags: OpenApiTagObject[] = [];
+  for (const [name, description] of jsDocMap.tagMetadata.entries()) {
+    addTagToSpec(specTags, description ? { name, description } : { name });
+  }
+  for (const pathItem of Object.values(paths)) {
+    if (!pathItem) continue;
+    for (const [key, opVal] of Object.entries(pathItem)) {
+      if (
+        HONO_METHODS.has(key) &&
+        typeof opVal === "object" &&
+        opVal !== null &&
+        "tags" in opVal
+      ) {
+        const op = opVal as OpenAPIV3.OperationObject;
+        if (Array.isArray(op.tags)) {
+          for (const t of op.tags) {
+            addTagToSpec(specTags, { name: t });
+          }
+        }
+      }
+    }
+  }
+
   const spec = {
     ...config.openApi,
+    tags: specTags,
     paths,
   };
 

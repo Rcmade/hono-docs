@@ -90,6 +90,7 @@ export async function convertZodSchema(
       const res = converter(zodSchema, {
         target: fallbackTarget,
         errorMessages: true,
+        $refStrategy: "none",
       });
       if (res && typeof res === "object") {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

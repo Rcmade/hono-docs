@@ -1,13 +1,22 @@
 import fs from "node:fs";
 import path, { resolve } from "node:path";
 import yaml from "yaml";
-import { PROJECT_CACHE_DIR_NAME } from "../utils/constants";
+import {
+  OPENAPI_OPERATION_METHODS,
+  PROJECT_CACHE_DIR_NAME,
+} from "../utils/constants";
 import { Project } from "ts-morph";
 import { loadConfig } from "../config/loadConfig";
 import { generateTypes } from "./generateTypes";
 import { generateOpenApi } from "./generateOpenApi";
 import { Api } from "../types";
-import { cleanDefaultResponse, sanitizeApiPrefix } from "../utils/format";
+import {
+  cleanDefaultResponse,
+  sanitizeApiPrefix,
+  addTagToSpec,
+  toOpenApiPath,
+  type OpenApiTagObject,
+} from "../utils/format";
 import { getLibDir } from "../utils/libDir";
 import { logger } from "../utils/logger";
 import { CacheManager } from "../cache/index";
@@ -237,7 +246,7 @@ export async function runGenerate(
   const merged = {
     security: [],
     ...config.openApi,
-    tags: [] as { name: string }[],
+    tags: [] as OpenApiTagObject[],
     components: { schemas: {} },
     paths: {} as Record<
       string,
@@ -257,17 +266,22 @@ export async function runGenerate(
     }
 
     const json = JSON.parse(fs.readFileSync(openApiFile, "utf-8"));
-    merged.tags.push({ name: apiGroup.name });
+    addTagToSpec(merged.tags, { name: apiGroup.name });
+
+    if (Array.isArray(json.tags)) {
+      for (const t of json.tags as OpenApiTagObject[]) {
+        addTagToSpec(merged.tags, t);
+      }
+    }
 
     const customApiMap = new Map<string, Api>();
 
     if (apiGroup?.api) {
       for (const customApi of apiGroup.api) {
-        const fullPath =
-          path.posix
-            .join(normalizedPrefix, customApi.api)
-            .replace(/\/+$/, "")
-            .replace(/:([a-zA-Z0-9_]+)(?:{([^{}]*(?:{[^{}]*}[^{}]*)*)})?/g, "{$1}") || "/";
+        const joined = path.posix
+          .join(normalizedPrefix, customApi.api)
+          .replace(/\/+$/, "");
+        const fullPath = toOpenApiPath(joined) || "/";
         customApiMap.set(
           `${customApi.method.toLowerCase()} ${fullPath}`,
           customApi,
@@ -307,6 +321,12 @@ export async function runGenerate(
           }
         }
 
+        if (operation.tags) {
+          for (const t of operation.tags) {
+            addTagToSpec(merged.tags, { name: t });
+          }
+        }
+
         cleanDefaultResponse(operation);
         (
           merged.paths[prefixedPath] as Record<
@@ -328,12 +348,37 @@ export async function runGenerate(
     finalSpec as unknown as import("openapi-types").OpenAPIV3.Document,
   );
 
-  
   if (config.validateOutput !== false) {
     try {
       const SwaggerParser = await import("@apidevtools/swagger-parser");
-      const clonedSpec = JSON.parse(JSON.stringify(deduplicatedSpec));
-      
+      const clonedSpec: import("openapi-types").OpenAPIV3.Document = JSON.parse(
+        JSON.stringify(deduplicatedSpec),
+      );
+
+      // Hono allows app.all() which generates a method key of "all".
+      // OpenAPI 3.x specifications only recognize standard HTTP operations (get, post, etc.).
+      // In the cloned validation document, expand any "all" operations to standard methods
+      // so SwaggerParser validates the underlying Operation schemas without schema errors.
+      if (clonedSpec.paths) {
+        for (const pathItem of Object.values(clonedSpec.paths)) {
+          if (pathItem && "all" in pathItem) {
+            const rawItem = pathItem as Record<
+              string,
+              import("openapi-types").OpenAPIV3.OperationObject | undefined
+            >;
+            const allOp = rawItem.all;
+            delete rawItem.all;
+            if (allOp) {
+              for (const method of OPENAPI_OPERATION_METHODS) {
+                if (!rawItem[method]) {
+                  rawItem[method] = allOp;
+                }
+              }
+            }
+          }
+        }
+      }
+
       await SwaggerParser.default.validate(clonedSpec);
     } catch (err) {
       logger.warn(

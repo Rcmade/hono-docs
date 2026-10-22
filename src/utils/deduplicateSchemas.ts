@@ -97,6 +97,72 @@ function toPascalCase(str: string): string {
 }
 
 /**
+ * Normalizes JSON schema constructs (such as 2020-12 prefixItems, draft-07 additionalItems,
+ * boolean items, contentEncoding, and numeric exclusiveMinimum) into compliant OpenAPI 3.0 schema objects.
+ */
+function normalizeOpenApi30Schema(obj: Record<string, unknown>): void {
+  // 1. Normalize tuple array schemas where items is an Array
+  if (obj.type === "array" && Array.isArray(obj.items)) {
+    const tupleItems = obj.items as Record<string, unknown>[];
+    if (obj.minItems === undefined) {
+      obj.minItems = tupleItems.length;
+    }
+    obj.items = { oneOf: tupleItems };
+  }
+
+  // 2. Normalize JSON Schema 2020-12 / ArkType prefixItems tuple to OpenAPI 3.0
+  if (obj.type === "array" && Array.isArray(obj.prefixItems)) {
+    const prefixItems = obj.prefixItems as Record<string, unknown>[];
+    if (obj.minItems === undefined) {
+      obj.minItems = prefixItems.length;
+    }
+    obj.items = { oneOf: prefixItems };
+    delete obj.prefixItems;
+  }
+
+  // 3. Remove non-OpenAPI 3.0 additionalItems / boolean items
+  if ("additionalItems" in obj) {
+    delete obj.additionalItems;
+  }
+  if (obj.items === false || obj.items === true) {
+    delete obj.items;
+  }
+
+  // 4. Remove contentEncoding (invalid in OpenAPI 3.0 SchemaObject)
+  if ("contentEncoding" in obj) {
+    delete obj.contentEncoding;
+  }
+
+  // 5. Convert numeric exclusiveMinimum/exclusiveMaximum to OpenAPI 3.0 boolean flags
+  if (typeof obj.exclusiveMinimum === "number") {
+    obj.minimum = obj.exclusiveMinimum;
+    obj.exclusiveMinimum = true;
+  }
+  if (typeof obj.exclusiveMaximum === "number") {
+    obj.maximum = obj.exclusiveMaximum;
+    obj.exclusiveMaximum = true;
+  }
+}
+
+/**
+ * Rewrites recursive self-referential "$ref": "#" pointers to the assigned component URI.
+ */
+function rewriteSelfRef(node: unknown, targetRef: string): void {
+  if (!node || typeof node !== "object") return;
+  if (Array.isArray(node)) {
+    for (const item of node) rewriteSelfRef(item, targetRef);
+    return;
+  }
+  const itemObj = node as Record<string, unknown>;
+  if (itemObj.$ref === "#") {
+    itemObj.$ref = targetRef;
+  }
+  for (const v of Object.values(itemObj)) {
+    rewriteSelfRef(v, targetRef);
+  }
+}
+
+/**
  * Main entry point for post-processing component schema deduplication.
  * Operates safely across any OpenAPI specification or validator library.
  */
@@ -183,6 +249,8 @@ export function deduplicateComponents(
       }
       return;
     }
+
+    normalizeOpenApi30Schema(obj);
 
     // Process children first (bottom-up traversal)
     if (obj.properties && typeof obj.properties === "object") {
@@ -273,7 +341,7 @@ export function deduplicateComponents(
 
   candidates.sort((a, b) => b.count - a.count || a.hash.localeCompare(b.hash));
 
-    for (const cand of candidates) {
+  for (const cand of candidates) {
     let baseName = "SharedSchema";
     if (cand.explicitNames.size > 0) {
       baseName = Array.from(cand.explicitNames)[0];
@@ -301,16 +369,23 @@ export function deduplicateComponents(
     const cleanSchema = { ...cand.schema };
     delete cleanSchema[X_SCHEMA_NAME];
 
-    existingSchemas[finalName] = cleanSchema as OpenAPIV3.SchemaObject;
     cand.assignedRef = `${refPrefix}${finalName}`;
+    rewriteSelfRef(cleanSchema, cand.assignedRef);
+    rewriteSelfRef(cand.schema, cand.assignedRef);
+
+    existingSchemas[finalName] = cleanSchema as OpenAPIV3.SchemaObject;
     hashToRefMap.set(cand.hash, cand.assignedRef);
   }
 
   // ── Phase 4: Tree Rewriting & Cleanup ──────────────────────────────────────
-  function rewriteTree(node: unknown, inComponents = false): unknown {
+  function rewriteTree(
+    node: unknown,
+    inComponents = false,
+    currentRef?: string,
+  ): unknown {
     if (!node || typeof node !== "object") return node;
     if (Array.isArray(node)) {
-      return node.map((item) => rewriteTree(item, inComponents));
+      return node.map((item) => rewriteTree(item, inComponents, currentRef));
     }
 
     const obj = node as Record<string, unknown>;
@@ -319,6 +394,12 @@ export function deduplicateComponents(
     if (X_SCHEMA_NAME in obj) {
       delete obj[X_SCHEMA_NAME];
     }
+
+    if (obj.$ref === "#" && currentRef) {
+      obj.$ref = currentRef;
+    }
+
+    normalizeOpenApi30Schema(obj);
 
     // Check if this object itself matches an extracted component
     if (!obj.$ref && isComponentCandidate(obj)) {
@@ -333,7 +414,7 @@ export function deduplicateComponents(
         // We replace with $ref, but first check if child properties need rewriting for nested $refs
         const rewritten = { ...obj };
         for (const [k, v] of Object.entries(rewritten)) {
-          rewritten[k] = rewriteTree(v, inComponents);
+          rewritten[k] = rewriteTree(v, inComponents, currentRef);
         }
         // If this exact node matches the top-level assigned Ref, replace with $ref
         const targetName = assignedRef.split("/").pop()!;
@@ -345,7 +426,7 @@ export function deduplicateComponents(
 
     // Recursively rewrite child nodes
     for (const [k, v] of Object.entries(obj)) {
-      obj[k] = rewriteTree(v, inComponents);
+      obj[k] = rewriteTree(v, inComponents, currentRef);
     }
     return obj;
   }
@@ -358,6 +439,7 @@ export function deduplicateComponents(
     existingSchemas[schemaName] = rewriteTree(
       schemaObj,
       true,
+      `${refPrefix}${schemaName}`,
     ) as OpenAPIV3.SchemaObject;
   }
 

@@ -14,6 +14,8 @@ export default defineConfig([
       "scratch/",
       "temp/",
       "**/temp/",
+      ".hono-docs/",
+      "tests/",
     ],
   },
   {

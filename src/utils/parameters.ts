@@ -48,17 +48,16 @@ export async function genParameters(
     adapter = v30Adapter,
   } = options;
   const inputProp = type.getProperty("input");
-  if (!inputProp) return [];
-
-  const input = typeChecker.getTypeOfSymbolAtLocation(inputProp, contextNode);
-  if (!input) return [];
+  const input = inputProp
+    ? typeChecker.getTypeOfSymbolAtLocation(inputProp, contextNode)
+    : null;
 
   const sources = VALIDATOR_TARGETS.filter((t) => t !== "json" && t !== "form");
   const params: OpenAPIV3.ParameterObject[] = [];
 
   for (const src of sources) {
-    const p = input.getProperty(src);
-    if (!p) continue;
+    const p = input ? input.getProperty(src) : undefined;
+    if (!p && !(routePath && method && project && rootPath)) continue;
 
     // Attempt dynamic resolution for parameter schema
     let dynamicSchema: OpenAPIV3.SchemaObject | null = null;
@@ -128,7 +127,7 @@ export async function genParameters(
           ...(isArray ? { style: "form", explode: true } : {}),
         });
       }
-    } else {
+    } else if (p) {
       // Fallback: Use AST type inference
       const srcType = typeChecker.getTypeOfSymbolAtLocation(p, contextNode);
       const props = srcType.getProperties();

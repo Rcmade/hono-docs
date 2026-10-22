@@ -1,68 +1,131 @@
 # @rcmade/hono-docs
 
-> Automatically generate production-grade OpenAPI 3.0 specifications directly from your Hono application's TypeScript type definitions — no decorators, no manual schemas.
+<p align="center">
+  <strong>Generate production-grade OpenAPI (Swagger) specifications directly from your existing Hono TypeScript routes.</strong><br>
+  No route rewrites. No custom router decorators. Zero runtime overhead.
+</p>
 
-[![npm version](https://img.shields.io/npm/v/@rcmade/hono-docs)](https://www.npmjs.com/package/@rcmade/hono-docs)
-[![license](https://img.shields.io/github/license/rcmade/hono-docs)](https://github.com/Rcmade/hono-docs/blob/main/LICENSE)
-
----
-
-## How It Works
-
-`hono-docs` uses **ts-morph** to statically analyze your Hono `AppType` at build time. It traverses your TypeScript types — including deeply nested `.route()` compositions — extracts validation schemas (Zod, Valibot, TypeBox), path/query/header/cookie parameters, request bodies, and JSDoc comments, then emits a fully merged `openapi.json` file. Zero runtime overhead.
-
----
-
-## Features
-
-| Feature                               | Description                                                                                                                                                                                                                                    |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🔀 **Nested Routing**                 | Fully supports complex apps composed with `.route()` and `.basePath()`. Point to your single root `AppType` and every sub-route is auto-discovered.                                                                                            |
-| ⚡ **Incremental Caching**            | Automatically caches route definitions and validator schemas between builds. Unchanged endpoints and schemas are served from cache without regenerating.                                                                                       |
-| 👁️ **Watch Mode**                     | Run `--watch` (or `-w`) to automatically rebuild docs on every file save. Uses a persistent ts-morph project and debounced AST hot-reloading for near-instant incremental updates.                                                             |
-| 🔁 **Schema Deduplication**           | Repeated inline schemas are automatically extracted into `components/schemas` and replaced with `$ref` pointers. Named schemas (via `x-schema-name`) are always promoted; anonymous schemas are promoted when they appear more than once.      |
-| 📝 **JSDoc Extraction**               | Write `@summary`, `@description`, `@tag`, and `@ignore` in comments above your routes. The engine automatically maps them to the correct nested path in the spec, even across multiple mount prefixes.                                         |
-| ✅ **Multi-Library Schema Inference** | Extracts full validation schemas for request bodies and responses from **Zod (v3 & v4), Valibot, Arktype, and TypeBox**. Automatically detects the library and uses runtime resolution for highest accuracy. Supports `oneOf` response unions. |
-| 🗂️ **Path Parameters**                | Automatically generates `in: path` parameters from Hono path patterns like `/:id`.                                                                                                                                                             |
-| 🔍 **Input Parameters**               | Extracts `query`, `header`, and `cookie` parameters with correct `required` flags from your validators.                                                                                                                                        |
-| 📦 **Request Body**                   | Generates `requestBody` with `application/json` and `multipart/form-data` content types automatically.                                                                                                                                         |
-| 🔢 **HTTP Status Codes**              | Resolves exact HTTP status codes (e.g. `201`, `404`) from your route return types, not just generic `default`. Supports all methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `OPTIONS`, `HEAD`, `ALL`.                                        |
-| 🏷️ **Tag Grouping**                   | Routes are automatically grouped by tags from JSDoc comments for clean, navigable documentation.                                                                                                                                               |
-| 🧹 **Auto-Clean**                     | Automatically omits completely excluded or empty routes from the final spec.                                                                                                                                                                   |
-| 🌐 **Cross-Platform**                 | Works on Windows, macOS, and Linux. Uses `jiti` for config loading with full `pathToFileURL` support.                                                                                                                                          |
-| 🚀 **Zero Runtime Overhead**          | All analysis is done at build time. Nothing is injected into your production bundle.                                                                                                                                                           |
-| ⚙️ **TypeScript & JS Configs**        | Config files can be `.ts` or `.js` with full `defineConfig` type inference.                                                                                                                                                                    |
-| 🔗 **Monorepo Ready**                 | Works seamlessly in `pnpm`/`npm`/`yarn` workspaces and monorepo setups.                                                                                                                                                                        |
+<p align="center">
+  <a href="https://www.npmjs.com/package/@rcmade/hono-docs"><img src="https://img.shields.io/npm/v/@rcmade/hono-docs.svg?style=flat-square&color=blue" alt="npm version" /></a>
+  <a href="https://www.npmjs.com/package/@rcmade/hono-docs"><img src="https://img.shields.io/npm/dm/@rcmade/hono-docs.svg?style=flat-square&color=success" alt="npm downloads" /></a>
+  <a href="https://github.com/rcmade/hono-docs/blob/main/LICENSE"><img src="https://img.shields.io/github/license/rcmade/hono-docs?style=flat-square" alt="license" /></a>
+  <img src="https://img.shields.io/badge/TypeScript-Strict%20Types-blue?style=flat-square&logo=typescript" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/OpenAPI-3.0%20%7C%203.1-brightgreen?style=flat-square" alt="OpenAPI 3.0 & 3.1" />
+  <img src="https://img.shields.io/badge/Hono-v4%2B-orange?style=flat-square" alt="Hono v4+" />
+</p>
 
 ---
 
-## Table of Contents
+## Why hono-docs?
 
-- [How It Works](#how-it-works)
-- [Features](#features)
-- [Install](#install)
-- [Quick Start](#quick-start)
-  - [1. Create a Config File](#1-create-a-config-file)
-  - [2. Define Your Routes](#2-define-your-routes)
-  - [3. Add JSDoc Comments](#3-add-jsdoc-comments)
-  - [4. Add an npm Script](#4-add-an-npm-script)
-  - [5. Run the Generator](#5-run-the-generator)
-- [Nested Routing (Grouped AppType)](#nested-routing-grouped-apptype)
-- [Incremental Caching](#incremental-caching)
-- [Watch Mode](#watch-mode)
-- [Schema Deduplication](#schema-deduplication)
-- [Serving the OpenAPI Docs](#serving-the-openapi-docs)
-- [Configuration Reference](#configuration-reference)
-- [CLI Usage](#cli-usage)
-- [Programmatic Usage](#programmatic-usage)
-- [Examples](#examples)
-- [Development](#development)
-- [Contributing](#contributing)
-- [License](#license)
+Most OpenAPI solutions for Hono require rewriting routes with custom wrapper DSLs or running heavy schema parsers inside your production bundle. `hono-docs` statically inspects your Hono `AppType` at build time using `ts-morph` — generating accurate, production-grade OpenAPI specifications with zero route modifications and zero runtime footprint.
+
+```
+Existing Hono Routes  ──>  TypeScript AppType  ──>  [hono-docs build]  ──>  openapi.json & openapi.yaml
+(No code changes!)          (Standard typeof app)   (Zero runtime cost)     (Scalar / Swagger UI)
+```
+
+- **Zero route rewrites** — works directly with standard `.get()`, `.post()`, and `.route()` code.
+- **Zero runtime overhead** — static analysis runs entirely at build time; nothing is bundled into production.
+- **Multi-validator support** — automatic schema extraction for **Zod (v3 & v4), Valibot, TypeBox, and ArkType**.
+- **Deep nested routing** — traverses chained `.route()` and `.basePath()` mounts automatically.
+- **Fast developer workflow** — incremental caching and instant watch mode (`-w`) for rapid iteration.
 
 ---
 
-## Install
+## 🔍 See It in Action
+
+### 1. Your Existing Hono Route
+
+Write standard Hono handlers with your favorite validator and standard JSDoc comments:
+
+```ts
+// src/routes/users.ts
+import { Hono } from "hono";
+import { zValidator } from "@hono/zod-validator";
+import { z } from "zod";
+
+const CreateUserSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  role: z.enum(["admin", "user"]).default("user"),
+});
+
+export const userRoutes = new Hono()
+  /**
+   * @summary Create a new user
+   * @description Provisions a new user account and returns the generated profile.
+   * @tag Users
+   * @response 201 User created successfully
+   */
+  .post("/", zValidator("json", CreateUserSchema), async (c) => {
+    const data = c.req.valid("json");
+    return c.json({ id: "usr_123", ...data }, 201);
+  });
+```
+
+### 2. The Generated OpenAPI Specification
+
+Run `npx hono-docs generate` and get a clean, valid OpenAPI 3.0 / 3.1 document with deduplicated schemas:
+
+```yaml
+paths:
+  /api/users:
+    post:
+      summary: Create a new user
+      description: Provisions a new user account and returns the generated profile.
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserSchema"
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: { type: string }
+                  name: { type: string }
+                  email: { type: string, format: email }
+                  role: { type: string, enum: [admin, user] }
+components:
+  schemas:
+    CreateUserSchema:
+      type: object
+      required: [name, email]
+      properties:
+        name: { type: string, minLength: 2 }
+        email: { type: string, format: email }
+        role: { type: string, enum: [admin, user], default: user }
+```
+
+---
+
+## 🥊 Comparison with Alternatives
+
+| Feature                             |         `@rcmade/hono-docs`         |      `@hono/zod-openapi`      |        `hono-openapi`        |
+| :---------------------------------- | :---------------------------------: | :---------------------------: | :--------------------------: |
+| **Requires Route Rewrites?**        | ❌ **No (Uses native Hono routes)** |    ⚠️ Yes (`createRoute`)     | ⚠️ Yes (Middleware wrappers) |
+| **Zero Runtime Overhead**           |    ✅ **Yes (Pure build-time)**     |   ❌ No (Runtime footprint)   |  ❌ No (Runtime footprint)   |
+| **Zod v3 & v4 Support**             |             ✅ **Yes**              |          ⚠️ Zod only          |         ⚠️ Zod only          |
+| **Valibot, TypeBox & ArkType**      |        ✅ **All supported**         |             ❌ No             |            ❌ No             |
+| **Nested Router Composition**       |    ✅ **Automatic (`.route()`)**    |       ⚠️ Complex setup        |   ⚠️ Manual configuration    |
+| **Instant Watch Mode**              |  ✅ **Yes (`--watch` / hot AST)**   |             ❌ No             |            ❌ No             |
+| **Incremental Build Cache**         |             ✅ **Yes**              |             ❌ No             |            ❌ No             |
+| **Schema Deduplication (`$ref`)**   |          ✅ **Automatic**           | ⚠️ Manual `$ref` registration |          ⚠️ Manual           |
+| **CI Drift Detection (`validate`)** |     ✅ **Built-in CLI command**     |             ❌ No             |            ❌ No             |
+
+---
+
+## 📦 Installation
+
+> **Compatibility:** Hono v4+, Node.js 18+, TypeScript 5+. Works on Bun, Deno, Cloudflare Workers, and any TypeScript-first environment.
 
 ```bash
 # npm
@@ -71,288 +134,125 @@ npm install --save-dev @rcmade/hono-docs
 # pnpm
 pnpm add -D @rcmade/hono-docs
 
+# bun
+bun add -d @rcmade/hono-docs
+
 # yarn
 yarn add -D @rcmade/hono-docs
 ```
 
 ---
 
-## Quick Start
+## 🚀 Quick Start (60 Seconds)
 
-### 1. Create a Config File
+### Step 1: Create `hono-docs.ts`
 
-Create `hono-docs.ts` at the root of your project:
+Create a configuration file at the root of your project:
 
 ```ts
+// hono-docs.ts
 import { defineConfig } from "@rcmade/hono-docs";
 
 export default defineConfig({
   tsConfigPath: "./tsconfig.json",
+  openApiVersion: "3.0", // or "3.1"
   openApi: {
     openapi: "3.0.0",
     info: {
-      title: "My API",
+      title: "My Hono API",
       version: "1.0.0",
-      description: "Automatically generated from Hono route types.",
+      description: "Auto-generated OpenAPI specification from Hono AppType.",
     },
-    servers: [{ url: "http://localhost:3000", description: "Development" }],
+    servers: [
+      { url: "http://localhost:3000", description: "Local Development" },
+    ],
   },
   outputs: {
     openApiJson: "./openapi/openapi.json",
+    openApiYaml: "./openapi/openapi.yaml", // optional
   },
   apis: [
     {
-      name: "My App",
-      apiPrefix: "",
-      appTypePath: "src/index.ts", // Path to the file exporting your AppType
+      name: "Main API",
+      apiPrefix: "", // Prefix prepended to route paths (or empty if .basePath is used)
+      appTypePath: "src/index.ts", // Path to the file exporting AppType
     },
   ],
 });
 ```
 
-### 2. Define Your Routes
+### Step 2: Export Your `AppType`
 
-Export your Hono app instance type as `AppType` from your entry file:
+In your main entry file, export the type of your Hono instance:
 
 ```ts
 // src/index.ts
 import { Hono } from "hono";
-import { authRoutes } from "./routes/authRoutes";
-import { productRoutes } from "./routes/productRoutes";
+import { userRoutes } from "./routes/users";
+import { productRoutes } from "./routes/products";
 
 const app = new Hono()
   .basePath("/api")
-  .route("/auth", authRoutes)
+  .route("/users", userRoutes)
   .route("/products", productRoutes);
 
-// Required: export your app type so hono-docs can analyze it
+// 🔑 Export your app's type definition:
 export type AppType = typeof app;
 export default app;
 ```
 
-```ts
-// src/routes/authRoutes.ts
-import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
-import { z } from "zod";
+### Step 3: Run the Generator
 
-export const authRoutes = new Hono().post(
-  "/login",
-  zValidator(
-    "json",
-    z.object({ email: z.string().email(), password: z.string().min(8) }),
-  ),
-  (c) => c.json({ token: "..." }),
-);
-```
+Add a script to your `package.json`:
 
-### 3. Add JSDoc Comments
-
-Annotate your routes with JSDoc to enrich your OpenAPI spec with summaries, descriptions, and tags. The engine automatically maps comments to the correct final route paths, even across nested routers:
-
-```ts
-export const authRoutes = new Hono()
-  /**
-   * @summary Authenticate User
-   * @description Validates credentials and returns a signed JWT session token.
-   * @tag Authentication
-   */
-  .post("/login", zValidator("json", loginSchema), (c) =>
-    c.json({ token: "..." }),
-  );
-```
-
-Supported JSDoc tags:
-
-| Tag               | Description                                                                    |
-| ----------------- | ------------------------------------------------------------------------------ |
-| `@summary`        | Short one-line title shown in the docs UI                                      |
-| `@description`    | Longer markdown-friendly description for the endpoint                          |
-| `@tag`            | Groups the endpoint under a named tag in the sidebar                           |
-| `@deprecated`     | Marks the endpoint as deprecated in the generated spec                         |
-| `@response`       | Custom response description: `@response <status> <desc>`                       |
-| `@example`        | Adds a JSON example: `@example {"foo": "bar"}`                                 |
-| `@responseHeader` | Documents a response header: `@responseHeader <status> <name> [<type>] <desc>` |
-| `@ignore`         | (or `@exclude`, `@hide`) Completely omits the endpoint from the generated docs |
-
-Example with a response header:
-
-```ts
-import { Hono } from "hono";
-
-export const userRoutes = new Hono()
-  /**
-   * @summary List users
-   * @description Returns a paginated user directory.
-   * @tag Users
-   * @responseHeader 200 X-Total-Count [integer] Total number of users
-   */
-  .get("/users", (c) => {
-    c.header("X-Total-Count", "100");
-    return c.json({ users: [] });
-  });
-```
-
-### 4. Add an npm Script
-
-```jsonc
-// package.json
+```json
 {
   "scripts": {
-    "docs": "npx @rcmade/hono-docs generate --config ./hono-docs.ts",
-  },
+    "docs": "hono-docs generate --config ./hono-docs.ts",
+    "docs:watch": "hono-docs generate --config ./hono-docs.ts --watch",
+    "docs:check": "hono-docs validate --config ./hono-docs.ts"
+  }
 }
 ```
 
-### 5. Run the Generator
+Run the build:
 
 ```bash
 npm run docs
 ```
 
 ```text
-  ◆  hono-docs v1.3.0  ·  ./hono-docs.ts  ·  ./tsconfig.json
+  ◆  hono-docs v1.4.0  ·  ./hono-docs.ts  ·  ./tsconfig.json
 
   🔍  Analyzing routes...
-      GET     /api                                          →  no input
-      POST    /api/auth/login                               →  zod json
-      GET     /api/products/:productId                      →  ts type param
-      POST    /api/test-cases/case-inline                   →  ts type json
-      POST    /api/enterprise/orgs/:…ces/:invoiceId/adjust  →  valibot query · param  typebox header  zod json
+      POST    /api/users                                    →  zod json
+      GET     /api/products/:productId                      →  path param
+      POST    /api/orders/:orderId/checkout                 →  valibot body · header
 
   📊  Documentation Summary
+      Endpoints Discovered  :  3 total
+      JSDoc Coverage        :  3 / 3 routes documented (100%)
 
-      Endpoints Discovered  :  5 total  ( GET: 2 · POST: 3 )
-      JSDoc Coverage        :  3 / 5 routes documented (60%)
+  📄  Outputs written
+      ./openapi/openapi.json  42.1 KB
+      ./openapi/openapi.yaml  28.4 KB
 
-  ⚙️  Schema Resolution Engine
-
-      zod       ████████████░░░░░░░░  3 routes  (Dynamic)
-      valibot   ████░░░░░░░░░░░░░░░  1 route   (Dynamic)
-      typebox   ████░░░░░░░░░░░░░░░  1 route   (Dynamic)
-      ts type   ████████░░░░░░░░░░░░  2 routes  (Static AST)
-      no input  ████████░░░░░░░░░░░░  2 routes  (No validation required)
-
-  📄  Output written
-
-      ./openapi/openapi.json  132.5 KB
-
-  ✨  Done in 355ms
+  ✨  Done in 240ms
 ```
 
 ---
 
-## Nested Routing (Grouped AppType)
+## 🎨 Serving Your API Docs
 
-`hono-docs` fully supports complex Hono applications composed with multiple `.route()` and `.basePath()` calls. You don't need to create a separate `AppType` for each route file — just point to your **single root `AppType`** and the engine handles everything automatically.
+Mount an interactive documentation UI directly from your Hono application:
 
-```ts
-// src/index.ts
-import { Hono } from "hono";
-import { authRoutes } from "./routes/authRoutes";
-import { productRoutes } from "./routes/productRoutes";
-import { orderRoutes } from "./routes/orderRoutes";
-import docs from "./routes/docs";
+### Option 1: [Scalar](https://github.com/scalar/scalar) (Recommended)
 
-const app = new Hono()
-  .basePath("/api")
-  .get("/", (c) => c.json({ status: "ok" }))
-  .route("/auth", authRoutes) // → /api/auth/*
-  .route("/products", productRoutes) // → /api/products/*
-  .route("/orders", orderRoutes) // → /api/orders/*
-  .route("/docs", docs); // → /api/docs/*
-
-// ✅ A single root AppType captures your entire API surface
-export type AppType = typeof app;
-```
-
-The generator will produce accurate OpenAPI paths for every route at every nesting level, including deeply composed routers like `/api/orders/tracking/:trackingNumber`.
-
-### ⚠️ Important: TypeScript Chaining Limits
-
-When building large applications, chaining too many `.route()` calls on a single `Hono` instance (usually around 8-10 chains) will exceed TypeScript's internal instantiation depth limit. When this happens, TypeScript gives up and infers an empty `BlankSchema` for your app, causing `hono-docs` to see zero routes.
-
-To fix this, simply break your route chain into intermediate variables to reset TypeScript's depth counter:
-
-```ts
-// Calculate first batch of routes
-const app1 = new Hono()
-  .route("/auth", authRoutes)
-  .route("/products", productRoutes)
-  .route("/orders", orderRoutes)
-  .route("/tests", testRoutes);
-
-// Start a new chain using the locked-in type
-const app = app1.route("/complex", complexRoutes).route("/docs", docs);
-```
-
----
-
-## Incremental Caching
-
-`hono-docs` automatically caches results between builds — unchanged routes and schemas are skipped on subsequent runs with no extra config required.
-
-To disable caching and force a full rebuild (e.g. in CI/CD), pass `--no-cache`:
-
-```bash
-npx @rcmade/hono-docs generate --config ./hono-docs.ts --no-cache
-
-# Or via npm script
-npm run docs -- --no-cache
-```
-
----
-
-## Watch Mode
-
-`hono-docs` includes a built-in file watcher for development workflows. Pass `--watch` (or `-w`) to the `generate` command and docs will automatically rebuild every time you save a source file.
-
-```bash
-# Via CLI
-npx @rcmade/hono-docs generate --config ./hono-docs.ts --watch
-
-# Combine with --no-cache for a forced rebuild on every change
-npx @rcmade/hono-docs generate --config ./hono-docs.ts --watch --no-cache
-```
-
-Or add a dedicated script to your `package.json`:
-
-```jsonc
-{
-  "scripts": {
-    "docs": "npx @rcmade/hono-docs generate --config ./hono-docs.ts",
-    "docs:watch": "npx @rcmade/hono-docs generate --config ./hono-docs.ts --watch",
-  },
-}
-```
-
-Watch mode rebuilds your docs instantly on every file save — no manual re-runs needed. Rapid saves are batched automatically, so only one build fires per logical change. Press `Ctrl+C` to stop.
-
----
-
-## Schema Deduplication
-
-`hono-docs` automatically cleans up the generated spec so you get a leaner, more readable OpenAPI document with no extra config:
-
-- Repeated schemas are extracted into `components/schemas` and replaced with `$ref` pointers — no more copy-pasted inline shapes across every endpoint.
-- Named schemas (from Zod, Valibot, TypeBox, or source-level type names) are always promoted with their original name.
-- `$defs` / `definitions` blocks from validator libraries are hoisted to `components/schemas` and rewritten as standard `$ref` links.
-
-Deduplication runs automatically after generation — no configuration is required.
-
----
-
-## Serving the OpenAPI Docs
-
-We recommend **Scalar** for a beautiful, interactive API reference UI.
-
-**Install:**
+Scalar provides a beautiful, modern API reference UI with search, code generation, and live request testing.
 
 ```bash
 npm install @scalar/hono-api-reference
 ```
-
-**Create a docs route:**
 
 ```ts
 // src/routes/docs.ts
@@ -362,140 +262,287 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 const docs = new Hono()
+  // Interactive UI at /api/docs
   .get(
     "/",
     apiReference({
-      url: "/api/docs/open-api",
       theme: "kepler",
-      layout: "modern",
+      spec: { url: "/api/docs/openapi.json" },
     }),
   )
-  .get("/open-api", async (c) => {
-    const raw = await fs.readFile(
+  // Raw OpenAPI JSON at /api/docs/openapi.json
+  .get("/openapi.json", async (c) => {
+    const spec = await fs.readFile(
       path.join(process.cwd(), "./openapi/openapi.json"),
       "utf-8",
     );
-    return c.json(JSON.parse(raw));
+    return c.json(JSON.parse(spec));
   });
 
-export type DocsType = typeof docs;
 export default docs;
 ```
 
-Mount this under your main app (for example `.route("/docs", docs)`). Keep pointing `appTypePath` at your **root** app’s `AppType`, not this docs module.
+Mount this in your root app:
 
-Visit `/api/docs` for the interactive UI and `/api/docs/open-api` for the raw JSON spec.
+```ts
+// src/index.ts
+const app = new Hono()
+  .basePath("/api")
+  .route("/users", userRoutes)
+  .route("/docs", docs); // → /api/docs (UI) and /api/docs/openapi.json
+```
 
----
+### Option 2: [Swagger UI](https://github.com/honojs/middleware/tree/main/packages/swagger-ui)
 
-## Configuration Reference
+```bash
+npm install @hono/swagger-ui
+```
 
-All options live in your `defineConfig({ ... })` call:
+```ts
+import { swaggerUI } from "@hono/swagger-ui";
 
-| Field                       | Type                                                                              | Required | Description                                                                                                                         |
-| --------------------------- | --------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `tsConfigPath`              | `string`                                                                          | ✅       | Path to your project's `tsconfig.json`                                                                                              |
-| `openApiVersion`            | `"3.0" \| "3.1"`                                                                  | —        | The OpenAPI version adapter to use (defaults to "3.0")                                                                              |
-| `openApi`                   | `OpenAPIConfig`                                                                   | ✅       | Static OpenAPI document fields                                                                                                      |
-| └ `openapi`                 | `string`                                                                          | ✅       | OpenAPI version string (e.g. `"3.0.0"`)                                                                                             |
-| └ `info`                    | `{ title, version, description? }`                                                | ✅       | API title, version, and optional description                                                                                        |
-| └ `servers`                 | `Array<{ url, description? }>`                                                    | ✅       | Server base URL(s)                                                                                                                  |
-| `outputs`                   | `{ openApiJson?: string, openApiYaml?: string }`                                  | ✅       | Output file paths (at least one is required)                                                                                        |
-| └ `openApiJson`             | `string`                                                                          | —        | Where to write the merged `openapi.json`                                                                                            |
-| └ `openApiYaml`             | `string`                                                                          | —        | Where to write the merged `openapi.yaml`                                                                                            |
-| `apis`                      | `ApiGroup[]`                                                                      | ✅       | Route groups to document                                                                                                            |
-| └ `name`                    | `string`                                                                          | ✅       | Human-readable name for this group                                                                                                  |
-| └ `apiPrefix`               | `string`                                                                          | ✅       | Extra URL prefix prepended at merge time. Use `""` when `AppType` already includes the full path (typical with `.basePath()`).      |
-| └ `appTypePath`             | `string`                                                                          | ✅       | Path to the file exporting `AppType`                                                                                                |
-| └ `api`                     | `Api[]`                                                                           | —        | Optional explicit endpoint overrides (see below)                                                                                    |
-| &nbsp;&nbsp;└ `api`         | `string`                                                                          | ✅       | Endpoint path without prefix, e.g. `/user/{id}`                                                                                     |
-| &nbsp;&nbsp;└ `method`      | `"get" \| "post" \| "put" \| "patch" \| "delete" \| "options" \| "head" \| "all"` | ✅       | HTTP method                                                                                                                         |
-| &nbsp;&nbsp;└ `summary`     | `string`                                                                          | —        | Short summary shown in docs                                                                                                         |
-| &nbsp;&nbsp;└ `description` | `string`                                                                          | —        | Longer endpoint description                                                                                                         |
-| &nbsp;&nbsp;└ `tag`         | `string[]`                                                                        | —        | Tags for grouping in the sidebar                                                                                                    |
-| `preDefineTypeContent`      | `string`                                                                          | —        | Content injected at the top of generated `.d.ts` snapshots (e.g. `import { Env } from './types';`) to resolve missing global types. |
-
----
-
-## CLI Usage
-
-```text
-Usage: hono-docs <command> [options]
-
-Commands:
-  hono-docs generate  Generate OpenAPI JSON/YAML
-  hono-docs validate  Validate that the generated OpenAPI spec matches the source code without writing to disk
-
-Options:
-  -c, --config     Path to your hono-docs config file (.ts or .js)   [required]
-      --no-cache   Bypass the incremental cache and force full regeneration
-  -w, --watch      Watch for file changes and seamlessly rebuild
-  -h, --help       Show help
+const docs = new Hono()
+  .get("/", swaggerUI({ url: "/api/docs/openapi.json" }))
+  .get("/openapi.json", async (c) => {
+    const spec = await fs.readFile(
+      path.join(process.cwd(), "./openapi/openapi.json"),
+      "utf-8",
+    );
+    return c.json(JSON.parse(spec));
+  });
 ```
 
 ---
 
-## Programmatic Usage
+## 💡 Feature Guide
+
+### 1. Multi-Library Validation Inference
+
+`hono-docs` automatically detects and resolves validation schemas from all leading TypeScript validation libraries:
+
+- **Zod (v3 & v4)**: `zValidator("json", ...)`
+- **Valibot**: `@valibot/to-json-schema` integration
+- **TypeBox**: `@sinclair/typebox` schema resolution
+- **ArkType**: Fast syntax and runtime resolution
+- **Static TypeScript AST Types**: Inferred types for parameters and responses when no validator is used
+
+Supports `query`, `json`, `form`, `header`, `cookie`, and path parameter extraction.
+
+### 2. JSDoc Annotations & Inheritance
+
+Enrich endpoints cleanly without runtime code changes:
+
+```ts
+export const orderRoutes = new Hono()
+  /**
+   * @summary Retrieve order details
+   * @description Fetches the full line items, delivery status, and invoice information.
+   * @tag Orders
+   * @deprecated
+   * @responseHeader 200 X-Rate-Limit [integer] Remaining requests per minute
+   * @example {"status": "shipped"}
+   */
+  .get("/:orderId", (c) => {
+    /* ... */
+  });
+```
+
+#### Available JSDoc Tags
+
+| Tag                    | Purpose                                   | Example                                              |
+| :--------------------- | :---------------------------------------- | :--------------------------------------------------- |
+| `@summary`             | Short endpoint headline                   | `@summary Search users`                              |
+| `@description`         | Long description (Markdown supported)     | `@description Filter users by creation date...`      |
+| `@tag`                 | Groups endpoint in documentation sidebar  | `@tag Billing`                                       |
+| `@deprecated`          | Marks route as deprecated in OpenAPI spec | `@deprecated`                                        |
+| `@response`            | Custom status description                 | `@response 404 Item was not found`                   |
+| `@responseHeader`      | Documents a response header               | `@responseHeader 200 X-Request-ID [string] Trace ID` |
+| `@example`             | Inline JSON example payload               | `@example {"active": true}`                          |
+| `@ignore` / `@exclude` | Hides endpoint from generated docs        | `@ignore Internal endpoint`                          |
+
+#### Router-Level Tag Inheritance
+
+Annotate router declarations or `.route()` mounts directly. All nested handlers automatically inherit parent tags:
+
+```ts
+/**
+ * @tag Payments
+ * @description Endpoints for Stripe and merchant transactions
+ */
+export const paymentRoutes = new Hono()
+  .post("/charge", (c) => c.text("ok"))
+  .post("/refund", (c) => c.text("ok"));
+```
+
+### 3. Deep Nested Route Composition
+
+Compose complex APIs freely with `.route()` and `.basePath()`. `hono-docs` traverses the type tree to compute full URL paths:
+
+```ts
+const api = new Hono()
+  .basePath("/api/v1")
+  .route("/orgs/:orgId/teams", teamRoutes)
+  .route("/orgs/:orgId/members", memberRoutes);
+
+export type AppType = typeof api;
+```
+
+> **TypeScript Tip (Deep Chaining Limits):**  
+> If your application chains more than 8–10 `.route()` calls on a single instance, TypeScript may hit its internal instantiation depth limit. To avoid this, split chains across intermediate variables:
+>
+> ```ts
+> const subRoutes = new Hono()
+>   .route("/auth", authRoutes)
+>   .route("/users", userRoutes);
+>
+> const app = new Hono().route("/v1", subRoutes).route("/health", healthRoutes);
+>
+> export type AppType = typeof app;
+> ```
+
+### 4. Automatic Schema Deduplication (`$ref`)
+
+`hono-docs` cleans up your specification automatically:
+
+- Reusable schemas appearing across multiple endpoints are extracted into `components.schemas` and referenced with `$ref`.
+- Named schemas (from type names or `x-schema-name`) retain their human-readable identifiers.
+- Third-party `$defs` / `definitions` blocks are hoisted to the root level.
+
+### 5. Incremental Caching & Watch Mode
+
+- **Incremental Caching**: Only files modified since the last run are parsed. Fast builds even on large monorepos. (Bypass with `--no-cache`).
+- **Live Watch Mode**: Run `hono-docs generate -w`. Uses an in-memory `ts-morph` project with debounced AST hot-reloading for near-instant rebuilds on save.
+
+---
+
+## 🛡️ CI/CD & Drift Detection
+
+Prevent outdated documentation from reaching production by adding spec validation to your CI pipeline:
+
+```bash
+# Validates that generated specs match your current source code without writing to disk
+npx @rcmade/hono-docs validate --config ./hono-docs.ts
+```
+
+### GitHub Actions Workflow
+
+```yaml
+# .github/workflows/verify-docs.yml
+name: Verify API Documentation
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - run: npm ci
+      - name: Verify OpenAPI spec is up-to-date
+        run: npx @rcmade/hono-docs validate --config ./hono-docs.ts
+```
+
+---
+
+## ⚙️ Configuration Reference
+
+Options available in `defineConfig`:
+
+| Option                 | Type                           | Required | Description                                              |
+| :--------------------- | :----------------------------- | :------: | :------------------------------------------------------- |
+| `tsConfigPath`         | `string`                       |    ✅    | Path to project `tsconfig.json`.                         |
+| `openApiVersion`       | `"3.0" \| "3.1"`               |    —     | OpenAPI version adapter (defaults to `"3.0"`).           |
+| `openApi`              | `OpenAPIConfig`                |    ✅    | Base metadata (`info`, `servers`, `externalDocs`).       |
+| `openApi.info.title`   | `string`                       |    ✅    | API title.                                               |
+| `openApi.info.version` | `string`                       |    ✅    | API version string.                                      |
+| `openApi.servers`      | `Array<{ url, description? }>` |    ✅    | Target server environments.                              |
+| `outputs.openApiJson`  | `string`                       |    —     | Target path for output `openapi.json`.                   |
+| `outputs.openApiYaml`  | `string`                       |    —     | Target path for output `openapi.yaml`.                   |
+| `apis`                 | `ApiGroup[]`                   |    ✅    | List of API entry points to analyze.                     |
+| `apis[].name`          | `string`                       |    ✅    | Descriptive name for the route group.                    |
+| `apis[].appTypePath`   | `string`                       |    ✅    | Source file exporting the `AppType`.                     |
+| `apis[].apiPrefix`     | `string`                       |    —     | Global URL prefix prepended to routes.                   |
+| `apis[].api`           | `ApiOverride[]`                |    —     | Manual route overrides if needed.                        |
+| `preDefineTypeContent` | `string`                       |    —     | Custom TypeScript declarations injected before analysis. |
+
+---
+
+## 💻 CLI & Programmatic API
+
+### CLI Commands
+
+```bash
+# Generate OpenAPI spec files
+hono-docs generate -c ./hono-docs.ts
+
+# Watch mode for development
+hono-docs generate -c ./hono-docs.ts --watch
+
+# Clean build bypassing cache
+hono-docs generate -c ./hono-docs.ts --no-cache
+
+# Validate spec in CI/CD without modifying disk
+hono-docs validate -c ./hono-docs.ts
+```
+
+### Programmatic API
 
 ```ts
 import { runGenerate, runWatch } from "@rcmade/hono-docs";
 
-// Standard run (uses incremental caching automatically)
-await runGenerate("./hono-docs.ts");
+// Run build programmatically
+await runGenerate("./hono-docs.ts", { noCache: false });
 
-// Force clean regeneration (bypass cache)
-await runGenerate("./hono-docs.ts", { noCache: true });
-
-// Start watch mode (blocks until process is killed)
+// Start file watcher
 await runWatch("./hono-docs.ts");
-
-// Watch mode with cache disabled
-await runWatch("./hono-docs.ts", { noCache: true });
 ```
 
 ---
 
-## Examples
+## 📁 Examples
 
-See [`examples/basic-app/`](https://github.com/rcmade/hono-docs/tree/main/examples/basic-app) for a complete working example featuring:
+A complete reference application is included in the repository:
 
-- Modular nested route architecture (`auth`, `products`, `orders`, `tracking`)
-- Zod validation on request bodies and query parameters
-- JSDoc annotations for summaries, descriptions, and tags
-- Scalar API reference UI served from the app itself
-
----
-
-## Development
-
-```bash
-# Clone and install
-git clone https://github.com/rcmade/hono-docs.git
-cd hono-docs
-pnpm install
-
-# Build the library
-pnpm build
-
-# Watch mode during development
-pnpm build --watch
-
-# Link locally to test in another project
-pnpm link --global
-```
+**[`examples/basic-app/`](https://github.com/rcmade/hono-docs/tree/main/examples/basic-app)**
+- Modular route architecture with `auth`, `products`, `orders`, and `tracking` route groups
+- Zod-validated request bodies and query parameters
+- JSDoc annotations for summaries, tags, and response descriptions
+- Scalar interactive UI served directly from the Hono app
+- Working `hono-docs.ts` config you can copy directly into your project
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feat/my-feature`)
-3. Commit your changes with a clear message
-4. Open a pull request with a description of what changed and why
-5. Ensure linting passes (`pnpm lint`)
+Contributions, bug reports, and suggestions are welcome!
+
+1. Fork the [repository](https://github.com/rcmade/hono-docs).
+2. Create your feature branch (`git checkout -b feat/amazing-feature`).
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`).
+4. Ensure linting and tests pass (`pnpm lint`).
+5. Open a Pull Request.
 
 ---
 
-## License
+## 📄 License
 
-[MIT](https://github.com/Rcmade/hono-docs/blob/main/LICENSE)
+Distributed under the **MIT License**. See [`LICENSE`](https://github.com/rcmade/hono-docs/blob/main/LICENSE) for more information.
+
+---
+
+## 💬 Community & Support
+
+- **Bug reports & questions** → [Open an issue](https://github.com/rcmade/hono-docs/issues)
+- **Ideas & roadmap** → [Start a discussion](https://github.com/rcmade/hono-docs/discussions)
+- **npm package** → [npmjs.com/package/@rcmade/hono-docs](https://www.npmjs.com/package/@rcmade/hono-docs)
+
+If `hono-docs` saves you time, a ⭐ on [GitHub](https://github.com/rcmade/hono-docs) helps other Hono developers discover it.
+
+<p align="center">Built with ❤️ for the <a href="https://hono.dev">Hono</a> community.</p>

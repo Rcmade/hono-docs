@@ -15,6 +15,48 @@
   "tags": [
     {
       "name": "E-Commerce Platform"
+    },
+    {
+      "name": "Authentication"
+    },
+    {
+      "name": "Catalog"
+    },
+    {
+      "name": "Orders"
+    },
+    {
+      "name": "Logistics"
+    },
+    {
+      "name": "Circular Testing"
+    },
+    {
+      "name": "Parameter Testing"
+    },
+    {
+      "name": "Union Testing"
+    },
+    {
+      "name": "Body Testing"
+    },
+    {
+      "name": "Method Testing"
+    },
+    {
+      "name": "Response Testing"
+    },
+    {
+      "name": "Complex Routing"
+    },
+    {
+      "name": "Zod Testing"
+    },
+    {
+      "name": "Exhaustive Validation"
+    },
+    {
+      "name": "Users"
     }
   ],
   "components": {
@@ -716,6 +758,19 @@
         },
         "required": [
           "created"
+        ]
+      },
+      "PostApiNewFrameworksArktypeBodyNestedTupleItem": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          }
         ]
       },
       "PostApiMultiValibotItemJsonResponse400": {
@@ -1462,7 +1517,7 @@
               "nodeA": {
                 "allOf": [
                   {
-                    "$ref": "#"
+                    "$ref": "#/components/schemas/nodeASchema"
                   }
                 ]
               }
@@ -1712,6 +1767,133 @@
         ],
         "additionalProperties": false
       },
+      "myArktypeSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "lastLogin": {
+                "type": "string"
+              },
+              "settings": {
+                "type": "object",
+                "properties": {
+                  "notifications": {
+                    "type": "boolean"
+                  },
+                  "theme": {
+                    "enum": [
+                      "dark",
+                      "light",
+                      "system"
+                    ]
+                  }
+                },
+                "required": [
+                  "notifications",
+                  "theme"
+                ]
+              },
+              "customData": {}
+            },
+            "required": [
+              "lastLogin",
+              "settings"
+            ]
+          },
+          "nestedTuple": {
+            "type": "array",
+            "minItems": 3,
+            "items": {
+              "$ref": "#/components/schemas/PostApiNewFrameworksArktypeBodyNestedTupleItem"
+            }
+          },
+          "scores": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "status": {
+            "enum": [
+              "active",
+              "inactive",
+              "pending"
+            ]
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "unionTest": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "userProfile": {
+            "type": "object",
+            "properties": {
+              "age": {
+                "type": "number",
+                "exclusiveMinimum": true,
+                "minimum": 0
+              },
+              "isActive": {
+                "type": "boolean"
+              },
+              "role": {
+                "enum": [
+                  "admin",
+                  "guest",
+                  "user"
+                ]
+              },
+              "username": {
+                "type": "string",
+                "minLength": 3
+              },
+              "email": {
+                "type": "string",
+                "pattern": "^[\\w%+.-]+@[\\d.A-Za-z-]+\\.[A-Za-z]{2,}$",
+                "format": "email"
+              }
+            },
+            "required": [
+              "age",
+              "isActive",
+              "role",
+              "username"
+            ]
+          },
+          "avatarUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "metadata",
+          "nestedTuple",
+          "scores",
+          "status",
+          "tags",
+          "unionTest",
+          "userProfile"
+        ]
+      },
       "categorySchema": {
         "type": "object",
         "properties": {
@@ -1721,7 +1903,7 @@
           "subcategories": {
             "type": "array",
             "items": {
-              "$ref": "#"
+              "$ref": "#/components/schemas/categorySchema"
             }
           }
         },
@@ -1956,142 +2138,6 @@
           "id",
           "name",
           "email"
-        ]
-      },
-      "myArktypeSchema": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "metadata": {
-            "type": "object",
-            "properties": {
-              "lastLogin": {
-                "type": "string"
-              },
-              "settings": {
-                "type": "object",
-                "properties": {
-                  "notifications": {
-                    "type": "boolean"
-                  },
-                  "theme": {
-                    "enum": [
-                      "dark",
-                      "light",
-                      "system"
-                    ]
-                  }
-                },
-                "required": [
-                  "notifications",
-                  "theme"
-                ]
-              },
-              "customData": {}
-            },
-            "required": [
-              "lastLogin",
-              "settings"
-            ]
-          },
-          "nestedTuple": {
-            "type": "array",
-            "minItems": 3,
-            "prefixItems": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "boolean"
-              }
-            ],
-            "items": false
-          },
-          "scores": {
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
-          },
-          "status": {
-            "enum": [
-              "active",
-              "inactive",
-              "pending"
-            ]
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "unionTest": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "boolean"
-              }
-            ]
-          },
-          "userProfile": {
-            "type": "object",
-            "properties": {
-              "age": {
-                "type": "number",
-                "minimum": 0,
-                "exclusiveMinimum": true
-              },
-              "isActive": {
-                "type": "boolean"
-              },
-              "role": {
-                "enum": [
-                  "admin",
-                  "guest",
-                  "user"
-                ]
-              },
-              "username": {
-                "type": "string",
-                "minLength": 3
-              },
-              "email": {
-                "type": "string",
-                "pattern": "^[\\w%+.-]+@[\\d.A-Za-z-]+\\.[A-Za-z]{2,}$",
-                "format": "email"
-              }
-            },
-            "required": [
-              "age",
-              "isActive",
-              "role",
-              "username"
-            ]
-          },
-          "avatarUrl": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "metadata",
-          "nestedTuple",
-          "scores",
-          "status",
-          "tags",
-          "unionTest",
-          "userProfile"
         ]
       }
     }
@@ -2544,7 +2590,23 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/categorySchema"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "subcategories": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/categorySchema"
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "subcategories"
+                ],
+                "additionalProperties": false
               }
             }
           }
@@ -2608,7 +2670,35 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/nodeASchema"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "nodeB": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "number"
+                      },
+                      "nodeA": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/nodeASchema"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "additionalProperties": false
               }
             }
           }
@@ -2737,7 +2827,7 @@
     },
     "/api/complex/org/{orgId}/projects/{projectId}/{subTaskId}?": {
       "get": {
-        "summary": "Get Complex Org By Org Id Projects By Project Id {sub Task Id}?",
+        "summary": "Complex Path Parameters",
         "responses": {
           "default": {
             "description": "Generic status from T[\"status\"]",
@@ -2777,6 +2867,11 @@
             }
           }
         },
+        "description": "Route with multiple path parameters and an optional one.",
+        "tags": [
+          "Parameter Testing",
+          "E-Commerce Platform"
+        ],
         "parameters": [
           {
             "name": "orgId",
@@ -2802,15 +2897,12 @@
               "type": "string"
             }
           }
-        ],
-        "tags": [
-          "E-Commerce Platform"
         ]
       }
     },
     "/api/complex/archive/{year}/{month}": {
       "get": {
-        "summary": "Get Complex Archive By Year By Month",
+        "summary": "Regex Path Parameters",
         "responses": {
           "default": {
             "description": "Generic status from T[\"status\"]",
@@ -2835,6 +2927,11 @@
             }
           }
         },
+        "description": "Route with regex constraints in parameters.",
+        "tags": [
+          "Parameter Testing",
+          "E-Commerce Platform"
+        ],
         "parameters": [
           {
             "name": "year",
@@ -2854,9 +2951,6 @@
               "pattern": "[0-9]{2}"
             }
           }
-        ],
-        "tags": [
-          "E-Commerce Platform"
         ]
       }
     },
@@ -2954,7 +3048,40 @@
         }
       }
     },
-    "/api/complex/any-method": {},
+    "/api/complex/any-method": {
+      "all": {
+        "summary": "All Methods Route",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "method": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "method",
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Route responding to any HTTP method.",
+        "tags": [
+          "Method Testing",
+          "E-Commerce Platform"
+        ]
+      }
+    },
     "/api/complex/union-responses": {
       "get": {
         "summary": "Union Status Code Responses",
@@ -4684,7 +4811,7 @@
     },
     "/api/exhaustive/ast/regex/date/{date}": {
       "get": {
-        "summary": "Get Exhaustive Ast Regex Date By Date",
+        "summary": "Test Date Regex Parameter",
         "responses": {
           "200": {
             "description": "Status 200",
@@ -4705,6 +4832,7 @@
             }
           }
         },
+        "description": "Extracts a complex regex with slashes and exact counts",
         "parameters": [
           {
             "name": "date",
@@ -4723,7 +4851,7 @@
     },
     "/api/exhaustive/ast/regex/action/{type}": {
       "get": {
-        "summary": "Get Exhaustive Ast Regex Action By Type",
+        "summary": "Test Literal OR Regex Parameter",
         "responses": {
           "200": {
             "description": "Status 200",
@@ -4736,6 +4864,7 @@
             }
           }
         },
+        "description": "Tests regex that uses pipe for literal matching",
         "parameters": [
           {
             "name": "type",
@@ -4754,7 +4883,7 @@
     },
     "/api/exhaustive/ast/regex/wildcard/{path}": {
       "get": {
-        "summary": "Get Exhaustive Ast Regex Wildcard By Path",
+        "summary": "Test Wildcard Regex Parameter",
         "responses": {
           "200": {
             "description": "Status 200",
@@ -4775,6 +4904,7 @@
             }
           }
         },
+        "description": "Tests wildcard catch-all regexes",
         "parameters": [
           {
             "name": "path",
@@ -7806,7 +7936,7 @@
     },
     "/api/edge/wildcard/files/*": {
       "get": {
-        "summary": "Get Edge Wildcard Files By Wildcard",
+        "summary": "Wildcard Path Parameter",
         "responses": {
           "default": {
             "description": "Generic status from T[\"status\"]",
@@ -7827,12 +7957,41 @@
             }
           }
         },
+        "description": "Route using a wildcard parameter.",
+        "tags": [
+          "Parameter Testing",
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/all-handler/check": {
+      "all": {
+        "summary": "All Edge All handler Check",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "method": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "method"
+                  ]
+                }
+              }
+            }
+          }
+        },
         "tags": [
           "E-Commerce Platform"
         ]
       }
     },
-    "/api/edge/all-handler/check": {},
     "/api/edge/headers/custom-test": {
       "get": {
         "summary": "Get Edge Headers Custom test",
@@ -7993,7 +8152,7 @@
     },
     "/api/edge/misc/info": {
       "get": {
-        "summary": "Get Edge Misc Info",
+        "summary": "Sub route info",
         "responses": {
           "default": {
             "description": "Generic status from T[\"status\"]",
@@ -8018,7 +8177,9 @@
             }
           }
         },
+        "description": "Get sub router info",
         "tags": [
+          "Complex Routing",
           "E-Commerce Platform"
         ]
       }
@@ -8675,17 +8836,7 @@
                         "nestedTuple": {
                           "type": "array",
                           "items": {
-                            "oneOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "type": "number"
-                              },
-                              {
-                                "type": "boolean"
-                              }
-                            ]
+                            "$ref": "#/components/schemas/PostApiNewFrameworksArktypeBodyNestedTupleItem"
                           },
                           "minItems": 3,
                           "maxItems": 3

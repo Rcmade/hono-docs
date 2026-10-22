@@ -15,11 +15,13 @@ const registerSchema = z.object({
   company: z.string().optional().describe("Company name, if applicable"),
 });
 
+/**
+ * @tag Authentication - User session and account management
+ */
 export const authRoutes = new Hono()
   /**
    * @summary Authenticate User
    * @description Authenticates a user and returns a signed JWT session token.
-   * @tag Authentication
    */
   .post("/login", zValidator("json", loginSchema), (c) => {
     const { email } = c.req.valid("json");
@@ -29,7 +31,6 @@ export const authRoutes = new Hono()
   /**
    * @summary Register New Account
    * @description Provisions a new user account in the system and sends a verification email.
-   * @tag Authentication
    */
   .post("/register", zValidator("json", registerSchema), (c) => {
     const data = c.req.valid("json");
@@ -39,7 +40,6 @@ export const authRoutes = new Hono()
   /**
    * @summary Logout User
    * @description Invalidates the current user session and clears authentication cookies.
-   * @tag Authentication
    */
   .post("/logout", (c) => {
     return c.json({ success: true, message: "Successfully logged out" });

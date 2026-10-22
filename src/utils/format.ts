@@ -1,4 +1,5 @@
 import type { OpenAPIV3 } from "openapi-types";
+import { PATH_PARAM_REGEX } from "./constants";
 
 export function sanitizeApiPrefix(prefix: string): string {
   return prefix
@@ -23,9 +24,7 @@ export function normalizeImportPaths(typeText: string): string {
   return typeText.replace(/from ["'].*node_modules\/(.*)["']/g, `from "$1"`);
 }
 
-export function cleanDefaultResponse(
-  operation: OpenAPIV3.OperationObject,
-) {
+export function cleanDefaultResponse(operation: OpenAPIV3.OperationObject) {
   const defaultResponse = operation.responses?.default;
   if (!defaultResponse) return;
 
@@ -125,4 +124,63 @@ export function generateDefaultSummary(
 
   // Join words and normalize spaces
   return words.join(" ").replace(/\s+/g, " ").trim();
+}
+
+export interface OpenApiTagObject {
+  name: string;
+  description?: string;
+}
+
+/**
+ * Inserts a tag into an OpenAPI tags array or enriches an existing tag's description without duplicates.
+ */
+export function addTagToSpec(
+  tags: OpenApiTagObject[],
+  tag: OpenApiTagObject,
+): void {
+  const existing = tags.find((item) => item.name === tag.name);
+  if (!existing) {
+    tags.push(tag);
+  } else if (!existing.description && tag.description) {
+    existing.description = tag.description;
+  }
+}
+
+/**
+ * Strips all single, double, or backtick quotes anywhere in a string.
+ */
+export function stripAllQuotes(str: string): string {
+  return str.replace(/['"`]/g, "").trim();
+}
+
+/**
+ * Strips outermost enclosing single, double, or backtick quotes from a string.
+ */
+export function stripQuotes(str: string): string {
+  return str.replace(/^['"`]|['"`]$/g, "").trim();
+}
+
+/**
+ * Converts a raw Hono route path (including regex constraints and parameters)
+ * to an OpenAPI 3.0 path template. E.g. "/archive/:year{[0-9]{4}}" -> "/archive/{year}"
+ */
+export function toOpenApiPath(pathStr: string): string {
+  return pathStr.replace(PATH_PARAM_REGEX, "{$1}");
+}
+
+/**
+ * Extracts parameter names and their custom regex constraints from a Hono route path.
+ */
+export function extractPathParamPatterns(
+  rawPath: string,
+): Record<string, string> {
+  const patterns: Record<string, string> = {};
+  const extractor = new RegExp(PATH_PARAM_REGEX.source, "g");
+  let match: RegExpExecArray | null;
+  while ((match = extractor.exec(rawPath)) !== null) {
+    if (match[2]) {
+      patterns[match[1]] = match[2];
+    }
+  }
+  return patterns;
 }
