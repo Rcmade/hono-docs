@@ -82,7 +82,7 @@ async function verifyOpenApiAccuracy() {
   // 2. Path Syntax & Formatting
   console.log("2️⃣  Verifying Path Syntax & Parameter Templating...");
   const paths = Object.keys(spec.paths);
-  assert(paths.length === 137, `Expected 137 paths, got ${paths.length}`);
+  assert(paths.length === 139, `Expected 139 paths, got ${paths.length}`);
 
   let totalOperations = 0;
   const methodCounts: Record<string, number> = {};
@@ -133,8 +133,8 @@ async function verifyOpenApiAccuracy() {
   }
 
   assert(
-    totalOperations === 138,
-    `Expected 138 operations, got ${totalOperations}`,
+    totalOperations === 140,
+    `Expected 140 operations, got ${totalOperations}`,
   );
   console.log(
     `  ✓ All ${paths.length} paths and ${totalOperations} operations verified:`,
@@ -303,6 +303,26 @@ async function verifyOpenApiAccuracy() {
   console.log(
     "  ✓ AST Fallback /api/stress/order/{id}/update parameter & body generated accurately\n",
   );
+
+  // 5b. Optional Route & Wildcard Parameter Accuracy
+  console.log("5️⃣b Verifying Optional Route & Wildcard Parameter Accuracy...");
+  const orgProjectBase = spec.paths["/api/complex/org/{orgId}/projects/{projectId}"]?.get;
+  assert(Boolean(orgProjectBase), "Missing canonical base path /api/complex/org/{orgId}/projects/{projectId}");
+  assert(orgProjectBase?.parameters?.length === 2, `Expected 2 parameters on base path, got ${orgProjectBase?.parameters?.length}`);
+  assert(orgProjectBase?.parameters?.[0]?.name === "orgId" && orgProjectBase?.parameters?.[0]?.required === true, "orgId parameter must be required");
+  assert(orgProjectBase?.parameters?.[1]?.name === "projectId" && orgProjectBase?.parameters?.[1]?.required === true, "projectId parameter must be required");
+
+  const orgProjectSub = spec.paths["/api/complex/org/{orgId}/projects/{projectId}/{subTaskId}"]?.get;
+  assert(Boolean(orgProjectSub), "Missing full path /api/complex/org/{orgId}/projects/{projectId}/{subTaskId}");
+  assert(orgProjectSub?.parameters?.length === 3, `Expected 3 parameters on subTaskId path, got ${orgProjectSub?.parameters?.length}`);
+  assert(orgProjectSub?.parameters?.[2]?.name === "subTaskId" && orgProjectSub?.parameters?.[2]?.required === true, "subTaskId parameter must be required");
+
+  const wildcardOp = spec.paths["/api/complex/files/{wildcard}"]?.get;
+  assert(Boolean(wildcardOp), "Missing normalized wildcard path /api/complex/files/{wildcard}");
+  assert(wildcardOp?.parameters?.length === 1, "Wildcard route must have 1 parameter");
+  assert(wildcardOp?.parameters?.[0]?.name === "wildcard" && wildcardOp?.parameters?.[0]?.in === "path" && wildcardOp?.parameters?.[0]?.required === true, "wildcard parameter must be path and required: true");
+
+  console.log("  ✓ Optional route expansion & wildcard parameter accuracy verified\n");
 
   // 6. JSDoc Annotation & Tag Inheritance Accuracy
   console.log("6️⃣  Verifying JSDoc Annotation & Tag Inheritance...");

@@ -23,6 +23,8 @@ export interface GenParamsOptions {
   typeChecker: TypeChecker;
   contextNode: Node;
   routePath?: string;
+  /** Explicit display route path for logger registration and output buffering. */
+  displayPath?: string;
   method?: string;
   project?: Project;
   rootPath?: string;
@@ -30,6 +32,15 @@ export interface GenParamsOptions {
   cacheManager?: CacheManager;
   /** Version adapter for nullable and schema transforms. Defaults to 3.0. */
   adapter?: OpenAPIVersionAdapter;
+  /**
+   * Only include path parameters that are present in the target path template.
+   * If provided, any path parameter not in this list will be filtered out.
+   */
+  allowedParamNames?: string[];
+  /**
+   * Wildcard parameter name if applicable (e.g. "wildcard" or "path").
+   */
+  wildcardParamName?: string;
 }
 
 export async function genParameters(
@@ -40,13 +51,17 @@ export async function genParameters(
     typeChecker,
     contextNode,
     routePath,
+    displayPath,
     method,
     project,
     rootPath,
     pathPatterns,
     cacheManager,
     adapter = v30Adapter,
+    allowedParamNames,
+    wildcardParamName,
   } = options;
+  const logPath = displayPath || routePath;
   const inputProp = type.getProperty("input");
   const input = inputProp
     ? typeChecker.getTypeOfSymbolAtLocation(inputProp, contextNode)
@@ -90,7 +105,7 @@ export async function genParameters(
           mergedRequired = Array.isArray(dynamicSchema.required)
             ? dynamicSchema.required
             : [];
-          logger.record(method, routePath, src, resolved.library);
+          if (logPath) logger.record(method, logPath, src, resolved.library);
         } else if (resolved.schema.allOf) {
           dynamicSchema = resolved.schema;
           const reqSet = new Set<string>();
@@ -103,7 +118,7 @@ export async function genParameters(
             }
           }
           if (reqSet.size > 0) mergedRequired = Array.from(reqSet);
-          logger.record(method, routePath, src, resolved.library);
+          if (logPath) logger.record(method, logPath, src, resolved.library);
         }
       }
     }
@@ -131,8 +146,8 @@ export async function genParameters(
       // Fallback: Use AST type inference
       const srcType = typeChecker.getTypeOfSymbolAtLocation(p, contextNode);
       const props = srcType.getProperties();
-      if (props.length > 0 && routePath && method) {
-        logger.record(method, routePath, src, "ts type");
+      if (props.length > 0 && logPath && method) {
+        logger.record(method, logPath, src, "ts type");
       }
       for (const f of props) {
         const ft = typeChecker.getTypeOfSymbolAtLocation(f, contextNode);
@@ -161,5 +176,40 @@ export async function genParameters(
       }
     }
   }
+
+  if (allowedParamNames) {
+    const allowedSet = new Set(allowedParamNames);
+    // Filter out path parameters that are not in this path template
+    const filteredParams = params.filter(
+      (p) => p.in !== "path" || allowedSet.has(p.name),
+    );
+
+    // If the path template contains parameters (such as wildcard) not in params,
+    // inject fallback string schema for OpenAPI compliance
+    for (const pName of allowedParamNames) {
+      const exists = filteredParams.some(
+        (p) => p.in === "path" && p.name === pName,
+      );
+      if (!exists) {
+        const isWildcard =
+          pName.toLowerCase().includes("wildcard") ||
+          Boolean(wildcardParamName && pName === wildcardParamName);
+        const pattern = pathPatterns?.[pName];
+        filteredParams.push({
+          name: pName,
+          in: "path",
+          required: true,
+          schema: pattern
+            ? { type: "string", pattern }
+            : { type: "string" },
+          description: isWildcard
+            ? "Catch-all wildcard path parameter"
+            : undefined,
+        });
+      }
+    }
+    return filteredParams;
+  }
+
   return params;
 }

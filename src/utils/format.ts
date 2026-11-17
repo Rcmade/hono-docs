@@ -1,5 +1,9 @@
 import type { OpenAPIV3 } from "openapi-types";
-import { PATH_PARAM_REGEX } from "./constants";
+import {
+  DEFAULT_WILDCARD_PARAM,
+  PATH_PARAM_REGEX,
+  WILDCARD_SEGMENT_REGEX,
+} from "./constants";
 
 export function sanitizeApiPrefix(prefix: string): string {
   return prefix
@@ -88,14 +92,14 @@ export function generateDefaultSummary(
     // Check if it is a parameter like :id, :userId, {id}, {userId} or wildcard *
     if (
       seg.startsWith(":") ||
-      (seg.startsWith("{") && seg.endsWith("}")) ||
+      (seg.startsWith("{") && (seg.endsWith("}") || seg.endsWith("}?"))) ||
       seg === "*"
     ) {
       let paramName = seg;
       if (seg.startsWith(":")) {
         paramName = seg.slice(1);
       } else if (seg.startsWith("{")) {
-        paramName = seg.slice(1, -1);
+        paramName = seg.replace(/^\{/, "").replace(/\}\??$/, "");
       } else if (seg === "*") {
         paramName = "Wildcard";
       }
@@ -163,9 +167,146 @@ export function stripQuotes(str: string): string {
 /**
  * Converts a raw Hono route path (including regex constraints and parameters)
  * to an OpenAPI 3.0 path template. E.g. "/archive/:year{[0-9]{4}}" -> "/archive/{year}"
+ * Also converts wildcard segments "*" to "{wildcard}" (or custom name) and cleans optional markers.
  */
-export function toOpenApiPath(pathStr: string): string {
-  return pathStr.replace(PATH_PARAM_REGEX, "{$1}");
+export function toOpenApiPath(
+  pathStr: string,
+  options?: { wildcardParam?: string },
+): string {
+  const wildcardParam = options?.wildcardParam || DEFAULT_WILDCARD_PARAM;
+  const replacedParams = pathStr.replace(PATH_PARAM_REGEX, "{$1}");
+
+  const wildcardRegex = new RegExp(WILDCARD_SEGMENT_REGEX.source, "g");
+  const matches = replacedParams.match(wildcardRegex);
+  if (!matches) return replacedParams;
+  const totalWildcards = matches.length;
+  let wildcardIndex = 0;
+
+  return replacedParams.replace(wildcardRegex, (match) => {
+    wildcardIndex++;
+    const name =
+      totalWildcards > 1 ? `${wildcardParam}${wildcardIndex}` : wildcardParam;
+    return match.startsWith("/") ? `/{${name}}` : `{${name}}`;
+  });
+}
+
+export interface ExpandedPath {
+  path: string;
+  paramNames: string[];
+}
+
+/**
+ * Expands a Hono route path into one or more valid OpenAPI 3.0 path templates.
+ *
+ * If the route contains optional path parameters (e.g. `/:id/files/:name?`),
+ * this expands into multiple paths:
+ * - `/{id}/files` (parameters: `["id"]`)
+ * - `/{id}/files/{name}` (parameters: `["id", "name"]`)
+ *
+ * If the route contains wildcard segments `/*`, they are converted to `{wildcard}`
+ * (or a custom configured parameter name).
+ */
+export function expandHonoPath(
+  rawPath: string,
+  options?: { wildcardParam?: string },
+): ExpandedPath[] {
+  const wildcardParam = options?.wildcardParam || DEFAULT_WILDCARD_PARAM;
+
+  let p = stripQuotes(rawPath);
+  if (!p.startsWith("/")) p = "/" + p;
+  if (p.length > 1 && p.endsWith("/")) p = p.slice(0, -1);
+
+  const segments = p.split("/").slice(1);
+  if (segments.length === 0 || (segments.length === 1 && segments[0] === "")) {
+    return [{ path: "/", paramNames: [] }];
+  }
+
+  const totalWildcards = segments.filter((s) => s === "*").length;
+  let wildcardIndex = 0;
+
+  interface SegmentInfo {
+    raw: string;
+    isOptional: boolean;
+    openApiSeg: string;
+    paramNames: string[];
+  }
+
+  const parsedSegments: SegmentInfo[] = segments.map((seg) => {
+    if (seg === "*") {
+      wildcardIndex++;
+      const paramName =
+        totalWildcards > 1
+          ? `${wildcardParam}${wildcardIndex}`
+          : wildcardParam;
+      return {
+        raw: seg,
+        isOptional: false,
+        openApiSeg: `{${paramName}}`,
+        paramNames: [paramName],
+      };
+    }
+
+    if (seg.includes(":")) {
+      const paramMatches = Array.from(
+        seg.matchAll(new RegExp(PATH_PARAM_REGEX.source, "g")),
+      );
+      const isOptional = paramMatches.some(
+        (m) => m[0].endsWith("?") || m[0].includes("?{"),
+      );
+      const openApiSeg = toOpenApiPath(seg, { wildcardParam });
+      const matches = Array.from(openApiSeg.matchAll(/\{([^}]+)\}/g));
+      const paramNames = matches.map((m) => m[1]);
+      return {
+        raw: seg,
+        isOptional,
+        openApiSeg,
+        paramNames,
+      };
+    }
+
+    return {
+      raw: seg,
+      isOptional: false,
+      openApiSeg: seg,
+      paramNames: [],
+    };
+  });
+
+  const hasOptional = parsedSegments.some((s) => s.isOptional);
+  if (!hasOptional) {
+    const fullPath = "/" + parsedSegments.map((s) => s.openApiSeg).join("/");
+    const paramNames = parsedSegments.flatMap((s) => s.paramNames);
+    return [{ path: fullPath, paramNames }];
+  }
+
+  const results: ExpandedPath[] = [];
+  const seenPaths = new Set<string>();
+
+  function addResult(activeSegments: SegmentInfo[]) {
+    const fullPath =
+      activeSegments.length === 0
+        ? "/"
+        : "/" + activeSegments.map((s) => s.openApiSeg).join("/");
+    if (!seenPaths.has(fullPath)) {
+      seenPaths.add(fullPath);
+      const paramNames = activeSegments.flatMap((s) => s.paramNames);
+      results.push({ path: fullPath, paramNames });
+    }
+  }
+
+  // Only permit early route termination before an optional segment
+  // if all subsequent segments are also optional
+  for (let i = 0; i < parsedSegments.length; i++) {
+    if (
+      parsedSegments[i].isOptional &&
+      parsedSegments.slice(i).every((s) => s.isOptional)
+    ) {
+      addResult(parsedSegments.slice(0, i));
+    }
+  }
+  addResult(parsedSegments);
+
+  return results;
 }
 
 /**

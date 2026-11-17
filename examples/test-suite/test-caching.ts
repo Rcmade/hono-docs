@@ -253,8 +253,8 @@ export const dynamicTestRoutes = new Hono()
         'import { edgeCaseRoutes } from "./routes/edgeCaseRoutes";\nimport { dynamicTestRoutes } from "./routes/dynamicTestRoutes";',
       )
       .replace(
-        '.route("/edge", edgeCaseRoutes);',
-        '.route("/edge", edgeCaseRoutes)\n  .route("/dynamic", dynamicTestRoutes);',
+        '.route("/edge", edgeCaseRoutes)',
+        '.route("/edge", edgeCaseRoutes)\n  .route("/dynamic", dynamicTestRoutes)',
       );
     assert(modifiedIndex !== originalIndexTs, "Failed to inject dynamic test routes into index.ts");
     fs.writeFileSync(INDEX_TS_PATH, modifiedIndex, "utf-8");

@@ -72,7 +72,11 @@ export const ZOD_TO_VALIBOT_TARGET_MAP: Record<
 export const HONO_METHOD_PREFIX = "$" as const;
 
 export const PATH_PARAM_REGEX =
-  /:([a-zA-Z0-9_]+)(?:{([^{}]*(?:{[^{}]*}[^{}]*)*)})?/g;
+  /:([a-zA-Z0-9_]+)\??(?:{([^{}]*(?:{[^{}]*}[^{}]*)*)})?\??/g;
+
+export const WILDCARD_SEGMENT_REGEX = /(?:^|\/)\*(?=\/|$)/g;
+
+export const DEFAULT_WILDCARD_PARAM = "wildcard" as const;
 
 export const ROUTER_CONSTANTS = {
   routeMethod: "route",

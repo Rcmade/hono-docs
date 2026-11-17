@@ -586,6 +586,17 @@
         ],
         "additionalProperties": false
       },
+      "GetApiEdgeTsAstOptionalResponsedefault": {
+        "type": "object",
+        "properties": {
+          "opt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "opt"
+        ]
+      },
       "GetApiStressItemIdResponsedefault": {
         "type": "object",
         "properties": {
@@ -694,6 +705,24 @@
         "required": [
           "orgId",
           "invoiceId"
+        ]
+      },
+      "GetApiComplexOrgOrgIdProjectsProjectIdResponsedefaultParams": {
+        "type": "object",
+        "properties": {
+          "orgId": {
+            "type": "string"
+          },
+          "projectId": {
+            "type": "string"
+          },
+          "subTaskId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "orgId",
+          "projectId"
         ]
       },
       "GetApiStressItemIdDetailsResponsedefault": {
@@ -1054,6 +1083,21 @@
         "required": [
           "year",
           "month"
+        ]
+      },
+      "GetApiComplexOrgOrgIdProjectsProjectIdResponsedefault": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "params": {
+            "$ref": "#/components/schemas/GetApiComplexOrgOrgIdProjectsProjectIdResponsedefaultParams"
+          }
+        },
+        "required": [
+          "success",
+          "params"
         ]
       },
       "GetApiComplexNestedInfoResponsedefault": {
@@ -2825,7 +2869,7 @@
         }
       }
     },
-    "/api/complex/org/{orgId}/projects/{projectId}/{subTaskId}?": {
+    "/api/complex/org/{orgId}/projects/{projectId}": {
       "get": {
         "summary": "Complex Path Parameters",
         "responses": {
@@ -2834,34 +2878,47 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    },
-                    "params": {
-                      "type": "object",
-                      "properties": {
-                        "orgId": {
-                          "type": "string"
-                        },
-                        "projectId": {
-                          "type": "string"
-                        },
-                        "subTaskId": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "orgId",
-                        "projectId"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "success",
-                    "params"
-                  ]
+                  "$ref": "#/components/schemas/GetApiComplexOrgOrgIdProjectsProjectIdResponsedefault"
+                }
+              }
+            }
+          }
+        },
+        "description": "Route with multiple path parameters and an optional one.",
+        "tags": [
+          "Parameter Testing",
+          "E-Commerce Platform"
+        ],
+        "parameters": [
+          {
+            "name": "orgId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/complex/org/{orgId}/projects/{projectId}/{subTaskId}": {
+      "get": {
+        "summary": "Complex Path Parameters",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiComplexOrgOrgIdProjectsProjectIdResponsedefault"
                 }
               }
             }
@@ -2954,7 +3011,7 @@
         ]
       }
     },
-    "/api/complex/files/*": {
+    "/api/complex/files/{wildcard}": {
       "get": {
         "summary": "Wildcard Path Parameter",
         "responses": {
@@ -2985,6 +3042,17 @@
         "tags": [
           "Parameter Testing",
           "E-Commerce Platform"
+        ],
+        "parameters": [
+          {
+            "name": "wildcard",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Catch-all wildcard path parameter"
+          }
         ]
       }
     },
@@ -7689,24 +7757,36 @@
         ]
       }
     },
-    "/api/edge/ts-ast/optional/{opt}?": {
+    "/api/edge/ts-ast/optional": {
       "get": {
-        "summary": "Get Edge Ts ast Optional {opt}?",
+        "summary": "Get Edge Ts ast Optional",
         "responses": {
           "default": {
             "description": "Generic status from T[\"status\"]",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "opt": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "opt"
-                  ]
+                  "$ref": "#/components/schemas/GetApiEdgeTsAstOptionalResponsedefault"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "E-Commerce Platform"
+        ]
+      }
+    },
+    "/api/edge/ts-ast/optional/{opt}": {
+      "get": {
+        "summary": "Get Edge Ts ast Optional By Opt",
+        "responses": {
+          "default": {
+            "description": "Generic status from T[\"status\"]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEdgeTsAstOptionalResponsedefault"
                 }
               }
             }
@@ -7934,7 +8014,7 @@
         ]
       }
     },
-    "/api/edge/wildcard/files/*": {
+    "/api/edge/wildcard/files/{wildcard}": {
       "get": {
         "summary": "Wildcard Path Parameter",
         "responses": {
@@ -7961,6 +8041,17 @@
         "tags": [
           "Parameter Testing",
           "E-Commerce Platform"
+        ],
+        "parameters": [
+          {
+            "name": "wildcard",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Catch-all wildcard path parameter"
+          }
         ]
       }
     },

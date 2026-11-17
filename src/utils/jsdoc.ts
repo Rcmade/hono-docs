@@ -11,7 +11,7 @@ import {
   JSDOC_TAGS,
   JSDOC_REGEXES,
 } from "./constants";
-import { toOpenApiPath, stripQuotes } from "./format";
+import { toOpenApiPath, expandHonoPath, stripQuotes } from "./format";
 import type { OpenAPIV3 } from "openapi-types";
 
 export interface ParsedJSDoc {
@@ -794,6 +794,14 @@ export function extractJSDocs(project: Project): JSDocMap {
 
         // Fallback: Suffix key for backwards compatibility
         result.addDoc(`${methodName} ${openApiSubPath}`, effectiveParsed);
+
+        // Also register any expanded path variants (for optional params and wildcards)
+        const expandedSubPaths = expandHonoPath(rawRoutePath);
+        for (const exp of expandedSubPaths) {
+          const expMounted = joinOpenApiPaths(chain.prefix, exp.path);
+          result.addDoc(`${methodName} ${expMounted}`, effectiveParsed);
+          result.addDoc(`${methodName} ${exp.path}`, effectiveParsed);
+        }
       }
     }
   }

@@ -13,6 +13,8 @@ import type {
   GenerateParams,
   OpenApiPath,
   ApiGroup,
+  HonoMethod,
+  HonoPathItemObject,
 } from "../types";
 import { extractJSDocs, type ParsedJSDoc } from "../utils/jsdoc";
 import { genParameters } from "../utils/parameters";
@@ -24,6 +26,7 @@ import {
   generateDefaultSummary,
   addTagToSpec,
   toOpenApiPath,
+  expandHonoPath,
   extractPathParamPatterns,
   stripAllQuotes,
   type OpenApiTagObject,
@@ -32,7 +35,11 @@ import { locateRouteEntry } from "../schema-resolver/routeIndex";
 import { extractASTHeaders } from "../utils/responseHeaders";
 import { logger } from "../utils/logger";
 import type { CacheManager } from "../cache/index";
-import { HONO_METHODS, HONO_METHOD_PREFIX } from "../utils/constants";
+import {
+  HONO_METHODS,
+  HONO_METHOD_PREFIX,
+  DEFAULT_WILDCARD_PARAM,
+} from "../utils/constants";
 
 import type { OpenAPIV3 } from "openapi-types";
 import { getAdapter } from "../openapi/adapters/index";
@@ -78,7 +85,7 @@ GenerateParams & {
 
   const routesNode = typeArgs[1];
 
-  const paths: Record<string, OpenAPIV3.PathItemObject> = {};
+  const paths: Record<string, HonoPathItemObject> = {};
 
   // Resolve the version adapter once — used by all schema builders
   const adapter = getAdapter(config.openApiVersion);
@@ -135,12 +142,13 @@ GenerateParams & {
     ? schemaType.getUnionTypes()
     : [schemaType];
 
+  const wildcardParam = config.wildcardParamName || DEFAULT_WILDCARD_PARAM;
+
   for (const t of types) {
     for (const routeProp of t.getProperties()) {
       const raw = stripAllQuotes(routeProp.getName());
       const pathPatterns = extractPathParamPatterns(raw);
-      const route = toOpenApiPath(raw);
-      if (!paths[route]) paths[route] = {};
+      const expandedRoutes = expandHonoPath(raw, { wildcardParam });
 
       // Get the type of the route methods object (e.g. { $get: ... })
       const routeType = typeChecker.getTypeOfSymbolAtLocation(
@@ -149,264 +157,292 @@ GenerateParams & {
       );
       if (!routeType) continue;
 
-      for (const methodSymbol of routeType.getProperties()) {
-        const name = methodSymbol.getName(); // e.g. "$get"
-        if (!name.startsWith(HONO_METHOD_PREFIX)) continue;
-        const http = name.slice(HONO_METHOD_PREFIX.length).toLowerCase(); // "get", "post", etc.
-        const routeEntry = locateRouteEntry(http, raw, project);
+      for (const expanded of expandedRoutes) {
+        const route = expanded.path;
+        if (!paths[route]) paths[route] = {};
 
-        // Get the type of the method (e.g. { input: ..., output: ... })
-        const methodType = typeChecker.getTypeOfSymbolAtLocation(
-          methodSymbol,
-          aliasDecl,
-        );
-        if (!methodType) continue;
+        for (const methodSymbol of routeType.getProperties()) {
+          const name = methodSymbol.getName(); // e.g. "$get"
+          if (!name.startsWith(HONO_METHOD_PREFIX)) continue;
+          const http = name.slice(HONO_METHOD_PREFIX.length).toLowerCase(); // "get", "post", etc.
+          const routeEntry = locateRouteEntry(http, raw, project);
 
-        const variants = unwrapUnion(methodType);
-
-        const exactKey = `${http} ${route}`;
-        let jsDoc: ParsedJSDoc | undefined;
-
-        if (jsDocMap.has(exactKey)) {
-          jsDoc = jsDocMap.get(exactKey)![0];
-        } else {
-          for (const [k, docs] of jsDocMap.entries()) {
-            const [mapHttp, ...mapPathParts] = k.split(" ");
-            const mapPath = mapPathParts.join(" ");
-            if (mapHttp === http && route.endsWith(mapPath)) {
-              jsDoc = docs[0];
-              break;
-            }
-          }
-        }
-
-        if (jsDoc?.exclude) {
-          continue;
-        }
-
-        let depHash = "";
-        let depFiles: string[] = [];
-        const routeKey = `${http.toLowerCase()} ${raw}`;
-
-        if (cacheManager) {
-          if (routeEntry?.sourceFilePath) {
-            const depInfo = getRouteDepInfo(
-              routeEntry.sourceFilePath,
-              jsDoc?.sourceFilePaths,
-            );
-            depHash = depInfo.hash;
-            depFiles = depInfo.files;
-            if (depHash) {
-              const routeCache = cacheManager.getRouteCache(routeKey, depHash);
-              if (routeCache) {
-                logger.recordSources(
-                  http,
-                  raw,
-                  routeCache.sources || [],
-                  !!(
-                    routeCache.operation.summary ||
-                    routeCache.operation.description ||
-                    (routeCache.operation.tags &&
-                      routeCache.operation.tags.length > 0)
-                  ),
-                );
-                // @ts-expect-error we are dynamically building the paths object
-                paths[route][http] = routeCache.operation;
-                continue;
-              }
-            }
-          }
-        }
-
-        const hasDoc = !!(
-          jsDoc?.summary ||
-          jsDoc?.description ||
-          (jsDoc?.tags && jsDoc?.tags?.length > 0) ||
-          jsDoc?.deprecated ||
-          (jsDoc?.examples && jsDoc?.examples?.length > 0) ||
-          (jsDoc?.responseDescriptions &&
-            Object.keys(jsDoc.responseDescriptions).length > 0) ||
-          (jsDoc?.responseHeaders &&
-            Object.keys(jsDoc.responseHeaders).length > 0)
-        );
-        logger.registerRoute(http, raw, hasDoc);
-
-        const op: OpenAPIV3.OperationObject = {
-          summary: jsDoc?.summary || generateDefaultSummary(http, route),
-          responses: {},
-        };
-
-        if (jsDoc?.description) {
-          op.description = jsDoc.description;
-        }
-
-        if (jsDoc?.tags && jsDoc.tags.length > 0) {
-          op.tags = jsDoc.tags;
-        }
-
-        if (jsDoc?.deprecated) {
-          op.deprecated = true;
-        }
-
-        // parameters - try runtime schema resolution first, fall back to type-based
-        const params = await genParameters({
-          type: variants[0],
-          typeChecker,
-          contextNode: aliasDecl,
-          routePath: raw,
-          method: http,
-          project,
-          rootPath,
-          pathPatterns,
-          cacheManager,
-          adapter,
-        });
-        if (params.length) op.parameters = params;
-
-        // requestBody — try runtime schema resolution first, fall back to type-based
-        const rb = await genRequestBody({
-          type: variants[0],
-          typeChecker,
-          contextNode: aliasDecl,
-          routePath: raw,
-          method: http,
-          project,
-          rootPath,
-          cacheManager,
-          adapter,
-        });
-        if (rb) {
-          // Apply requestBody examples from JSDoc
-          const bodyExamples =
-            jsDoc?.examples?.filter((ex) => !ex.statusCode) || [];
-          if (bodyExamples.length > 0 && rb.content) {
-            for (const mediaType of Object.keys(rb.content)) {
-              if (bodyExamples.length === 1) {
-                rb.content[mediaType].example = bodyExamples[0].value;
-              } else {
-                const examplesMap: Record<string, OpenAPIV3.ExampleObject> = {};
-                bodyExamples.forEach((ex, idx) => {
-                  examplesMap[`example${idx + 1}`] = { value: ex.value };
-                });
-                rb.content[mediaType].examples = examplesMap;
-              }
-            }
-          }
-          op.requestBody = rb;
-        }
-
-        // responses
-        op.responses = {};
-        const byStatus = groupBy(variants, (v) => {
-          const statusProp = v.getProperty("status");
-          if (!statusProp) return "default";
-          const statusType = typeChecker.getTypeOfSymbolAtLocation(
-            statusProp,
+          // Get the type of the method (e.g. { input: ..., output: ... })
+          const methodType = typeChecker.getTypeOfSymbolAtLocation(
+            methodSymbol,
             aliasDecl,
           );
-          const s = statusType.getText();
+          if (!methodType) continue;
 
-          if (statusType.isNumberLiteral()) {
-            return String(statusType.getLiteralValue());
+          const variants = unwrapUnion(methodType);
+
+          const exactKey = `${http} ${route}`;
+          let jsDoc: ParsedJSDoc | undefined;
+
+          if (jsDocMap.has(exactKey)) {
+            jsDoc = jsDocMap.get(exactKey)![0];
+          } else {
+            const rawKey = `${http} ${toOpenApiPath(raw, { wildcardParam })}`;
+            if (jsDocMap.has(rawKey)) {
+              jsDoc = jsDocMap.get(rawKey)![0];
+            } else {
+              for (const [k, docs] of jsDocMap.entries()) {
+                const [mapHttp, ...mapPathParts] = k.split(" ");
+                const mapPath = mapPathParts.join(" ");
+                if (
+                  mapHttp === http &&
+                  (route.endsWith(mapPath) || raw.endsWith(mapPath))
+                ) {
+                  jsDoc = docs[0];
+                  break;
+                }
+              }
+            }
           }
 
-          return /^\d+$/.test(s) ? s : "default";
-        });
-        for (const [code, vs] of Object.entries(byStatus)) {
-          const schemas = vs.map((v) => {
-            const outProp = v.getProperty("output");
-            if (!outProp) return {};
-            const outType = typeChecker.getTypeOfSymbolAtLocation(
-              outProp,
-              aliasDecl,
-            );
-            return buildSchema({
-              type: outType,
-              typeChecker,
-              contextNode: aliasDecl,
-              adapter,
-            });
-          });
-          const schema = schemas.length > 1 ? { oneOf: schemas } : schemas[0];
+          if (jsDoc?.exclude) {
+            continue;
+          }
 
-          const customDesc =
-            jsDoc?.responseDescriptions?.[code] ??
-            (code !== "default"
-              ? jsDoc?.responseDescriptions?.[code.toLowerCase()]
-              : undefined);
+          let depHash = "";
+          let depFiles: string[] = [];
+          const routeKey = `${http.toLowerCase()} ${route}`;
 
-          const defaultDesc =
-            code === "default"
-              ? `Generic status from ${vs[0]
-                  .getProperty("status")!
-                  .getValueDeclarationOrThrow()
-                  .getType()
-                  .getText()}`
-              : `Status ${code}`;
+          if (cacheManager) {
+            if (routeEntry?.sourceFilePath) {
+              const depInfo = getRouteDepInfo(
+                routeEntry.sourceFilePath,
+                jsDoc?.sourceFilePaths,
+              );
+              depHash = depInfo.hash;
+              depFiles = depInfo.files;
+              if (depHash) {
+                const routeCache = cacheManager.getRouteCache(
+                  routeKey,
+                  depHash,
+                );
+                if (routeCache) {
+                  logger.recordSources(
+                    http,
+                    route,
+                    routeCache.sources || [],
+                    !!(
+                      routeCache.operation.summary ||
+                      routeCache.operation.description ||
+                      (routeCache.operation.tags &&
+                        routeCache.operation.tags.length > 0)
+                    ),
+                  );
+                  paths[route][http as HonoMethod] =
+                    routeCache.operation;
+                  continue;
+                }
+              }
+            }
+          }
 
-          const responseObj: OpenAPIV3.ResponseObject = {
-            description: customDesc || defaultDesc,
-            content: { "application/json": { schema } },
+          const hasDoc = !!(
+            jsDoc?.summary ||
+            jsDoc?.description ||
+            (jsDoc?.tags && jsDoc?.tags?.length > 0) ||
+            jsDoc?.deprecated ||
+            (jsDoc?.examples && jsDoc?.examples?.length > 0) ||
+            (jsDoc?.responseDescriptions &&
+              Object.keys(jsDoc.responseDescriptions).length > 0) ||
+            (jsDoc?.responseHeaders &&
+              Object.keys(jsDoc.responseHeaders).length > 0)
+          );
+          logger.registerRoute(http, route, hasDoc);
+
+          const op: OpenAPIV3.OperationObject = {
+            summary: jsDoc?.summary || generateDefaultSummary(http, route),
+            responses: {},
           };
 
-          // Apply response examples from JSDoc
-          const respExamples =
-            jsDoc?.examples?.filter((ex) => {
-              if (ex.statusCode) {
-                return ex.statusCode === code;
-              }
-              if (
-                !rb &&
-                (code === "200" ||
-                  (code === "default" && Object.keys(byStatus).length === 1))
-              ) {
-                return true;
-              }
-              return false;
-            }) || [];
-
-          if (respExamples.length > 0 && responseObj.content) {
-            for (const mediaType of Object.keys(responseObj.content)) {
-              if (respExamples.length === 1) {
-                responseObj.content[mediaType].example = respExamples[0].value;
-              } else {
-                const examplesMap: Record<string, OpenAPIV3.ExampleObject> = {};
-                respExamples.forEach((ex, idx) => {
-                  examplesMap[`example${idx + 1}`] = { value: ex.value };
-                });
-                responseObj.content[mediaType].examples = examplesMap;
-              }
-            }
+          if (jsDoc?.description) {
+            op.description = jsDoc.description;
           }
 
-          const routeNode = routeEntry?.call ?? null;
-          const astHeaders = routeNode ? extractASTHeaders(routeNode) : [];
-          const jsdocHeaders = jsDoc?.responseHeaders?.[code] || [];
-
-          if (astHeaders.length > 0 || jsdocHeaders.length > 0) {
-            responseObj.headers = {};
-
-            // Apply AST headers first (fallback)
-            for (const h of astHeaders) {
-              responseObj.headers[h.name] = h.schema;
-            }
-
-            // Apply JSDoc headers (overrides AST)
-            for (const h of jsdocHeaders) {
-              responseObj.headers[h.name] = h.schema;
-            }
+          if (jsDoc?.tags && jsDoc.tags.length > 0) {
+            op.tags = jsDoc.tags;
           }
 
-          op.responses[code] = responseObj;
-        }
+          if (jsDoc?.deprecated) {
+            op.deprecated = true;
+          }
 
-        if (cacheManager && depHash && depFiles.length > 0) {
-          const sources = logger.getRouteSources(http, raw);
-          cacheManager.setRouteCache(routeKey, depHash, op, sources, depFiles);
-        }
+          // parameters - try runtime schema resolution first, fall back to type-based
+          const params = await genParameters({
+            type: variants[0],
+            typeChecker,
+            contextNode: aliasDecl,
+            routePath: raw,
+            displayPath: route,
+            method: http,
+            project,
+            rootPath,
+            pathPatterns,
+            cacheManager,
+            adapter,
+            allowedParamNames: expanded.paramNames,
+            wildcardParamName: wildcardParam,
+          });
+          if (params.length) op.parameters = params;
 
-        // @ts-expect-error we are dynamically building the paths object
-        paths[route][http] = op;
+          // requestBody — try runtime schema resolution first, fall back to type-based
+          const rb = await genRequestBody({
+            type: variants[0],
+            typeChecker,
+            contextNode: aliasDecl,
+            routePath: raw,
+            displayPath: route,
+            method: http,
+            project,
+            rootPath,
+            cacheManager,
+            adapter,
+          });
+          if (rb) {
+            // Apply requestBody examples from JSDoc
+            const bodyExamples =
+              jsDoc?.examples?.filter((ex) => !ex.statusCode) || [];
+            if (bodyExamples.length > 0 && rb.content) {
+              for (const mediaType of Object.keys(rb.content)) {
+                if (bodyExamples.length === 1) {
+                  rb.content[mediaType].example = bodyExamples[0].value;
+                } else {
+                  const examplesMap: Record<string, OpenAPIV3.ExampleObject> =
+                    {};
+                  bodyExamples.forEach((ex, idx) => {
+                    examplesMap[`example${idx + 1}`] = { value: ex.value };
+                  });
+                  rb.content[mediaType].examples = examplesMap;
+                }
+              }
+            }
+            op.requestBody = rb;
+          }
+
+          // responses
+          op.responses = {};
+          const byStatus = groupBy(variants, (v) => {
+            const statusProp = v.getProperty("status");
+            if (!statusProp) return "default";
+            const statusType = typeChecker.getTypeOfSymbolAtLocation(
+              statusProp,
+              aliasDecl,
+            );
+            const s = statusType.getText();
+
+            if (statusType.isNumberLiteral()) {
+              return String(statusType.getLiteralValue());
+            }
+
+            return /^\d+$/.test(s) ? s : "default";
+          });
+          for (const [code, vs] of Object.entries(byStatus)) {
+            const schemas = vs.map((v) => {
+              const outProp = v.getProperty("output");
+              if (!outProp) return {};
+              const outType = typeChecker.getTypeOfSymbolAtLocation(
+                outProp,
+                aliasDecl,
+              );
+              return buildSchema({
+                type: outType,
+                typeChecker,
+                contextNode: aliasDecl,
+                adapter,
+              });
+            });
+            const schema = schemas.length > 1 ? { oneOf: schemas } : schemas[0];
+
+            const customDesc =
+              jsDoc?.responseDescriptions?.[code] ??
+              (code !== "default"
+                ? jsDoc?.responseDescriptions?.[code.toLowerCase()]
+                : undefined);
+
+            const defaultDesc =
+              code === "default"
+                ? `Generic status from ${vs[0]
+                    .getProperty("status")!
+                    .getValueDeclarationOrThrow()
+                    .getType()
+                    .getText()}`
+                : `Status ${code}`;
+
+            const responseObj: OpenAPIV3.ResponseObject = {
+              description: customDesc || defaultDesc,
+              content: { "application/json": { schema } },
+            };
+
+            // Apply response examples from JSDoc
+            const respExamples =
+              jsDoc?.examples?.filter((ex) => {
+                if (ex.statusCode) {
+                  return ex.statusCode === code;
+                }
+                if (
+                  !rb &&
+                  (code === "200" ||
+                    (code === "default" && Object.keys(byStatus).length === 1))
+                ) {
+                  return true;
+                }
+                return false;
+              }) || [];
+
+            if (respExamples.length > 0 && responseObj.content) {
+              for (const mediaType of Object.keys(responseObj.content)) {
+                if (respExamples.length === 1) {
+                  responseObj.content[mediaType].example =
+                    respExamples[0].value;
+                } else {
+                  const examplesMap: Record<string, OpenAPIV3.ExampleObject> =
+                    {};
+                  respExamples.forEach((ex, idx) => {
+                    examplesMap[`example${idx + 1}`] = { value: ex.value };
+                  });
+                  responseObj.content[mediaType].examples = examplesMap;
+                }
+              }
+            }
+
+            const routeNode = routeEntry?.call ?? null;
+            const astHeaders = routeNode ? extractASTHeaders(routeNode) : [];
+            const jsdocHeaders = jsDoc?.responseHeaders?.[code] || [];
+
+            if (astHeaders.length > 0 || jsdocHeaders.length > 0) {
+              responseObj.headers = {};
+
+              // Apply AST headers first (fallback)
+              for (const h of astHeaders) {
+                responseObj.headers[h.name] = h.schema;
+              }
+
+              // Apply JSDoc headers (overrides AST)
+              for (const h of jsdocHeaders) {
+                responseObj.headers[h.name] = h.schema;
+              }
+            }
+
+            op.responses[code] = responseObj;
+          }
+
+          if (cacheManager && depHash && depFiles.length > 0) {
+            const sources = logger.getRouteSources(http, route);
+            cacheManager.setRouteCache(
+              routeKey,
+              depHash,
+              op,
+              sources,
+              depFiles,
+            );
+          }
+
+          paths[route][http as HonoMethod] = op;
+        }
       }
     }
   }

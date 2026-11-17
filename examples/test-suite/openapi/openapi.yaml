@@ -316,6 +316,13 @@ components:
       required:
         - oldApiKey
       additionalProperties: false
+    GetApiEdgeTsAstOptionalResponsedefault:
+      type: object
+      properties:
+        opt:
+          type: string
+      required:
+        - opt
     GetApiStressItemIdResponsedefault:
       type: object
       properties:
@@ -393,6 +400,18 @@ components:
       required:
         - orgId
         - invoiceId
+    GetApiComplexOrgOrgIdProjectsProjectIdResponsedefaultParams:
+      type: object
+      properties:
+        orgId:
+          type: string
+        projectId:
+          type: string
+        subTaskId:
+          type: string
+      required:
+        - orgId
+        - projectId
     GetApiStressItemIdDetailsResponsedefault:
       type: object
       properties:
@@ -604,6 +623,17 @@ components:
       required:
         - year
         - month
+    GetApiComplexOrgOrgIdProjectsProjectIdResponsedefault:
+      type: object
+      properties:
+        success:
+          type: boolean
+        params:
+          $ref: "#/components/schemas/GetApiComplexOrgOrgIdProjectsProjectIdResponsedefau\
+            ltParams"
+      required:
+        - success
+        - params
     GetApiComplexNestedInfoResponsedefault:
       type: object
       properties:
@@ -1782,7 +1812,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/PostApiTestsUnionTestBody"
-  /api/complex/org/{orgId}/projects/{projectId}/{subTaskId}?:
+  /api/complex/org/{orgId}/projects/{projectId}:
     get:
       summary: Complex Path Parameters
       responses:
@@ -1791,25 +1821,34 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  params:
-                    type: object
-                    properties:
-                      orgId:
-                        type: string
-                      projectId:
-                        type: string
-                      subTaskId:
-                        type: string
-                    required:
-                      - orgId
-                      - projectId
-                required:
-                  - success
-                  - params
+                $ref: "#/components/schemas/GetApiComplexOrgOrgIdProjectsProjectIdResponsedefau\
+                  lt"
+      description: Route with multiple path parameters and an optional one.
+      tags:
+        - Parameter Testing
+        - E-Commerce Platform
+      parameters:
+        - name: orgId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+  /api/complex/org/{orgId}/projects/{projectId}/{subTaskId}:
+    get:
+      summary: Complex Path Parameters
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiComplexOrgOrgIdProjectsProjectIdResponsedefau\
+                  lt"
       description: Route with multiple path parameters and an optional one.
       tags:
         - Parameter Testing
@@ -1865,7 +1904,7 @@ paths:
           schema:
             type: string
             pattern: "[0-9]{2}"
-  /api/complex/files/*:
+  /api/complex/files/{wildcard}:
     get:
       summary: Wildcard Path Parameter
       responses:
@@ -1887,6 +1926,13 @@ paths:
       tags:
         - Parameter Testing
         - E-Commerce Platform
+      parameters:
+        - name: wildcard
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Catch-all wildcard path parameter
   /api/complex/upload-form:
     post:
       summary: Multipart Form Data Validation
@@ -4856,21 +4902,28 @@ paths:
             type: string
       tags:
         - E-Commerce Platform
-  /api/edge/ts-ast/optional/{opt}?:
+  /api/edge/ts-ast/optional:
     get:
-      summary: Get Edge Ts ast Optional {opt}?
+      summary: Get Edge Ts ast Optional
       responses:
         default:
           description: Generic status from T["status"]
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  opt:
-                    type: string
-                required:
-                  - opt
+                $ref: "#/components/schemas/GetApiEdgeTsAstOptionalResponsedefault"
+      tags:
+        - E-Commerce Platform
+  /api/edge/ts-ast/optional/{opt}:
+    get:
+      summary: Get Edge Ts ast Optional By Opt
+      responses:
+        default:
+          description: Generic status from T["status"]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiEdgeTsAstOptionalResponsedefault"
       parameters:
         - name: opt
           in: path
@@ -5006,7 +5059,7 @@ paths:
             pattern: "[0-9]{2}"
       tags:
         - E-Commerce Platform
-  /api/edge/wildcard/files/*:
+  /api/edge/wildcard/files/{wildcard}:
     get:
       summary: Wildcard Path Parameter
       responses:
@@ -5025,6 +5078,13 @@ paths:
       tags:
         - Parameter Testing
         - E-Commerce Platform
+      parameters:
+        - name: wildcard
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Catch-all wildcard path parameter
   /api/edge/all-handler/check:
     all:
       summary: All Edge All handler Check

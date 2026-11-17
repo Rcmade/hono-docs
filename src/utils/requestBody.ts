@@ -15,6 +15,8 @@ export interface GenRequestBodyOptions {
   typeChecker: TypeChecker;
   contextNode: Node;
   routePath?: string;
+  /** Explicit display route path for logger registration and output buffering. */
+  displayPath?: string;
   method?: string;
   project?: Project;
   rootPath?: string;
@@ -31,12 +33,14 @@ export async function genRequestBody(
     typeChecker,
     contextNode,
     routePath,
+    displayPath,
     method,
     project,
     rootPath,
     cacheManager,
     adapter = v30Adapter,
   } = options;
+  const logPath = displayPath || routePath;
   const inpProp = type.getProperty("input");
   const inp = inpProp
     ? typeChecker.getTypeOfSymbolAtLocation(inpProp, contextNode)
@@ -63,7 +67,7 @@ export async function genRequestBody(
       content["application/json"] = {
         schema: resolved.schema as OpenAPIV3.SchemaObject,
       };
-      logger.record(method, routePath, "json", resolved.library);
+      if (logPath) logger.record(method, logPath, "json", resolved.library);
     }
   } else if (jProp) {
     const jType = typeChecker.getTypeOfSymbolAtLocation(jProp, contextNode);
@@ -85,7 +89,7 @@ export async function genRequestBody(
       );
       if (resolved) {
         jsonSchema = resolved.schema as OpenAPIV3.SchemaObject;
-        logger.record(method, routePath, "json", resolved.library);
+        if (logPath) logger.record(method, logPath, "json", resolved.library);
       }
     }
 
@@ -97,8 +101,8 @@ export async function genRequestBody(
         contextNode,
         adapter,
       });
-      if (routePath && method) {
-        logger.record(method, routePath, "json", "ts type");
+      if (logPath && method) {
+        logger.record(method, logPath, "json", "ts type");
       }
     }
 
@@ -122,7 +126,7 @@ export async function genRequestBody(
       content["multipart/form-data"] = {
         schema: resolved.schema as OpenAPIV3.SchemaObject,
       };
-      logger.record(method, routePath, "form", resolved.library);
+      if (logPath) logger.record(method, logPath, "form", resolved.library);
     }
   } else if (fProp) {
     const fType = typeChecker.getTypeOfSymbolAtLocation(fProp, contextNode);
@@ -143,7 +147,7 @@ export async function genRequestBody(
       );
       if (resolved) {
         formSchema = resolved.schema as OpenAPIV3.SchemaObject;
-        logger.record(method, routePath, "form", resolved.library);
+        if (logPath) logger.record(method, logPath, "form", resolved.library);
       }
     }
 
@@ -154,8 +158,8 @@ export async function genRequestBody(
         contextNode,
         adapter,
       });
-      if (routePath && method) {
-        logger.record(method, routePath, "form", "ts type");
+      if (logPath && method) {
+        logger.record(method, logPath, "form", "ts type");
       }
     }
 

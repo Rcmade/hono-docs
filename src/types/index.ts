@@ -13,6 +13,13 @@ export type HonoMethod = (typeof HONO_METHOD_NAMES)[number];
 export type HttpMethod = Uppercase<HonoMethod>;
 
 /**
+ * PathItemObject augmented with Hono-specific operations (such as `all`).
+ */
+export type HonoPathItemObject = OpenAPIV3.PathItemObject & {
+  [method in HonoMethod]?: OpenAPIV3.OperationObject;
+};
+
+/**
  * The base OpenAPI configuration, excluding dynamically generated fields.
  *
  * This config maps directly to the OpenAPI 3.0 `Document` type,
@@ -133,6 +140,13 @@ export type HonoDocsConfig = {
    * @default true
    */
   validateOutput?: boolean;
+
+  /**
+   * Parameter name used when converting wildcard routes `/*` into OpenAPI path templates `{wildcard}`.
+   *
+   * @default "wildcard"
+   */
+  wildcardParamName?: string;
 
   /**
    * Optional raw string content to inject at the top of each generated `.d.ts` snapshot.
