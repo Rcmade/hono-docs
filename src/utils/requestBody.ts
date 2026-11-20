@@ -25,6 +25,68 @@ export interface GenRequestBodyOptions {
   adapter?: OpenAPIVersionAdapter;
 }
 
+/**
+ * Determines whether a request body is required based on its schema.
+ *
+ * Only object-like schemas can be "partially optional": a body is required
+ * when at least one property is mandatory. Primitive/array bodies, `$ref`s
+ * (not inspectable here), and schemas composed via allOf/oneOf/anyOf fall
+ * back to required when any member demands mandatory fields.
+ */
+function requestBodyRequired(
+  schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject,
+  defaultsMakePropertiesOptional = false,
+): boolean {
+  if ("$ref" in schema) return true;
+  const types = Array.isArray(schema.type)
+    ? schema.type
+    : schema.type
+      ? [schema.type]
+      : [];
+  // OpenAPI 3.1 nullable objects use type: ["object", "null"]. Object-like
+  // schemas are optional unless they declare a mandatory property; every
+  // other explicitly typed body (primitive/array/etc.) must be sent.
+  if (types.length > 0 && !types.includes("object")) return true;
+  const required = Array.isArray(schema.required) ? schema.required : [];
+  const mandatory = defaultsMakePropertiesOptional
+    ? required.filter((name) => {
+        const property = schema.properties?.[name];
+        // Zod v4's output-oriented conversion includes defaulted input keys in
+        // `required`. They are omittable request properties, unlike a plain
+        // TypeBox `default` annotation, so this is enabled per source library.
+        return !(
+          property &&
+          typeof property === "object" &&
+          !("$ref" in property) &&
+          property.default !== undefined
+        );
+      })
+    : required;
+  if (mandatory.length > 0) return true;
+  const compositionKeys = ["allOf", "oneOf", "anyOf"] as const;
+  const isObjectLike =
+    types.includes("object") ||
+    schema.properties !== undefined ||
+    schema.additionalProperties !== undefined ||
+    compositionKeys.some((key) => Array.isArray(schema[key]));
+  // Unknown schemas must retain the conservative required behavior.
+  if (!isObjectLike) return true;
+  for (const key of compositionKeys) {
+    const subs = schema[key];
+    if (
+      Array.isArray(subs) &&
+      subs.some(
+        (s) =>
+          typeof s === "object" &&
+          requestBodyRequired(s, defaultsMakePropertiesOptional),
+      )
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
 export async function genRequestBody(
   options: GenRequestBodyOptions,
 ): Promise<OpenAPIV3.RequestBodyObject | null> {
@@ -47,6 +109,11 @@ export async function genRequestBody(
     : null;
 
   const content: { [media: string]: OpenAPIV3.MediaTypeObject } = {};
+  // Track Zod schemas because Zod v4's converter uses output-oriented
+  // `required` arrays, which include defaulted properties that are optional
+  // as request input. Other libraries (notably TypeBox) have different
+  // default semantics and must not receive this treatment.
+  const zodSchemas = new WeakSet<object>();
 
   const isMutating = method ? MUTATING_METHODS.has(method.toLowerCase()) : false;
 
@@ -67,6 +134,7 @@ export async function genRequestBody(
       content["application/json"] = {
         schema: resolved.schema as OpenAPIV3.SchemaObject,
       };
+      if (resolved.library === "zod") zodSchemas.add(resolved.schema);
       if (logPath) logger.record(method, logPath, "json", resolved.library);
     }
   } else if (jProp) {
@@ -89,6 +157,7 @@ export async function genRequestBody(
       );
       if (resolved) {
         jsonSchema = resolved.schema as OpenAPIV3.SchemaObject;
+        if (resolved.library === "zod") zodSchemas.add(resolved.schema);
         if (logPath) logger.record(method, logPath, "json", resolved.library);
       }
     }
@@ -126,6 +195,7 @@ export async function genRequestBody(
       content["multipart/form-data"] = {
         schema: resolved.schema as OpenAPIV3.SchemaObject,
       };
+      if (resolved.library === "zod") zodSchemas.add(resolved.schema);
       if (logPath) logger.record(method, logPath, "form", resolved.library);
     }
   } else if (fProp) {
@@ -147,6 +217,7 @@ export async function genRequestBody(
       );
       if (resolved) {
         formSchema = resolved.schema as OpenAPIV3.SchemaObject;
+        if (resolved.library === "zod") zodSchemas.add(resolved.schema);
         if (logPath) logger.record(method, logPath, "form", resolved.library);
       }
     }
@@ -166,5 +237,14 @@ export async function genRequestBody(
     content["multipart/form-data"] = { schema: formSchema };
   }
 
-  return Object.keys(content).length ? { required: true, content } : null;
+  if (!Object.keys(content).length) return null;
+
+  // Derive requiredness from the body schema: a body is only required when
+  // at least one property in the schema is mandatory (e.g. all-optional
+  // filter objects produce `required: false`).
+  const bodyRequired = Object.values(content).some((m) => {
+    if (!m.schema) return false;
+    return requestBodyRequired(m.schema, zodSchemas.has(m.schema));
+  });
+  return { required: bodyRequired, content };
 }
